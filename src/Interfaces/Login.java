@@ -26,8 +26,6 @@ public class Login extends javax.swing.JFrame {
         initComponents();
         setBackground(new Color(1.0f,1.0f,1.0f,0.0f));
         setImageLabel(jlLogin, "CamionGas.png");
-
-
     }
 
     /**
@@ -68,7 +66,7 @@ public class Login extends javax.swing.JFrame {
         jlLogin.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/CamionGas.png"))); // NOI18N
         jlLogin.setText("jLabel1");
         jlLogin.setPreferredSize(new java.awt.Dimension(589, 550));
-        panelRound1.add(jlLogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 515, 554));
+        panelRound1.add(jlLogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 540, 570));
 
         jPanel1.setBackground(new java.awt.Color(27, 27, 27));
         jPanel1.setForeground(new java.awt.Color(204, 204, 204));
@@ -237,7 +235,9 @@ public class Login extends javax.swing.JFrame {
             InputStream inputStream = getClass().getResourceAsStream("/imagenes/" + resourceName);
             if (inputStream != null) {
                 ImageIcon image = new ImageIcon(ImageIO.read(inputStream));
-                Icon icon = new ImageIcon(image.getImage().getScaledInstance(labelName.getWidth(), labelName.getHeight(), Image.SCALE_DEFAULT));
+                Icon icon = new ImageIcon(image.getImage().getScaledInstance(
+                    labelName.getWidth(), labelName.getHeight(), Image.SCALE_SMOOTH
+                ));
                 labelName.setIcon(icon);
                 this.repaint();
             } else {        
