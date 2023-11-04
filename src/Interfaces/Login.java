@@ -50,6 +50,7 @@ public class Login extends javax.swing.JFrame {
         panelRound2 = new Interfaces.PanelRound();
         btnIngresarLogin = new javax.swing.JButton();
         jLabel11 = new javax.swing.JLabel();
+        btnClose = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -132,7 +133,9 @@ public class Login extends javax.swing.JFrame {
         btnIngresarLogin.setBackground(new java.awt.Color(255, 0, 0));
         btnIngresarLogin.setText("Ingresar");
         btnIngresarLogin.setContentAreaFilled(false);
+        btnIngresarLogin.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnIngresarLogin.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        btnIngresarLogin.setSelected(true);
         btnIngresarLogin.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnIngresarLoginMouseClicked(evt);
@@ -169,7 +172,23 @@ public class Login extends javax.swing.JFrame {
         jLabel11.setText("Sesión");
         jPanel1.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 18, -1, 56));
 
-        panelRound1.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 60, -1, 410));
+        panelRound1.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 80, -1, 410));
+
+        btnClose.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/cerrar.png"))); // NOI18N
+        btnClose.setBorder(null);
+        btnClose.setBorderPainted(false);
+        btnClose.setContentAreaFilled(false);
+        btnClose.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnClose.setDefaultCapable(false);
+        btnClose.setFocusPainted(false);
+        btnClose.setFocusable(false);
+        btnClose.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                handleClick(evt);
+            }
+        });
+        panelRound1.add(btnClose, new org.netbeans.lib.awtextra.AbsoluteConstraints(995, 10, 25, 25));
+        btnClose.getAccessibleContext().setAccessibleName("Cerrar ventana");
 
         getContentPane().add(panelRound1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1030, 570));
 
@@ -196,6 +215,11 @@ public class Login extends javax.swing.JFrame {
     private void btnIngresarLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarLoginActionPerformed
 
     }//GEN-LAST:event_btnIngresarLoginActionPerformed
+
+    private void handleClick(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleClick
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_handleClick
 
     /**
      * @param args the command line arguments
@@ -254,6 +278,7 @@ public class Login extends javax.swing.JFrame {
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnClose;
     private javax.swing.JButton btnIngresarLogin;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JLabel jLabel10;
