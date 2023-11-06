@@ -20,7 +20,7 @@ import javax.swing.border.EmptyBorder;
  *
  * @author ASUS
  */
-public class Login extends javax.swing.JFrame {
+public final class Login extends javax.swing.JFrame {
 
     public Login() {
         initComponents();
@@ -37,18 +37,7 @@ public class Login extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
-        jLabel8 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel10 = new javax.swing.JLabel();
-        tfNombreUser = new javax.swing.JTextField();
-        jLabel9 = new javax.swing.JLabel();
-        tfContraseña = new javax.swing.JPasswordField();
-        panelRound2 = new Interfaces.PanelRound();
-        btnIngresarLogin = new javax.swing.JButton();
-        jLabel11 = new javax.swing.JLabel();
-        tfContraseña2 = new javax.swing.JPasswordField();
-        panelRound1 = new Interfaces.PanelRound();
+        panelRound1 = new util.PanelRound();
         jlLogin = new javax.swing.JLabel();
         btnClose = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
@@ -59,117 +48,17 @@ public class Login extends javax.swing.JFrame {
         jLabel14 = new javax.swing.JLabel();
         tfContraseña1 = new javax.swing.JPasswordField();
         jCheckBox2 = new javax.swing.JCheckBox();
-        panelRound3 = new Interfaces.PanelRound();
+        panelRound3 = new util.PanelRound();
         btnIngresarLogin1 = new javax.swing.JButton();
         jLabel15 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMaximumSize(new java.awt.Dimension(1030, 570));
         setUndecorated(true);
+        setResizable(false);
+        setSize(new java.awt.Dimension(1030, 570));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jPanel1.setBackground(new java.awt.Color(27, 27, 27));
-        jPanel1.setForeground(new java.awt.Color(204, 204, 204));
-        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        jLabel8.setForeground(new java.awt.Color(43, 209, 195));
-        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel8.setText("Registrate");
-        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 330, 56));
-
-        jLabel5.setForeground(new java.awt.Color(255, 180, 40));
-        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/editar (2).png"))); // NOI18N
-        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 330, 46));
-
-        jLabel10.setFont(new java.awt.Font("Segoe UI Semibold", 0, 13)); // NOI18N
-        jLabel10.setForeground(new java.awt.Color(204, 204, 204));
-        jLabel10.setText("Usuario:");
-        jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 110, -1, -1));
-
-        tfNombreUser.setBackground(new java.awt.Color(56, 56, 56));
-        tfNombreUser.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        tfNombreUser.setForeground(new java.awt.Color(204, 204, 204));
-        tfNombreUser.setBorder(new EmptyBorder(10, 10, 10, 10));
-        jPanel1.add(tfNombreUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 130, 236, 40));
-
-        jLabel9.setFont(new java.awt.Font("Segoe UI Semibold", 0, 13)); // NOI18N
-        jLabel9.setForeground(new java.awt.Color(204, 204, 204));
-        jLabel9.setText("Contraseña:");
-        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 250, -1, -1));
-
-        tfContraseña.setBackground(new java.awt.Color(56, 56, 56));
-        tfContraseña.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        tfContraseña.setForeground(new java.awt.Color(204, 204, 204));
-        tfContraseña.setBorder(new EmptyBorder(10,10,10,10));
-        tfContraseña.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tfContraseñaActionPerformed(evt);
-            }
-        });
-        jPanel1.add(tfContraseña, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 270, 236, 40));
-
-        panelRound2.setBackground(new java.awt.Color(43, 209, 195));
-        panelRound2.setForeground(new java.awt.Color(255, 255, 255));
-        panelRound2.setToolTipText("");
-        panelRound2.setRoundBottomLeft(15);
-        panelRound2.setRoundBottomRight(15);
-        panelRound2.setRoundTopLeft(15);
-        panelRound2.setRoundTopRight(15);
-
-        btnIngresarLogin.setBackground(new java.awt.Color(255, 0, 0));
-        btnIngresarLogin.setText("Registrar");
-        btnIngresarLogin.setContentAreaFilled(false);
-        btnIngresarLogin.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnIngresarLogin.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        btnIngresarLogin.setSelected(true);
-        btnIngresarLogin.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnIngresarLoginMouseClicked(evt);
-            }
-        });
-        btnIngresarLogin.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnIngresarLoginActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout panelRound2Layout = new javax.swing.GroupLayout(panelRound2);
-        panelRound2.setLayout(panelRound2Layout);
-        panelRound2Layout.setHorizontalGroup(
-            panelRound2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelRound2Layout.createSequentialGroup()
-                .addContainerGap(44, Short.MAX_VALUE)
-                .addComponent(btnIngresarLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(40, 40, 40))
-        );
-        panelRound2Layout.setVerticalGroup(
-            panelRound2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelRound2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnIngresarLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-
-        jPanel1.add(panelRound2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 340, -1, -1));
-
-        jLabel11.setFont(new java.awt.Font("Segoe UI Semibold", 0, 13)); // NOI18N
-        jLabel11.setForeground(new java.awt.Color(204, 204, 204));
-        jLabel11.setText("Email:");
-        jPanel1.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 180, -1, -1));
-
-        tfContraseña2.setBackground(new java.awt.Color(56, 56, 56));
-        tfContraseña2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        tfContraseña2.setForeground(new java.awt.Color(204, 204, 204));
-        tfContraseña2.setBorder(new EmptyBorder(10,10,10,10));
-        tfContraseña2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tfContraseña2ActionPerformed(evt);
-            }
-        });
-        jPanel1.add(tfContraseña2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 200, 236, 40));
-
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 80, -1, 410));
 
         panelRound1.setBackground(new java.awt.Color(35, 35, 35));
         panelRound1.setPreferredSize(new java.awt.Dimension(1230, 530));
@@ -228,7 +117,7 @@ public class Login extends javax.swing.JFrame {
 
         jLabel14.setFont(new java.awt.Font("Segoe UI Semibold", 0, 13)); // NOI18N
         jLabel14.setForeground(new java.awt.Color(204, 204, 204));
-        jLabel14.setText("Contraseña");
+        jLabel14.setText("Contraseña:");
         jPanel2.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(42, 222, -1, -1));
 
         tfContraseña1.setBackground(new java.awt.Color(56, 56, 56));
@@ -304,27 +193,26 @@ public class Login extends javax.swing.JFrame {
 
         panelRound1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 80, -1, 410));
 
+        jLabel1.setForeground(new java.awt.Color(0, 102, 255));
+        jLabel1.setText("¿No tienes cuenta?");
+        jLabel1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                handleRegisterClick(evt);
+            }
+        });
+        panelRound1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 510, -1, -1));
+        jLabel1.getAccessibleContext().setAccessibleDescription("Ir a ventana de registro");
+
         getContentPane().add(panelRound1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1030, 570));
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void tfContraseñaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfContraseñaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tfContraseñaActionPerformed
-
-    private void btnIngresarLoginMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnIngresarLoginMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnIngresarLoginMouseClicked
-
-    private void btnIngresarLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarLoginActionPerformed
-
-    }//GEN-LAST:event_btnIngresarLoginActionPerformed
-
     private void handleClick(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleClick
         // TODO add your handling code here:
-        this.dispose();
+        System.exit(0);
     }//GEN-LAST:event_handleClick
 
     private void tfContraseña1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfContraseña1ActionPerformed
@@ -343,9 +231,11 @@ public class Login extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnIngresarLogin1ActionPerformed
 
-    private void tfContraseña2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfContraseña2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tfContraseña2ActionPerformed
+    private void handleRegisterClick(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_handleRegisterClick
+        Registro view = new Registro();
+        this.dispose();
+        view.setVisible(true);
+    }//GEN-LAST:event_handleRegisterClick
 
     /**
      * @param args the command line arguments
@@ -380,7 +270,7 @@ public class Login extends javax.swing.JFrame {
         });
     }
     //Metodos
-    private void setImageLabel(JLabel labelName, String resourceName) {
+    public void setImageLabel(JLabel labelName, String resourceName) {
         try {
             InputStream inputStream = getClass().getResourceAsStream("/imagenes/" + resourceName);
             if (inputStream != null) {
@@ -405,29 +295,19 @@ public class Login extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnClose;
-    private javax.swing.JButton btnIngresarLogin;
     private javax.swing.JButton btnIngresarLogin1;
     private javax.swing.JCheckBox jCheckBox2;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel jlLogin;
-    private Interfaces.PanelRound panelRound1;
-    private Interfaces.PanelRound panelRound2;
-    private Interfaces.PanelRound panelRound3;
-    private javax.swing.JPasswordField tfContraseña;
+    private util.PanelRound panelRound1;
+    private util.PanelRound panelRound3;
     private javax.swing.JPasswordField tfContraseña1;
-    private javax.swing.JPasswordField tfContraseña2;
-    private javax.swing.JTextField tfNombreUser;
     private javax.swing.JTextField tfNombreUser1;
     // End of variables declaration//GEN-END:variables
 }
