@@ -1,13 +1,17 @@
 
 package Clases;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Proveedores {
     private int id;
     private String nombre;
     private String direccion;
     private String telefono;
     private String correo;
-
+    private List<Productos> productos;
+    
     // Constructor vacío
     public Proveedores() {
     }
@@ -61,5 +65,12 @@ public class Proveedores {
 
     public void setCorreo(String correo) {
         this.correo = correo;
+    }
+    
+    public void agregarProducto(Productos producto) {
+        if (productos == null) {
+            productos = new ArrayList<>();
+        }
+        productos.add(producto);
     }
 }

@@ -1,13 +1,17 @@
 
 package Clases;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Clientes {
     private int id;
     private String nombre;
     private String direccion;
     private String telefono;
     private String correo;
-
+    private List<Ventas> ventas;
+    
     // Constructor vacío
     public Clientes() {
     }
@@ -61,6 +65,13 @@ public class Clientes {
 
     public void setCorreo(String correo) {
         this.correo = correo;
+    }
+    
+    public void agregarVenta(Ventas venta) {
+        if (ventas == null) {
+            ventas = new ArrayList<>();
+        }
+        ventas.add(venta);
     }
 
 }

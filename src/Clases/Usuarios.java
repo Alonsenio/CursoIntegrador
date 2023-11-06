@@ -1,6 +1,9 @@
 
 package Clases;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Usuarios {
     private int id;
     private String nombre;
@@ -11,6 +14,7 @@ public class Usuarios {
     private String fechaModificacion;
     private int creadoPor;
     private int modificadoPor;
+    private List<Rol_usuarios> rolesUsuarios;
 
     // Constructor vacío
     public Usuarios() {
@@ -102,5 +106,18 @@ public class Usuarios {
 
     public void setModificadoPor(int modificadoPor) {
         this.modificadoPor = modificadoPor;
+    }
+    
+    public void agregarRolUsuario(Rol_usuarios rolUsuario) {
+        if (rolesUsuarios == null) {
+            rolesUsuarios = new ArrayList<>();
+        }
+        rolesUsuarios.add(rolUsuario);
+    }
+
+    public void quitarRolUsuario(Rol_usuarios rolUsuario) {
+        if (rolesUsuarios != null) {
+            rolesUsuarios.remove(rolUsuario);
+        }
     }
 }

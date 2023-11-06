@@ -1,9 +1,13 @@
 
 package Clases;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Rol {
     private int id;
     private String nombreRol;
+    private List<Usuarios> usuarios;
 
     // Constructor vacío
     public Rol() {
@@ -31,5 +35,18 @@ public class Rol {
 
     public void setNombreRol(String nombreRol) {
         this.nombreRol = nombreRol;
+    }
+    
+    public void agregarUsuario(Usuarios usuario) {
+        if (usuarios == null) {
+            usuarios = new ArrayList<>();
+        }
+        usuarios.add(usuario);
+    }
+
+    public void quitarUsuario(Usuarios usuario) {
+        if (usuarios != null) {
+            usuarios.remove(usuario);
+        }
     }
 }
