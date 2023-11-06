@@ -31,7 +31,7 @@ public class Registro extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        panelRound = new Interfaces.PanelRound();
+        panelRound = new util.PanelRound();
         PanelRegistro = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
@@ -39,7 +39,7 @@ public class Registro extends javax.swing.JFrame {
         tfNombreUser = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         tfContraseña = new javax.swing.JPasswordField();
-        panelRound2 = new Interfaces.PanelRound();
+        panelRound2 = new util.PanelRound();
         btnIngresarLogin = new javax.swing.JButton();
         jLabel11 = new javax.swing.JLabel();
         tfContraseña2 = new javax.swing.JPasswordField();
@@ -291,8 +291,8 @@ public class Registro extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JLabel lblLogin;
-    private Interfaces.PanelRound panelRound;
-    private Interfaces.PanelRound panelRound2;
+    private util.PanelRound panelRound;
+    private util.PanelRound panelRound2;
     private javax.swing.JPasswordField tfContraseña;
     private javax.swing.JPasswordField tfContraseña2;
     private javax.swing.JTextField tfNombreUser;

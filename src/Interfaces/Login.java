@@ -37,7 +37,7 @@ public final class Login extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        panelRound1 = new Interfaces.PanelRound();
+        panelRound1 = new util.PanelRound();
         jlLogin = new javax.swing.JLabel();
         btnClose = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
@@ -48,7 +48,7 @@ public final class Login extends javax.swing.JFrame {
         jLabel14 = new javax.swing.JLabel();
         tfContraseña1 = new javax.swing.JPasswordField();
         jCheckBox2 = new javax.swing.JCheckBox();
-        panelRound3 = new Interfaces.PanelRound();
+        panelRound3 = new util.PanelRound();
         btnIngresarLogin1 = new javax.swing.JButton();
         jLabel15 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
@@ -305,8 +305,8 @@ public final class Login extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel jlLogin;
-    private Interfaces.PanelRound panelRound1;
-    private Interfaces.PanelRound panelRound3;
+    private util.PanelRound panelRound1;
+    private util.PanelRound panelRound3;
     private javax.swing.JPasswordField tfContraseña1;
     private javax.swing.JTextField tfNombreUser1;
     // End of variables declaration//GEN-END:variables

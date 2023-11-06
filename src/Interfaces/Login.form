@@ -33,7 +33,7 @@
     <Property name="useNullLayout" type="boolean" value="false"/>
   </Layout>
   <SubComponents>
-    <Container class="Interfaces.PanelRound" name="panelRound1">
+    <Container class="util.PanelRound" name="panelRound1">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="23" green="23" red="23" type="rgb"/>
@@ -249,7 +249,7 @@
                 </Constraint>
               </Constraints>
             </Component>
-            <Container class="Interfaces.PanelRound" name="panelRound3">
+            <Container class="util.PanelRound" name="panelRound3">
               <Properties>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="c3" green="d1" red="2b" type="rgb"/>
