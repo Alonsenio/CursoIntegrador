@@ -11,6 +11,7 @@ import java.io.InputStream;
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.border.EmptyBorder;
 
@@ -26,6 +27,7 @@ public final class Login extends javax.swing.JFrame {
         initComponents();
         setBackground(new Color(1.0f,1.0f,1.0f,0.0f));
         setImageLabel(jlLogin, "CamionGas.png");
+        this.setIconFrame(this);
     }
 
     /**
@@ -148,6 +150,7 @@ public final class Login extends javax.swing.JFrame {
         panelRound3.setRoundBottomRight(15);
         panelRound3.setRoundTopLeft(15);
         panelRound3.setRoundTopRight(15);
+        panelRound3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         btnIngresarLogin1.setBackground(new java.awt.Color(255, 0, 0));
         btnIngresarLogin1.setText("Ingresar");
@@ -162,28 +165,12 @@ public final class Login extends javax.swing.JFrame {
         });
         btnIngresarLogin1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnIngresarLogin1ActionPerformed(evt);
+                handleLoginClick(evt);
             }
         });
+        panelRound3.add(btnIngresarLogin1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 240, 40));
 
-        javax.swing.GroupLayout panelRound3Layout = new javax.swing.GroupLayout(panelRound3);
-        panelRound3.setLayout(panelRound3Layout);
-        panelRound3Layout.setHorizontalGroup(
-            panelRound3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelRound3Layout.createSequentialGroup()
-                .addContainerGap(44, Short.MAX_VALUE)
-                .addComponent(btnIngresarLogin1, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(40, 40, 40))
-        );
-        panelRound3Layout.setVerticalGroup(
-            panelRound3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelRound3Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnIngresarLogin1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-
-        jPanel2.add(panelRound3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 340, -1, -1));
+        jPanel2.add(panelRound3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 340, 240, -1));
 
         jLabel15.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel15.setForeground(new java.awt.Color(153, 153, 153));
@@ -227,15 +214,17 @@ public final class Login extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnIngresarLogin1MouseClicked
 
-    private void btnIngresarLogin1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarLogin1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnIngresarLogin1ActionPerformed
-
     private void handleRegisterClick(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_handleRegisterClick
         Registro view = new Registro();
         this.dispose();
         view.setVisible(true);
     }//GEN-LAST:event_handleRegisterClick
+
+    private void handleLoginClick(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleLoginClick
+        var view = new Inicio();
+        this.dispose();
+        view.setVisible(true);
+    }//GEN-LAST:event_handleLoginClick
 
     /**
      * @param args the command line arguments
@@ -282,6 +271,19 @@ public final class Login extends javax.swing.JFrame {
                 this.repaint();
             } else {        
                 System.err.println("No se pudo cargar la imagen: " + resourceName);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public void setIconFrame(JFrame frame){
+        try {
+            InputStream inputStream = getClass().getResourceAsStream("/iconos/ico.png");
+            if (inputStream != null) {
+                ImageIcon image = new ImageIcon(ImageIO.read(inputStream));
+                frame.setIconImage(image.getImage());
+            } else {        
+                System.err.println("No se pudo cargar el icono");
             }
         } catch (IOException e) {
             e.printStackTrace();
