@@ -6,6 +6,7 @@ package Interfaces;
 
 import java.awt.Color;
 import javax.swing.border.EmptyBorder;
+import util.RenderImage;
 
 /**
  *
@@ -19,7 +20,10 @@ public class Registro extends javax.swing.JFrame {
     public Registro() {
         initComponents();
         setBackground(new Color(1.0f,1.0f,1.0f,0.0f));
-        new Login().setImageLabel(Hero, "CamionGas.png");
+        
+        var RI = new RenderImage(this);
+        RI.setImageLabel(Hero, "CamionGas.png");
+        RI.setIconFrame();
     }
 
     /**
