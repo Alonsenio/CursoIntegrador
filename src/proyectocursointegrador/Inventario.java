@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Inventario {
-    private List<Productos> productos;
+    private final List<Productos> productos;
 
     public Inventario() {
         productos = new ArrayList<>();

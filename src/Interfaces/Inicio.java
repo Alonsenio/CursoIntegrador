@@ -7,6 +7,7 @@ package Interfaces;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Graphics;
+import util.RenderImage;
 
 /**
  *
@@ -20,9 +21,10 @@ public class Inicio extends javax.swing.JFrame {
     public Inicio() {
         initComponents();
         setBackground(new Color(1.0f,1.0f,1.0f,0.0f));
-        var view = new Login();
-        view.setImageLabel(this.lblLogo, "logo.png");
-        view.setIconFrame(this);
+        
+        var RI = new RenderImage(this);
+        RI.setImageLabel(this.lblLogo, "logo.png");
+        RI.setIconFrame();
 
         paintGraph(10, 3);
     }

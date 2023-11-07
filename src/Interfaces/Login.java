@@ -5,15 +5,8 @@
 package Interfaces;
 
 import java.awt.Color;
-import java.awt.Image;
-import java.io.IOException;
-import java.io.InputStream;
-import javax.imageio.ImageIO;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.border.EmptyBorder;
+import util.RenderImage;
 
 
 
@@ -26,8 +19,10 @@ public final class Login extends javax.swing.JFrame {
     public Login() {
         initComponents();
         setBackground(new Color(1.0f,1.0f,1.0f,0.0f));
-        setImageLabel(jlLogin, "CamionGas.png");
-        this.setIconFrame(this);
+        
+        var RI = new RenderImage(this);
+        RI.setImageLabel(jlLogin, "CamionGas.png");
+        RI.setIconFrame();
     }
 
     /**
@@ -257,37 +252,6 @@ public final class Login extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(() -> {
             new Login().setVisible(true);
         });
-    }
-    //Metodos
-    public void setImageLabel(JLabel labelName, String resourceName) {
-        try {
-            InputStream inputStream = getClass().getResourceAsStream("/imagenes/" + resourceName);
-            if (inputStream != null) {
-                ImageIcon image = new ImageIcon(ImageIO.read(inputStream));
-                Icon icon = new ImageIcon(image.getImage().getScaledInstance(
-                    labelName.getWidth(), labelName.getHeight(), Image.SCALE_SMOOTH
-                ));
-                labelName.setIcon(icon);
-                this.repaint();
-            } else {        
-                System.err.println("No se pudo cargar la imagen: " + resourceName);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    public void setIconFrame(JFrame frame){
-        try {
-            InputStream inputStream = getClass().getResourceAsStream("/iconos/ico.png");
-            if (inputStream != null) {
-                ImageIcon image = new ImageIcon(ImageIO.read(inputStream));
-                frame.setIconImage(image.getImage());
-            } else {        
-                System.err.println("No se pudo cargar el icono");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
     
     

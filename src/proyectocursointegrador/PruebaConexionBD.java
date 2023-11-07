@@ -1,7 +1,9 @@
 
-package util;
+package proyectocursointegrador;
 
-public class prueba1 {
+import util.MySQLConexion;
+
+public class PruebaConexionBD {
 
     public static void main(String[] args) {
         MySQLConexion.getConexion();
