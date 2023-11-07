@@ -24,6 +24,10 @@ public class Ventas {
         this.totalVenta = totalVenta;
     }
 
+    public Ventas(int generarIdVenta, String obtenerFechaActual, Clientes cliente, double montoTotal) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
     // Métodos getters y setters para acceder y modificar los atributos
 
     public int getId() {
@@ -63,5 +67,13 @@ public class Ventas {
             detallesVenta = new ArrayList<>();
         }
         detallesVenta.add(detalleVenta);
+    }
+
+    public void setDetallesVenta(List<Detalles_venta> detallesVenta) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    public void setMontoTotal(int i) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }
