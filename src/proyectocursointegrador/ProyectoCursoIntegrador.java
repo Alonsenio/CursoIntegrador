@@ -4,6 +4,8 @@
  */
 package proyectocursointegrador;
 
+import Interfaces.Login;
+
 /**
  *
  * @author ASUS
@@ -14,8 +16,8 @@ public class ProyectoCursoIntegrador {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        System.out.println("Creando Repositorio github - java");
-        System.out.println("Version-1");
+        Login mostrar=new Login();
+        mostrar.setVisible(true);
     }
     
 }
