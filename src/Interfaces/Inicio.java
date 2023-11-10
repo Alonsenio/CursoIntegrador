@@ -14,6 +14,8 @@ import util.RenderImage;
  * @author JMMOLLER
  */
 public class Inicio extends javax.swing.JFrame {
+    private int total_p = 10;
+    private int pendientes = 3;
 
     /**
      * Creates new form Inicio
@@ -25,27 +27,35 @@ public class Inicio extends javax.swing.JFrame {
         var RI = new RenderImage(this);
         RI.setImageLabel(this.lblLogo, "logo.png");
         RI.setIconFrame();
-
-        paintGraph(10, 3);
+        
     }
     
-    private void paintGraph(int total, int complete){
-        PanelGraph.repaint();
+    private void mostrarPendientes(int total, int completado, Graphics graph) {
+        lblPenText.setText("Pendiente(s): " + Integer.toString(total - completado));
+        lblPenTextC.setText("Completado(s): " + completado);
+        graficar(total, completado, graph);
+    }
+    
+    public void graficar(int total, int completado, Graphics graph){
 
-        int tareasPendientes = total - complete;
+        int tareasPendientes = total - completado;
 
-        double porcentajeCompletadas = (double) complete / total;
+        double porcentajeCompletadas = (double) completado / total;
         double porcentajePendientes = (double) tareasPendientes / total;
 
         int anguloCompletadas = (int) (porcentajeCompletadas * 360);
         int anguloPendientes = (int) (porcentajePendientes * 360);
 
-        Graphics graph = PanelGraph.getGraphics();
+        int radio = 100;
+        int centroPanel = 75; // Mitad de 150 (tamaño del JPanel)
+        int centroCirculo = centroPanel - radio / 2; // Centra el círculo en el JPanel
+        Color color_completado = new Color(102,255,102); // Crea el color para los completados
+        Color color_pendiene = new Color(255,255,51); // Crea el color para los pendientes
 
-        graph.setColor(Color.GREEN);
-        graph.fillArc(50, 50, 100, 100, 0, anguloCompletadas);
-        graph.setColor(Color.RED);
-        graph.fillArc(50, 50, 100, 100, anguloCompletadas, anguloPendientes);
+        graph.setColor(color_completado);
+        graph.fillArc(centroCirculo, centroCirculo, radio, radio, 0, anguloCompletadas);
+        graph.setColor(color_pendiene);
+        graph.fillArc(centroCirculo, centroCirculo, radio, radio, anguloCompletadas, anguloPendientes);
     }
     
     public void handleCursorChange(boolean mouseEntered){
@@ -91,18 +101,25 @@ public class Inicio extends javax.swing.JFrame {
         contentPendings = new javax.swing.JPanel();
         lblTitlePendings = new javax.swing.JLabel();
         lblPenText = new javax.swing.JLabel();
-        PanelGraph = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jSeparator4 = new javax.swing.JSeparator();
         jPanel3 = new javax.swing.JPanel();
-        lblPenText1 = new javax.swing.JLabel();
+        lblPenTextC = new javax.swing.JLabel();
+        PanelGraph = new javax.swing.JPanel(){
+            @Override
+            public void paint(Graphics graph){
+                super.paint(graph);
+
+                mostrarPendientes(total_p, pendientes, graph);
+            }
+        };
         jSeparator1 = new javax.swing.JSeparator();
         jSeparator2 = new javax.swing.JSeparator();
         jSeparator3 = new javax.swing.JSeparator();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
-        setPreferredSize(new java.awt.Dimension(1280, 720));
         setResizable(false);
         setSize(new java.awt.Dimension(1280, 720));
 
@@ -185,7 +202,7 @@ public class Inicio extends javax.swing.JFrame {
 
         panelRound1.add(panelNav, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 180, 720));
 
-        jLabel6.setFont(new java.awt.Font("Arial Black", 1, 24)); // NOI18N
+        jLabel6.setFont(new java.awt.Font("Arial Black", 0, 24)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("¡Bienvenido, usuario!");
         panelRound1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 20, -1, -1));
@@ -208,7 +225,7 @@ public class Inicio extends javax.swing.JFrame {
 
         contentRecent.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 40, 540, 300));
 
-        lblTitleRecent.setFont(new java.awt.Font("Arial Black", 1, 20)); // NOI18N
+        lblTitleRecent.setFont(new java.awt.Font("Arial Black", 0, 20)); // NOI18N
         lblTitleRecent.setForeground(new java.awt.Color(255, 255, 255));
         lblTitleRecent.setText("Ventas Recientes");
         contentRecent.add(lblTitleRecent, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
@@ -218,7 +235,7 @@ public class Inicio extends javax.swing.JFrame {
         contentClients.setBackground(new java.awt.Color(35, 35, 35));
         contentClients.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        lblTitleClients.setFont(new java.awt.Font("Arial Black", 1, 20)); // NOI18N
+        lblTitleClients.setFont(new java.awt.Font("Arial Black", 0, 20)); // NOI18N
         lblTitleClients.setForeground(new java.awt.Color(255, 255, 255));
         lblTitleClients.setText("Mejores Clientes");
         contentClients.add(lblTitleClients, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
@@ -251,7 +268,7 @@ public class Inicio extends javax.swing.JFrame {
         contentProducts.setBackground(new java.awt.Color(35, 35, 35));
         contentProducts.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        lblTitleProducts.setFont(new java.awt.Font("Arial Black", 1, 20)); // NOI18N
+        lblTitleProducts.setFont(new java.awt.Font("Arial Black", 0, 20)); // NOI18N
         lblTitleProducts.setForeground(new java.awt.Color(255, 255, 255));
         lblTitleProducts.setText("Productos Más Vendidos");
         contentProducts.add(lblTitleProducts, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
@@ -276,33 +293,16 @@ public class Inicio extends javax.swing.JFrame {
         contentPendings.setBackground(new java.awt.Color(35, 35, 35));
         contentPendings.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        lblTitlePendings.setFont(new java.awt.Font("Arial Black", 1, 20)); // NOI18N
+        lblTitlePendings.setFont(new java.awt.Font("Arial Black", 0, 20)); // NOI18N
         lblTitlePendings.setForeground(new java.awt.Color(255, 255, 255));
         lblTitlePendings.setText("Ventas Pendientes");
         contentPendings.add(lblTitlePendings, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         lblPenText.setForeground(new java.awt.Color(255, 255, 255));
-        lblPenText.setText("Pendientes: 0");
-        contentPendings.add(lblPenText, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 228, -1, -1));
+        lblPenText.setText("Pendiente(s): 0");
+        contentPendings.add(lblPenText, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 229, -1, -1));
 
-        PanelGraph.setBackground(new java.awt.Color(35, 35, 35));
-        PanelGraph.setFocusable(false);
-        PanelGraph.setRequestFocusEnabled(false);
-
-        javax.swing.GroupLayout PanelGraphLayout = new javax.swing.GroupLayout(PanelGraph);
-        PanelGraph.setLayout(PanelGraphLayout);
-        PanelGraphLayout.setHorizontalGroup(
-            PanelGraphLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 180, Short.MAX_VALUE)
-        );
-        PanelGraphLayout.setVerticalGroup(
-            PanelGraphLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 170, Short.MAX_VALUE)
-        );
-
-        contentPendings.add(PanelGraph, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 40, 180, 170));
-
-        jPanel2.setBackground(new java.awt.Color(153, 255, 0));
+        jPanel2.setBackground(new java.awt.Color(102, 255, 102));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -318,9 +318,9 @@ public class Inicio extends javax.swing.JFrame {
         contentPendings.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 225, -1, -1));
 
         jSeparator4.setOrientation(javax.swing.SwingConstants.VERTICAL);
-        contentPendings.add(jSeparator4, new org.netbeans.lib.awtextra.AbsoluteConstraints(143, 220, 5, 30));
+        contentPendings.add(jSeparator4, new org.netbeans.lib.awtextra.AbsoluteConstraints(145, 220, 5, 30));
 
-        jPanel3.setBackground(new java.awt.Color(204, 204, 0));
+        jPanel3.setBackground(new java.awt.Color(255, 255, 51));
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -335,9 +335,27 @@ public class Inicio extends javax.swing.JFrame {
 
         contentPendings.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 225, -1, -1));
 
-        lblPenText1.setForeground(new java.awt.Color(255, 255, 255));
-        lblPenText1.setText("Completados: 0");
-        contentPendings.add(lblPenText1, new org.netbeans.lib.awtextra.AbsoluteConstraints(45, 229, -1, -1));
+        lblPenTextC.setForeground(new java.awt.Color(255, 255, 255));
+        lblPenTextC.setText("Completado(s): 0");
+        contentPendings.add(lblPenTextC, new org.netbeans.lib.awtextra.AbsoluteConstraints(43, 229, -1, -1));
+
+        PanelGraph.setBackground(new java.awt.Color(35, 35, 35));
+        PanelGraph.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 51, 51)));
+        PanelGraph.setFocusable(false);
+        PanelGraph.setRequestFocusEnabled(false);
+
+        javax.swing.GroupLayout PanelGraphLayout = new javax.swing.GroupLayout(PanelGraph);
+        PanelGraph.setLayout(PanelGraphLayout);
+        PanelGraphLayout.setHorizontalGroup(
+            PanelGraphLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 148, Short.MAX_VALUE)
+        );
+        PanelGraphLayout.setVerticalGroup(
+            PanelGraphLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 148, Short.MAX_VALUE)
+        );
+
+        contentPendings.add(PanelGraph, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 50, 150, 150));
 
         panelRound1.add(contentPendings, new org.netbeans.lib.awtextra.AbsoluteConstraints(970, 440, 290, 260));
 
@@ -347,6 +365,14 @@ public class Inicio extends javax.swing.JFrame {
 
         jSeparator3.setOrientation(javax.swing.SwingConstants.VERTICAL);
         panelRound1.add(jSeparator3, new org.netbeans.lib.awtextra.AbsoluteConstraints(575, 431, 10, 270));
+
+        jButton1.setText("jButton1");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        panelRound1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 200, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -383,6 +409,11 @@ public class Inicio extends javax.swing.JFrame {
     private void sectionReportMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_sectionReportMouseExited
         this.handleCursorChange(false);
     }//GEN-LAST:event_sectionReportMouseExited
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        mostrarPendientes(20, 7, PanelGraph.getGraphics());
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -424,6 +455,7 @@ public class Inicio extends javax.swing.JFrame {
     private javax.swing.JPanel contentPendings;
     private javax.swing.JPanel contentProducts;
     private javax.swing.JPanel contentRecent;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -443,7 +475,7 @@ public class Inicio extends javax.swing.JFrame {
     private javax.swing.JTable jTable3;
     private javax.swing.JLabel lblLogo;
     private javax.swing.JLabel lblPenText;
-    private javax.swing.JLabel lblPenText1;
+    private javax.swing.JLabel lblPenTextC;
     private javax.swing.JLabel lblTitleClients;
     private javax.swing.JLabel lblTitlePendings;
     private javax.swing.JLabel lblTitleProducts;
