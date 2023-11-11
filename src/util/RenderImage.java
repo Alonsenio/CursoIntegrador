@@ -55,4 +55,28 @@ public class RenderImage {
             System.out.println(e);
         }
     }
+    public String setImageLabel2(JLabel labelName, String resourceName) {
+        try {
+            InputStream inputStream = getClass().getResourceAsStream("/imagenes/" + resourceName);
+            if (inputStream != null) {
+                ImageIcon image = new ImageIcon(ImageIO.read(inputStream));
+                Image scaledImage = image.getImage().getScaledInstance(
+                        labelName.getWidth(), labelName.getHeight(), Image.SCALE_SMOOTH
+                );
+                Icon icon = new ImageIcon(scaledImage);
+                labelName.setIcon(icon);
+                this.frameRef.repaint();
+
+                // Devuelve el nombre de archivo de la imagen redimensionada
+                return resourceName;
+            } else {
+                System.err.println("No se pudo cargar la imagen: " + resourceName);
+            }
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+
+        // Devuelve null si hubo un error al cargar la imagen
+        return null;
+    }
 }

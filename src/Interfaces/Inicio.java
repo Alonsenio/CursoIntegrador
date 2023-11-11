@@ -7,6 +7,14 @@ package Interfaces;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
+import javax.swing.UIManager;
 import util.RenderImage;
 
 /**
@@ -25,8 +33,25 @@ public class Inicio extends javax.swing.JFrame {
         setBackground(new Color(1.0f,1.0f,1.0f,0.0f));
         
         var RI = new RenderImage(this);
-        RI.setImageLabel(this.lblLogo, "logo.png");
+        RI.setImageLabel(jlFotoUsuario, "siNoTieneFoto2.jpg");
+        
         RI.setIconFrame();
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(Inicio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(Inicio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(Inicio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(Inicio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
         
     }
     
@@ -75,16 +100,28 @@ public class Inicio extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        PanelGraph = new javax.swing.JPanel(){
+            @Override
+            public void paint(Graphics graph){
+                super.paint(graph);
+
+                mostrarPendientes(total_p, pendientes, graph);
+            }
+        };
         panelRound1 = new util.PanelRound();
-        btnClose = new javax.swing.JButton();
-        panelNav = new util.PanelRound();
+        DashBoard = new util.PanelRound();
         lblLogo = new javax.swing.JLabel();
-        sectionHome = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        sectionReport = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        jButton8 = new javax.swing.JButton();
+        jButton9 = new javax.swing.JButton();
+        jButton10 = new javax.swing.JButton();
+        jButton11 = new javax.swing.JButton();
+        exit = new util.PanelRound();
+        jButton7 = new javax.swing.JButton();
+        panelRound2 = new util.PanelRound();
+        jlFotoUsuario = new javax.swing.JLabel();
+        rSButtonCustom1 = new rsbuttoncustom.RSButtonCustom();
+        rSButtonCustom2 = new rsbuttoncustom.RSButtonCustom();
+        jButton13 = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
         contentRecent = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -98,25 +135,33 @@ public class Inicio extends javax.swing.JFrame {
         lblTitleProducts = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTable3 = new javax.swing.JTable();
+        jSeparator3 = new javax.swing.JSeparator();
         contentPendings = new javax.swing.JPanel();
         lblTitlePendings = new javax.swing.JLabel();
         lblPenText = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
+        jSeparator1 = new javax.swing.JSeparator();
         jSeparator4 = new javax.swing.JSeparator();
         jPanel3 = new javax.swing.JPanel();
         lblPenTextC = new javax.swing.JLabel();
-        PanelGraph = new javax.swing.JPanel(){
-            @Override
-            public void paint(Graphics graph){
-                super.paint(graph);
-
-                mostrarPendientes(total_p, pendientes, graph);
-            }
-        };
-        jSeparator1 = new javax.swing.JSeparator();
         jSeparator2 = new javax.swing.JSeparator();
-        jSeparator3 = new javax.swing.JSeparator();
         jButton1 = new javax.swing.JButton();
+
+        PanelGraph.setBackground(new java.awt.Color(35, 35, 35));
+        PanelGraph.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 51, 51)));
+        PanelGraph.setFocusable(false);
+        PanelGraph.setRequestFocusEnabled(false);
+
+        javax.swing.GroupLayout PanelGraphLayout = new javax.swing.GroupLayout(PanelGraph);
+        PanelGraph.setLayout(PanelGraphLayout);
+        PanelGraphLayout.setHorizontalGroup(
+            PanelGraphLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 148, Short.MAX_VALUE)
+        );
+        PanelGraphLayout.setVerticalGroup(
+            PanelGraphLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 148, Short.MAX_VALUE)
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -131,81 +176,182 @@ public class Inicio extends javax.swing.JFrame {
         panelRound1.setRoundTopRight(30);
         panelRound1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        btnClose.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/cerrar.png"))); // NOI18N
-        btnClose.setBorder(null);
-        btnClose.setBorderPainted(false);
-        btnClose.setContentAreaFilled(false);
-        btnClose.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnClose.setDefaultCapable(false);
-        btnClose.setFocusPainted(false);
-        btnClose.setFocusable(false);
-        btnClose.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnClosehandleClick(evt);
-            }
-        });
-        panelRound1.add(btnClose, new org.netbeans.lib.awtextra.AbsoluteConstraints(1243, 10, 25, 25));
+        DashBoard.setBackground(new java.awt.Color(27, 27, 27));
+        DashBoard.setPreferredSize(new java.awt.Dimension(1230, 530));
+        DashBoard.setRoundBottomLeft(30);
+        DashBoard.setRoundTopLeft(30);
+        DashBoard.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        panelNav.setBackground(new java.awt.Color(251, 176, 47));
-        panelNav.setPreferredSize(new java.awt.Dimension(1230, 530));
-        panelNav.setRoundBottomLeft(30);
-        panelNav.setRoundBottomRight(30);
-        panelNav.setRoundTopLeft(30);
-        panelNav.setRoundTopRight(30);
-        panelNav.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
+        lblLogo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/logo-150.png"))); // NOI18N
         lblLogo.setDebugGraphicsOptions(javax.swing.DebugGraphics.FLASH_OPTION);
-        panelNav.add(lblLogo, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 160, 110));
+        DashBoard.add(lblLogo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 260, 150));
 
-        sectionHome.setBackground(new java.awt.Color(255, 135, 9));
-        sectionHome.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                sectionHomeMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                sectionHomeMouseExited(evt);
-            }
-        });
-        sectionHome.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/home-50.png"))); // NOI18N
-        sectionHome.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 5, -1, -1));
-
-        jLabel4.setFont(new java.awt.Font("Arial Black", 1, 18)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel4.setText("Inicio");
-        sectionHome.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 17, -1, -1));
-
-        panelNav.add(sectionHome, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 180, 180, 60));
-
-        sectionReport.setBackground(new java.awt.Color(251, 176, 47));
-        sectionReport.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                sectionReportMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                sectionReportMouseExited(evt);
+        jButton8.setBackground(new java.awt.Color(27, 27, 27));
+        jButton8.setForeground(new java.awt.Color(255, 255, 255));
+        jButton8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/casa (1).png"))); // NOI18N
+        jButton8.setText("            Home");
+        jButton8.setContentAreaFilled(false);
+        jButton8.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
             }
         });
-        sectionReport.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        DashBoard.add(jButton8, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 150, 250, 50));
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/analysis-50.png"))); // NOI18N
-        sectionReport.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 5, -1, -1));
+        jButton9.setBackground(new java.awt.Color(27, 27, 27));
+        jButton9.setForeground(new java.awt.Color(255, 255, 255));
+        jButton9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/usuario.png"))); // NOI18N
+        jButton9.setText("         Usuarios");
+        jButton9.setContentAreaFilled(false);
+        jButton9.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        jButton9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton9ActionPerformed(evt);
+            }
+        });
+        DashBoard.add(jButton9, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 200, 250, 50));
 
-        jLabel2.setFont(new java.awt.Font("Arial Black", 1, 18)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("Reporte");
-        sectionReport.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 17, -1, -1));
+        jButton10.setBackground(new java.awt.Color(27, 27, 27));
+        jButton10.setForeground(new java.awt.Color(255, 255, 255));
+        jButton10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/gas.png"))); // NOI18N
+        jButton10.setText("       Productos");
+        jButton10.setContentAreaFilled(false);
+        jButton10.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        jButton10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton10ActionPerformed(evt);
+            }
+        });
+        DashBoard.add(jButton10, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 250, 250, 50));
 
-        panelNav.add(sectionReport, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 250, 180, 60));
+        jButton11.setBackground(new java.awt.Color(27, 27, 27));
+        jButton11.setForeground(new java.awt.Color(255, 255, 255));
+        jButton11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/proveedor.png"))); // NOI18N
+        jButton11.setText("      Provedores");
+        jButton11.setContentAreaFilled(false);
+        jButton11.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        jButton11.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton11ActionPerformed(evt);
+            }
+        });
+        DashBoard.add(jButton11, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 300, 250, 50));
 
-        panelRound1.add(panelNav, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 180, 720));
+        exit.setBackground(new java.awt.Color(43, 209, 195));
+        exit.setRoundBottomLeft(15);
+        exit.setRoundBottomRight(15);
+        exit.setRoundTopLeft(15);
+        exit.setRoundTopRight(15);
+
+        jButton7.setBackground(new java.awt.Color(27, 27, 27));
+        jButton7.setForeground(new java.awt.Color(255, 255, 255));
+        jButton7.setText("Exit");
+        jButton7.setContentAreaFilled(false);
+        jButton7.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout exitLayout = new javax.swing.GroupLayout(exit);
+        exit.setLayout(exitLayout);
+        exitLayout.setHorizontalGroup(
+            exitLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(exitLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        exitLayout.setVerticalGroup(
+            exitLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, exitLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        DashBoard.add(exit, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 420, 200, 50));
+
+        panelRound2.setBackground(new java.awt.Color(56, 56, 56));
+        panelRound2.setRoundBottomLeft(20);
+        panelRound2.setRoundBottomRight(20);
+        panelRound2.setRoundTopLeft(20);
+        panelRound2.setRoundTopRight(20);
+
+        jlFotoUsuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/siNoTieneFoto2.jpg"))); // NOI18N
+        jlFotoUsuario.setText("jLabel1");
+
+        rSButtonCustom1.setBackground(new java.awt.Color(27, 27, 27));
+        rSButtonCustom1.setForeground(new java.awt.Color(43, 209, 195));
+        rSButtonCustom1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/configuraciones.png"))); // NOI18N
+        rSButtonCustom1.setColorMaterial(new java.awt.Color(43, 209, 195));
+        rSButtonCustom1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rSButtonCustom1ActionPerformed(evt);
+            }
+        });
+
+        rSButtonCustom2.setBackground(new java.awt.Color(27, 27, 27));
+        rSButtonCustom2.setForeground(new java.awt.Color(43, 209, 195));
+        rSButtonCustom2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/imagen.png"))); // NOI18N
+        rSButtonCustom2.setColorMaterial(new java.awt.Color(43, 209, 195));
+        rSButtonCustom2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rSButtonCustom2ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout panelRound2Layout = new javax.swing.GroupLayout(panelRound2);
+        panelRound2.setLayout(panelRound2Layout);
+        panelRound2Layout.setHorizontalGroup(
+            panelRound2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelRound2Layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(jlFotoUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(panelRound2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(rSButtonCustom1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(rSButtonCustom2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(22, Short.MAX_VALUE))
+        );
+        panelRound2Layout.setVerticalGroup(
+            panelRound2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelRound2Layout.createSequentialGroup()
+                .addContainerGap(37, Short.MAX_VALUE)
+                .addGroup(panelRound2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelRound2Layout.createSequentialGroup()
+                        .addComponent(jlFotoUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(33, 33, 33))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelRound2Layout.createSequentialGroup()
+                        .addComponent(rSButtonCustom2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(rSButtonCustom1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(49, 49, 49))))
+        );
+
+        DashBoard.add(panelRound2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 490, 200, 200));
+
+        jButton13.setBackground(new java.awt.Color(27, 27, 27));
+        jButton13.setForeground(new java.awt.Color(255, 255, 255));
+        jButton13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/inventario (1).png"))); // NOI18N
+        jButton13.setText("        Inventario");
+        jButton13.setContentAreaFilled(false);
+        jButton13.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        jButton13.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton13ActionPerformed(evt);
+            }
+        });
+        DashBoard.add(jButton13, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 350, 250, 50));
+
+        panelRound1.add(DashBoard, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 260, 720));
 
         jLabel6.setFont(new java.awt.Font("Arial Black", 0, 24)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("¡Bienvenido, usuario!");
-        panelRound1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 20, -1, -1));
+        panelRound1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 20, -1, -1));
 
         contentRecent.setBackground(new java.awt.Color(35, 35, 35));
         contentRecent.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -223,12 +369,12 @@ public class Inicio extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(jTable1);
 
-        contentRecent.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 40, 540, 300));
+        contentRecent.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 40, 640, 300));
 
         lblTitleRecent.setFont(new java.awt.Font("Arial Black", 0, 20)); // NOI18N
         lblTitleRecent.setForeground(new java.awt.Color(255, 255, 255));
         lblTitleRecent.setText("Ventas Recientes");
-        contentRecent.add(lblTitleRecent, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+        contentRecent.add(lblTitleRecent, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 0, -1, -1));
 
         panelRound1.add(contentRecent, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 80, 540, 340));
 
@@ -238,7 +384,7 @@ public class Inicio extends javax.swing.JFrame {
         lblTitleClients.setFont(new java.awt.Font("Arial Black", 0, 20)); // NOI18N
         lblTitleClients.setForeground(new java.awt.Color(255, 255, 255));
         lblTitleClients.setText("Mejores Clientes");
-        contentClients.add(lblTitleClients, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+        contentClients.add(lblTitleClients, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 0, -1, -1));
 
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -261,9 +407,9 @@ public class Inicio extends javax.swing.JFrame {
         });
         jScrollPane2.setViewportView(jTable2);
 
-        contentClients.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 40, 350, 220));
+        contentClients.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, 300, 220));
 
-        panelRound1.add(contentClients, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 440, 350, 260));
+        panelRound1.add(contentClients, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 440, 310, 260));
 
         contentProducts.setBackground(new java.awt.Color(35, 35, 35));
         contentProducts.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -271,7 +417,7 @@ public class Inicio extends javax.swing.JFrame {
         lblTitleProducts.setFont(new java.awt.Font("Arial Black", 0, 20)); // NOI18N
         lblTitleProducts.setForeground(new java.awt.Color(255, 255, 255));
         lblTitleProducts.setText("Productos Más Vendidos");
-        contentProducts.add(lblTitleProducts, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+        contentProducts.add(lblTitleProducts, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 0, -1, -1));
 
         jTable3.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -286,7 +432,10 @@ public class Inicio extends javax.swing.JFrame {
         ));
         jScrollPane3.setViewportView(jTable3);
 
-        contentProducts.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 40, 340, 220));
+        contentProducts.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 40, 340, 220));
+
+        jSeparator3.setOrientation(javax.swing.SwingConstants.VERTICAL);
+        contentProducts.add(jSeparator3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, -10, 10, 270));
 
         panelRound1.add(contentProducts, new org.netbeans.lib.awtextra.AbsoluteConstraints(595, 440, 340, 260));
 
@@ -304,15 +453,22 @@ public class Inicio extends javax.swing.JFrame {
 
         jPanel2.setBackground(new java.awt.Color(102, 255, 102));
 
+        jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 20, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 20, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         contentPendings.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 225, -1, -1));
@@ -339,32 +495,8 @@ public class Inicio extends javax.swing.JFrame {
         lblPenTextC.setText("Completado(s): 0");
         contentPendings.add(lblPenTextC, new org.netbeans.lib.awtextra.AbsoluteConstraints(43, 229, -1, -1));
 
-        PanelGraph.setBackground(new java.awt.Color(35, 35, 35));
-        PanelGraph.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 51, 51)));
-        PanelGraph.setFocusable(false);
-        PanelGraph.setRequestFocusEnabled(false);
-
-        javax.swing.GroupLayout PanelGraphLayout = new javax.swing.GroupLayout(PanelGraph);
-        PanelGraph.setLayout(PanelGraphLayout);
-        PanelGraphLayout.setHorizontalGroup(
-            PanelGraphLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 148, Short.MAX_VALUE)
-        );
-        PanelGraphLayout.setVerticalGroup(
-            PanelGraphLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 148, Short.MAX_VALUE)
-        );
-
-        contentPendings.add(PanelGraph, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 50, 150, 150));
-
-        panelRound1.add(contentPendings, new org.netbeans.lib.awtextra.AbsoluteConstraints(970, 440, 290, 260));
-
-        jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
-        panelRound1.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(950, 431, 10, 270));
-        panelRound1.add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 430, 1050, 10));
-
-        jSeparator3.setOrientation(javax.swing.SwingConstants.VERTICAL);
-        panelRound1.add(jSeparator3, new org.netbeans.lib.awtextra.AbsoluteConstraints(575, 431, 10, 270));
+        panelRound1.add(contentPendings, new org.netbeans.lib.awtextra.AbsoluteConstraints(1020, 430, 240, 260));
+        panelRound1.add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 430, 960, 10));
 
         jButton1.setText("jButton1");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -389,31 +521,61 @@ public class Inicio extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnClosehandleClick(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClosehandleClick
-        // TODO add your handling code here:
-        System.exit(0);
-    }//GEN-LAST:event_btnClosehandleClick
-
-    private void sectionHomeMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_sectionHomeMouseEntered
-        this.handleCursorChange(true);
-    }//GEN-LAST:event_sectionHomeMouseEntered
-
-    private void sectionHomeMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_sectionHomeMouseExited
-        this.handleCursorChange(false);
-    }//GEN-LAST:event_sectionHomeMouseExited
-
-    private void sectionReportMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_sectionReportMouseEntered
-        this.handleCursorChange(true);
-    }//GEN-LAST:event_sectionReportMouseEntered
-
-    private void sectionReportMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_sectionReportMouseExited
-        this.handleCursorChange(false);
-    }//GEN-LAST:event_sectionReportMouseExited
-
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         mostrarPendientes(20, 7, PanelGraph.getGraphics());
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton8ActionPerformed
+
+    private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton9ActionPerformed
+
+    private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton10ActionPerformed
+
+    private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton11ActionPerformed
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton13ActionPerformed
+
+    private void rSButtonCustom1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rSButtonCustom1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rSButtonCustom1ActionPerformed
+
+    private void rSButtonCustom2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rSButtonCustom2ActionPerformed
+        JFileChooser jf = new JFileChooser();
+            jf.setMultiSelectionEnabled(false);
+
+            if (jf.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+                File selectedFile = jf.getSelectedFile();
+                try {
+                    BufferedImage originalImage = ImageIO.read(selectedFile);
+                    int newWidth = 100;  
+                    int newHeight = 130; 
+                    Image resizedImage = originalImage.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
+  
+                    BufferedImage bufferedResizedImage = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB);
+                    bufferedResizedImage.getGraphics().drawImage(resizedImage, 0, 0, null);
+                    ImageIO.write(bufferedResizedImage, "png", new File("src/Imagenes/siNoTieneFoto2.jpg"));
+
+                    jlFotoUsuario.setIcon(new ImageIcon(resizedImage));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+    }//GEN-LAST:event_rSButtonCustom2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -449,17 +611,20 @@ public class Inicio extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private util.PanelRound DashBoard;
     private javax.swing.JPanel PanelGraph;
-    private javax.swing.JButton btnClose;
     private javax.swing.JPanel contentClients;
     private javax.swing.JPanel contentPendings;
     private javax.swing.JPanel contentProducts;
     private javax.swing.JPanel contentRecent;
+    private util.PanelRound exit;
     private javax.swing.JButton jButton1;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
+    private javax.swing.JButton jButton10;
+    private javax.swing.JButton jButton11;
+    private javax.swing.JButton jButton13;
+    private javax.swing.JButton jButton7;
+    private javax.swing.JButton jButton8;
+    private javax.swing.JButton jButton9;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -473,6 +638,7 @@ public class Inicio extends javax.swing.JFrame {
     private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
     private javax.swing.JTable jTable3;
+    private javax.swing.JLabel jlFotoUsuario;
     private javax.swing.JLabel lblLogo;
     private javax.swing.JLabel lblPenText;
     private javax.swing.JLabel lblPenTextC;
@@ -480,9 +646,9 @@ public class Inicio extends javax.swing.JFrame {
     private javax.swing.JLabel lblTitlePendings;
     private javax.swing.JLabel lblTitleProducts;
     private javax.swing.JLabel lblTitleRecent;
-    private util.PanelRound panelNav;
     private util.PanelRound panelRound1;
-    private javax.swing.JPanel sectionHome;
-    private javax.swing.JPanel sectionReport;
+    private util.PanelRound panelRound2;
+    private rsbuttoncustom.RSButtonCustom rSButtonCustom1;
+    private rsbuttoncustom.RSButtonCustom rSButtonCustom2;
     // End of variables declaration//GEN-END:variables
 }

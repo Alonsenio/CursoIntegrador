@@ -12,11 +12,6 @@ import util.MySQLConexion;
 import java.sql.*;
 import javax.swing.ImageIcon;
 
-
-
-
-
-
 /**
  *
  * @author ASUS
@@ -211,7 +206,6 @@ public final class Login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void handleClick(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleClick
-        // TODO add your handling code here:
         System.exit(0);
     }//GEN-LAST:event_handleClick
 
@@ -226,9 +220,8 @@ public final class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_handleRegisterClick
 
     private void handleLoginClick(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleLoginClick
-        
-    String nombre = tfNombreUser.getText().trim();
-    String contraseña = new String(tfContraseñaUser.getPassword());
+        String nombre = tfNombreUser.getText().trim();
+        String contraseña = new String(tfContraseñaUser.getPassword());
 
     if (nombre.isEmpty() || contraseña.isEmpty()) {
         JOptionPane.showMessageDialog(null, "Por favor, complete todos los campos.");
@@ -259,10 +252,11 @@ public final class Login extends javax.swing.JFrame {
             }
 
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error en la conexión a la base de datos: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Error en la conexión a la base de datos1: " + e.getMessage());
             e.printStackTrace();
         }
     }
+    
     }//GEN-LAST:event_handleLoginClick
 
     private void tfContraseñaUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfContraseñaUserActionPerformed
@@ -270,7 +264,11 @@ public final class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_tfContraseñaUserActionPerformed
 
     private void jCheckBox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox3ActionPerformed
-        // TODO add your handling code here:
+        if (jCheckBox3.isSelected()) {
+             tfContraseñaUser.setEchoChar((char) 0);
+        } else {
+        tfContraseñaUser.setEchoChar('*');
+        }
     }//GEN-LAST:event_jCheckBox3ActionPerformed
 
     private void btnCloseMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCloseMouseEntered

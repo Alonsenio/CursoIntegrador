@@ -233,7 +233,7 @@ public class Registro extends javax.swing.JFrame {
     }//GEN-LAST:event_btnRegistrarMouseClicked
 
     private void btnRegistrarhandleLoginClick(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarhandleLoginClick
-        String nombre = tfNombreUserR.getText();
+    String nombre = tfNombreUserR.getText();
     String email = tfEmailUser.getText();
     String contraseña = new String(tfContraseñaUserR.getPassword());
 
