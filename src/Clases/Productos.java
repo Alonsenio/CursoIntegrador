@@ -5,7 +5,7 @@ public class Productos {
     private int id;
     private String nombre;
     private String descripcion;
-    private int precio;
+    private float precio;
     private int stock;
     private int proveedorId;
 
@@ -21,6 +21,13 @@ public class Productos {
         this.precio = precio;
         this.stock = stock;
         this.proveedorId = proveedorId;
+    }
+    
+    public Productos(int id, String nombre, String descripcion, float precio) {
+        this.id = id;
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.precio = precio;
     }
 
     // Métodos getters y setters para acceder y modificar los atributos
@@ -49,11 +56,11 @@ public class Productos {
         this.descripcion = descripcion;
     }
 
-    public int getPrecio() {
+    public float getPrecio() {
         return precio;
     }
 
-    public void setPrecio(int precio) {
+    public void setPrecio(float precio) {
         this.precio = precio;
     }
 
@@ -72,4 +79,10 @@ public class Productos {
     public void setProveedorId(int proveedorId) {
         this.proveedorId = proveedorId;
     }
+
+    @Override
+    public String toString() {
+        return "Productos{" + "id=" + id + ", nombre=" + nombre + ", descripcion=" + descripcion + ", precio=" + precio + ", stock=" + stock + ", proveedorId=" + proveedorId + '}';
+    }
+
 }
