@@ -688,16 +688,16 @@ private void cargarProductos() {
         panelUsuariosLayout.setHorizontalGroup(
             panelUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelUsuariosLayout.createSequentialGroup()
-                .addGap(21, 21, 21)
+                .addGap(32, 32, 32)
                 .addComponent(jLabel1)
-                .addContainerGap(448, Short.MAX_VALUE))
+                .addContainerGap(437, Short.MAX_VALUE))
         );
         panelUsuariosLayout.setVerticalGroup(
             panelUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelUsuariosLayout.createSequentialGroup()
-                .addGap(91, 91, 91)
+                .addGap(32, 32, 32)
                 .addComponent(jLabel1)
-                .addContainerGap(491, Short.MAX_VALUE))
+                .addContainerGap(550, Short.MAX_VALUE))
         );
 
         panelPrincipal.add(panelUsuarios, "card3");
