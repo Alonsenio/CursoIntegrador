@@ -11,12 +11,19 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import util.MySQLConexion;
@@ -59,8 +66,46 @@ public class Inicio extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(Inicio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         cargarProductosPorDefecto();
+        cargarProveedoresPorDefecto();
+        cargarProveedores();
+        cargarProductos();
+        cargarAlmacen();
         
     }
+
+private void cargarProveedores() {
+    try (Connection connection = MySQLConexion.getConexion()) {
+        String sql = "SELECT nombre FROM proveedores";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            try (ResultSet resultSet = statement.executeQuery()) {
+                List<String> proveedores = new ArrayList<>();
+                while (resultSet.next()) {
+                    proveedores.add(resultSet.getString("nombre"));
+                }
+                cbProveedores.setModel(new DefaultComboBoxModel<>(proveedores.toArray(new String[0])));
+            }
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+}
+private void cargarProductos() {
+    try (Connection connection = MySQLConexion.getConexion()) {
+        String sql = "SELECT nombre FROM productos";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            try (ResultSet resultSet = statement.executeQuery()) {
+                List<String> proveedores = new ArrayList<>();
+                while (resultSet.next()) {
+                    proveedores.add(resultSet.getString("nombre"));
+                }
+                cbProductos.setModel(new DefaultComboBoxModel<>(proveedores.toArray(new String[0])));
+            }
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+}
+
     
     private void mostrarPendientes(int total, int completado, Graphics graph) {
         lblPenText1.setText("Pendiente(s): " + Integer.toString(total - completado));
@@ -183,8 +228,38 @@ public class Inicio extends javax.swing.JFrame {
         btnMostrarProductos = new rsbuttongradiente.RSButtonGradiente();
         panelProvedores = new util.PanelRound();
         jLabel12 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        tfNombreProvedor = new javax.swing.JTextField();
+        tfTelefonoProvedor = new javax.swing.JTextField();
+        jLabel15 = new javax.swing.JLabel();
+        tfDireccionProvedor = new javax.swing.JTextField();
+        jLabel16 = new javax.swing.JLabel();
+        tfCorreoProvedor = new javax.swing.JTextField();
+        btnCrearProvedor = new rsbuttongradiente.RSButtonGradiente();
+        tfBuscarProvedor = new javax.swing.JTextField();
+        btnBuscarProvedor = new rsbuttongradiente.RSButtonGradiente();
+        btnEliminarProvedor = new rsbuttongradiente.RSButtonGradiente();
+        btnModificarProvedor = new rsbuttongradiente.RSButtonGradiente();
+        btnMostrarProvedor = new rsbuttongradiente.RSButtonGradiente();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tableProvedor = new rojerusan.RSTableMetro();
         panelInventario = new util.PanelRound();
-        jLabel4 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel17 = new javax.swing.JLabel();
+        cbProveedores = new javax.swing.JComboBox<>();
+        jLabel18 = new javax.swing.JLabel();
+        jLabel19 = new javax.swing.JLabel();
+        tfCantidadProducto = new javax.swing.JTextField();
+        cbProductos = new javax.swing.JComboBox<>();
+        btnIngresarProductoAlmacen = new rsbuttongradiente.RSButtonGradiente();
+        tfBuscarInventario = new javax.swing.JTextField();
+        btnBuscarProvedor1 = new rsbuttongradiente.RSButtonGradiente();
+        btnEliminarProvedor1 = new rsbuttongradiente.RSButtonGradiente();
+        btnModificarProvedor1 = new rsbuttongradiente.RSButtonGradiente();
+        btnMostrarProvedor1 = new rsbuttongradiente.RSButtonGradiente();
+        jScrollPane7 = new javax.swing.JScrollPane();
+        tableAlmacen = new rojerusan.RSTableMetro();
 
         PanelGraph.setBackground(new java.awt.Color(35, 35, 35));
         PanelGraph.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 51, 51)));
@@ -559,7 +634,7 @@ public class Inicio extends javax.swing.JFrame {
                     .addComponent(jSeparator9, javax.swing.GroupLayout.PREFERRED_SIZE, 697, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(panelHomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelHomeLayout.createSequentialGroup()
-                            .addComponent(contentRecent1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(contentRecent1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(contentPendings1, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addComponent(jLabel7)
@@ -660,6 +735,11 @@ public class Inicio extends javax.swing.JFrame {
                 tfBuscarFocusLost(evt);
             }
         });
+        tfBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tfBuscarActionPerformed(evt);
+            }
+        });
         panelProductos.add(tfBuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 300, 698, 40));
 
         rSButtonGradiente2.setBackground(new java.awt.Color(43, 209, 195));
@@ -687,6 +767,10 @@ public class Inicio extends javax.swing.JFrame {
         ));
         tableProductos.setColorBackgoundHead(new java.awt.Color(0, 102, 102));
         jScrollPane1.setViewportView(tableProductos);
+        if (tableProductos.getColumnModel().getColumnCount() > 0) {
+            tableProductos.getColumnModel().getColumn(5).setHeaderValue("Categoria");
+            tableProductos.getColumnModel().getColumn(6).setHeaderValue("Almacen ");
+        }
 
         panelProductos.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 420, 698, 180));
 
@@ -832,45 +916,426 @@ public class Inicio extends javax.swing.JFrame {
         jLabel12.setForeground(new java.awt.Color(153, 153, 153));
         jLabel12.setText("Listado Provedores");
 
+        jLabel13.setForeground(new java.awt.Color(204, 204, 204));
+        jLabel13.setText("Dirección: ");
+
+        jLabel14.setForeground(new java.awt.Color(204, 204, 204));
+        jLabel14.setText("Nombre:");
+
+        tfNombreProvedor.setBackground(new java.awt.Color(56, 56, 56));
+        tfNombreProvedor.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        tfNombreProvedor.setForeground(new java.awt.Color(204, 204, 204));
+        tfNombreProvedor.setBorder(new EmptyBorder(10, 10, 10, 10));
+        tfNombreProvedor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tfNombreProvedorActionPerformed(evt);
+            }
+        });
+
+        tfTelefonoProvedor.setBackground(new java.awt.Color(56, 56, 56));
+        tfTelefonoProvedor.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        tfTelefonoProvedor.setForeground(new java.awt.Color(204, 204, 204));
+        tfTelefonoProvedor.setBorder(new EmptyBorder(10, 10, 10, 10));
+        tfTelefonoProvedor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tfTelefonoProvedorActionPerformed(evt);
+            }
+        });
+
+        jLabel15.setForeground(new java.awt.Color(204, 204, 204));
+        jLabel15.setText("Telefono:");
+
+        tfDireccionProvedor.setBackground(new java.awt.Color(56, 56, 56));
+        tfDireccionProvedor.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        tfDireccionProvedor.setForeground(new java.awt.Color(204, 204, 204));
+        tfDireccionProvedor.setBorder(new EmptyBorder(10, 10, 10, 10));
+        tfDireccionProvedor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tfDireccionProvedorActionPerformed(evt);
+            }
+        });
+
+        jLabel16.setForeground(new java.awt.Color(204, 204, 204));
+        jLabel16.setText("Correo");
+
+        tfCorreoProvedor.setBackground(new java.awt.Color(56, 56, 56));
+        tfCorreoProvedor.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        tfCorreoProvedor.setForeground(new java.awt.Color(204, 204, 204));
+        tfCorreoProvedor.setBorder(new EmptyBorder(10, 10, 10, 10));
+        tfCorreoProvedor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tfCorreoProvedorActionPerformed(evt);
+            }
+        });
+
+        btnCrearProvedor.setBackground(new java.awt.Color(43, 209, 195));
+        btnCrearProvedor.setText("Crear Provedor");
+        btnCrearProvedor.setColorPrimario(new java.awt.Color(43, 209, 195));
+        btnCrearProvedor.setColorPrimarioHover(new java.awt.Color(43, 209, 195));
+        btnCrearProvedor.setColorSecundario(new java.awt.Color(0, 102, 102));
+        btnCrearProvedor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCrearProvedorActionPerformed(evt);
+            }
+        });
+
+        tfBuscarProvedor.setBackground(new java.awt.Color(56, 56, 56));
+        tfBuscarProvedor.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        tfBuscarProvedor.setForeground(new java.awt.Color(204, 204, 204));
+        tfBuscarProvedor.setText("Buscar por id, nombre y dirección");
+        tfBuscarProvedor.setBorder(new EmptyBorder(10, 10, 10, 10));
+        tfBuscarProvedor.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                tfBuscarProvedorFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                tfBuscarProvedorFocusLost(evt);
+            }
+        });
+        tfBuscarProvedor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tfBuscarProvedorActionPerformed(evt);
+            }
+        });
+
+        btnBuscarProvedor.setBackground(new java.awt.Color(43, 209, 195));
+        btnBuscarProvedor.setText("Buscar");
+        btnBuscarProvedor.setColorPrimario(new java.awt.Color(43, 209, 195));
+        btnBuscarProvedor.setColorPrimarioHover(new java.awt.Color(43, 209, 195));
+        btnBuscarProvedor.setColorSecundario(new java.awt.Color(0, 102, 102));
+        btnBuscarProvedor.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                btnBuscarProvedorFocusGained(evt);
+            }
+        });
+        btnBuscarProvedor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarProvedorActionPerformed(evt);
+            }
+        });
+
+        btnEliminarProvedor.setBackground(new java.awt.Color(43, 209, 195));
+        btnEliminarProvedor.setText("Eliminar");
+        btnEliminarProvedor.setColorPrimario(new java.awt.Color(43, 209, 195));
+        btnEliminarProvedor.setColorPrimarioHover(new java.awt.Color(43, 209, 195));
+        btnEliminarProvedor.setColorSecundario(new java.awt.Color(0, 102, 102));
+        btnEliminarProvedor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarProvedorActionPerformed(evt);
+            }
+        });
+
+        btnModificarProvedor.setBackground(new java.awt.Color(43, 209, 195));
+        btnModificarProvedor.setText("Editar");
+        btnModificarProvedor.setColorPrimario(new java.awt.Color(43, 209, 195));
+        btnModificarProvedor.setColorPrimarioHover(new java.awt.Color(43, 209, 195));
+        btnModificarProvedor.setColorSecundario(new java.awt.Color(0, 102, 102));
+        btnModificarProvedor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModificarProvedorActionPerformed(evt);
+            }
+        });
+
+        btnMostrarProvedor.setBackground(new java.awt.Color(43, 209, 195));
+        btnMostrarProvedor.setText("Todos");
+        btnMostrarProvedor.setColorPrimario(new java.awt.Color(43, 209, 195));
+        btnMostrarProvedor.setColorPrimarioHover(new java.awt.Color(43, 209, 195));
+        btnMostrarProvedor.setColorSecundario(new java.awt.Color(0, 102, 102));
+        btnMostrarProvedor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMostrarProvedorActionPerformed(evt);
+            }
+        });
+
+        tableProvedor.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "Id", "Nombre", "Direccion", "Telefono", "Correo"
+            }
+        ));
+        tableProvedor.setColorBackgoundHead(new java.awt.Color(0, 102, 102));
+        jScrollPane3.setViewportView(tableProvedor);
+
         javax.swing.GroupLayout panelProvedoresLayout = new javax.swing.GroupLayout(panelProvedores);
         panelProvedores.setLayout(panelProvedoresLayout);
         panelProvedoresLayout.setHorizontalGroup(
             panelProvedoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelProvedoresLayout.createSequentialGroup()
                 .addGap(30, 30, 30)
-                .addComponent(jLabel12)
-                .addContainerGap(427, Short.MAX_VALUE))
+                .addGroup(panelProvedoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 698, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(panelProvedoresLayout.createSequentialGroup()
+                        .addComponent(btnBuscarProvedor, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnEliminarProvedor, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnModificarProvedor, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnMostrarProvedor, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(tfBuscarProvedor, javax.swing.GroupLayout.PREFERRED_SIZE, 698, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnCrearProvedor, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel12)
+                    .addGroup(panelProvedoresLayout.createSequentialGroup()
+                        .addGroup(panelProvedoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(panelProvedoresLayout.createSequentialGroup()
+                                .addComponent(jLabel14)
+                                .addGap(27, 27, 27))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelProvedoresLayout.createSequentialGroup()
+                                .addComponent(jLabel13)
+                                .addGap(18, 18, 18)))
+                        .addGroup(panelProvedoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(tfNombreProvedor, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(tfDireccionProvedor, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(40, 40, 40)
+                        .addGroup(panelProvedoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel16)
+                            .addComponent(jLabel15))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(panelProvedoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(tfCorreoProvedor, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(tfTelefonoProvedor, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(42, Short.MAX_VALUE))
         );
         panelProvedoresLayout.setVerticalGroup(
             panelProvedoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelProvedoresLayout.createSequentialGroup()
                 .addGap(27, 27, 27)
                 .addComponent(jLabel12)
-                .addContainerGap(560, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(panelProvedoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelProvedoresLayout.createSequentialGroup()
+                        .addGroup(panelProvedoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(tfNombreProvedor, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel14))
+                        .addGap(18, 18, 18)
+                        .addGroup(panelProvedoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(tfDireccionProvedor, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel13)))
+                    .addGroup(panelProvedoresLayout.createSequentialGroup()
+                        .addGroup(panelProvedoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(tfTelefonoProvedor, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel15))
+                        .addGap(18, 18, 18)
+                        .addGroup(panelProvedoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(tfCorreoProvedor, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel16))))
+                .addGap(18, 18, 18)
+                .addComponent(btnCrearProvedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(tfBuscarProvedor, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(panelProvedoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnBuscarProvedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnEliminarProvedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnModificarProvedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnMostrarProvedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(28, Short.MAX_VALUE))
         );
 
         panelPrincipal.add(panelProvedores, "card5");
 
         panelInventario.setBackground(new java.awt.Color(35, 35, 35));
 
-        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
-        jLabel4.setText("PANEL INVENTARIO");
+        jLabel3.setFont(new java.awt.Font("Roboto", 1, 36)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(153, 153, 153));
+        jLabel3.setText("Inventario de la empresa");
+
+        jLabel17.setForeground(new java.awt.Color(204, 204, 204));
+        jLabel17.setText("Proveedor");
+
+        cbProveedores.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccionar Proveedor" }));
+        cbProveedores.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbProveedoresActionPerformed(evt);
+            }
+        });
+
+        jLabel18.setForeground(new java.awt.Color(204, 204, 204));
+        jLabel18.setText("Producto");
+
+        jLabel19.setForeground(new java.awt.Color(204, 204, 204));
+        jLabel19.setText("Cantidad");
+
+        tfCantidadProducto.setBackground(new java.awt.Color(56, 56, 56));
+        tfCantidadProducto.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        tfCantidadProducto.setForeground(new java.awt.Color(204, 204, 204));
+        tfCantidadProducto.setBorder(new EmptyBorder(10, 10, 10, 10));
+        tfCantidadProducto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tfCantidadProductoActionPerformed(evt);
+            }
+        });
+
+        cbProductos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccionar Prodcuto" }));
+
+        btnIngresarProductoAlmacen.setBackground(new java.awt.Color(43, 209, 195));
+        btnIngresarProductoAlmacen.setText("Ingresar a Almacen");
+        btnIngresarProductoAlmacen.setColorPrimario(new java.awt.Color(43, 209, 195));
+        btnIngresarProductoAlmacen.setColorPrimarioHover(new java.awt.Color(43, 209, 195));
+        btnIngresarProductoAlmacen.setColorSecundario(new java.awt.Color(0, 102, 102));
+        btnIngresarProductoAlmacen.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnIngresarProductoAlmacenActionPerformed(evt);
+            }
+        });
+
+        tfBuscarInventario.setBackground(new java.awt.Color(56, 56, 56));
+        tfBuscarInventario.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        tfBuscarInventario.setForeground(new java.awt.Color(204, 204, 204));
+        tfBuscarInventario.setText("Buscar por Fecha, Proveedor y Producto");
+        tfBuscarInventario.setBorder(new EmptyBorder(10, 10, 10, 10));
+        tfBuscarInventario.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                tfBuscarInventarioFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                tfBuscarInventarioFocusLost(evt);
+            }
+        });
+        tfBuscarInventario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tfBuscarInventarioActionPerformed(evt);
+            }
+        });
+
+        btnBuscarProvedor1.setBackground(new java.awt.Color(43, 209, 195));
+        btnBuscarProvedor1.setText("Buscar");
+        btnBuscarProvedor1.setColorPrimario(new java.awt.Color(43, 209, 195));
+        btnBuscarProvedor1.setColorPrimarioHover(new java.awt.Color(43, 209, 195));
+        btnBuscarProvedor1.setColorSecundario(new java.awt.Color(0, 102, 102));
+        btnBuscarProvedor1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarProvedor1ActionPerformed(evt);
+            }
+        });
+
+        btnEliminarProvedor1.setBackground(new java.awt.Color(43, 209, 195));
+        btnEliminarProvedor1.setText("Eliminar");
+        btnEliminarProvedor1.setColorPrimario(new java.awt.Color(43, 209, 195));
+        btnEliminarProvedor1.setColorPrimarioHover(new java.awt.Color(43, 209, 195));
+        btnEliminarProvedor1.setColorSecundario(new java.awt.Color(0, 102, 102));
+        btnEliminarProvedor1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarProvedor1ActionPerformed(evt);
+            }
+        });
+
+        btnModificarProvedor1.setBackground(new java.awt.Color(43, 209, 195));
+        btnModificarProvedor1.setText("Editar");
+        btnModificarProvedor1.setColorPrimario(new java.awt.Color(43, 209, 195));
+        btnModificarProvedor1.setColorPrimarioHover(new java.awt.Color(43, 209, 195));
+        btnModificarProvedor1.setColorSecundario(new java.awt.Color(0, 102, 102));
+        btnModificarProvedor1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModificarProvedor1ActionPerformed(evt);
+            }
+        });
+
+        btnMostrarProvedor1.setBackground(new java.awt.Color(43, 209, 195));
+        btnMostrarProvedor1.setText("Todos");
+        btnMostrarProvedor1.setColorPrimario(new java.awt.Color(43, 209, 195));
+        btnMostrarProvedor1.setColorPrimarioHover(new java.awt.Color(43, 209, 195));
+        btnMostrarProvedor1.setColorSecundario(new java.awt.Color(0, 102, 102));
+        btnMostrarProvedor1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMostrarProvedor1ActionPerformed(evt);
+            }
+        });
+
+        tableAlmacen.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "Id", "Fecha ", "Producto", "Cantidad", "Precio", "Total", "Proveedor"
+            }
+        ));
+        tableAlmacen.setColorBackgoundHead(new java.awt.Color(0, 102, 102));
+        jScrollPane7.setViewportView(tableAlmacen);
 
         javax.swing.GroupLayout panelInventarioLayout = new javax.swing.GroupLayout(panelInventario);
         panelInventario.setLayout(panelInventarioLayout);
         panelInventarioLayout.setHorizontalGroup(
             panelInventarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelInventarioLayout.createSequentialGroup()
-                .addGap(23, 23, 23)
-                .addComponent(jLabel4)
-                .addContainerGap(407, Short.MAX_VALUE))
+                .addGap(31, 31, 31)
+                .addGroup(panelInventarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelInventarioLayout.createSequentialGroup()
+                        .addComponent(btnIngresarProductoAlmacen, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(panelInventarioLayout.createSequentialGroup()
+                        .addGroup(panelInventarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3)
+                            .addGroup(panelInventarioLayout.createSequentialGroup()
+                                .addGroup(panelInventarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelInventarioLayout.createSequentialGroup()
+                                        .addComponent(jLabel17)
+                                        .addGap(32, 32, 32)
+                                        .addComponent(cbProveedores, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(panelInventarioLayout.createSequentialGroup()
+                                        .addComponent(jLabel19)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(tfCantidadProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel18)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(cbProductos, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(37, 37, 37))
+                    .addGroup(panelInventarioLayout.createSequentialGroup()
+                        .addGroup(panelInventarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(panelInventarioLayout.createSequentialGroup()
+                                .addComponent(btnBuscarProvedor1, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(27, 27, 27)
+                                .addComponent(btnEliminarProvedor1, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(29, 29, 29)
+                                .addComponent(btnModificarProvedor1, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(26, 26, 26)
+                                .addComponent(btnMostrarProvedor1, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(tfBuscarInventario, javax.swing.GroupLayout.PREFERRED_SIZE, 698, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE))))
+            .addGroup(panelInventarioLayout.createSequentialGroup()
+                .addGap(22, 22, 22)
+                .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 698, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         panelInventarioLayout.setVerticalGroup(
             panelInventarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelInventarioLayout.createSequentialGroup()
                 .addGap(26, 26, 26)
-                .addComponent(jLabel4)
-                .addContainerGap(556, Short.MAX_VALUE))
+                .addComponent(jLabel3)
+                .addGap(18, 18, 18)
+                .addGroup(panelInventarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel17)
+                    .addComponent(cbProveedores, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbProductos, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel18))
+                .addGap(18, 18, 18)
+                .addGroup(panelInventarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(tfCantidadProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel19))
+                .addGap(27, 27, 27)
+                .addComponent(btnIngresarProductoAlmacen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(tfBuscarInventario, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(panelInventarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnBuscarProvedor1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnEliminarProvedor1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnModificarProvedor1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnMostrarProvedor1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(32, Short.MAX_VALUE))
         );
 
         panelPrincipal.add(panelInventario, "card6");
@@ -1120,6 +1585,414 @@ public class Inicio extends javax.swing.JFrame {
     private void btnMostrarProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMostrarProductosActionPerformed
         cargarProductosPorDefecto();
     }//GEN-LAST:event_btnMostrarProductosActionPerformed
+
+    private void tfNombreProvedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfNombreProvedorActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tfNombreProvedorActionPerformed
+
+    private void tfTelefonoProvedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfTelefonoProvedorActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tfTelefonoProvedorActionPerformed
+
+    private void tfDireccionProvedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfDireccionProvedorActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tfDireccionProvedorActionPerformed
+
+    private void tfCorreoProvedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfCorreoProvedorActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tfCorreoProvedorActionPerformed
+
+    private void btnCrearProvedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearProvedorActionPerformed
+        String nombre=tfNombreProvedor.getText().trim();
+        String direccion=tfDireccionProvedor.getText().trim();
+        String telefono=tfTelefonoProvedor.getText().trim();
+        String correo=tfCorreoProvedor.getText().trim();
+        if(nombre.isEmpty()||correo.isEmpty()||telefono.isEmpty()||correo.isEmpty()){
+            JOptionPane.showMessageDialog(this, "Todos los campos son obligaotios, por favor llenar todos");
+            return;
+        }else if(!telefono.matches("\\d{9}")){
+            JOptionPane.showMessageDialog(this, "Formato de teléfono incorrecto", "Error", JOptionPane.ERROR_MESSAGE);
+             return;
+        }else if(!correo.matches("\\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z|a-z]{2,}\\b")){
+            JOptionPane.showMessageDialog(this, "Formato de correo electrónico incorrecto", "Error", JOptionPane.ERROR_MESSAGE);
+        return; 
+        }else{
+            String sql="INSERT INTO proveedores (nombre,dirección,teléfono,correo) values(?,?,?,?)";
+            try(Connection conexion=MySQLConexion.getConexion()) {
+                try(PreparedStatement ps=conexion.prepareStatement(sql)) {
+                    ps.setString(1, nombre);
+                    ps.setString(2, direccion);
+                    ps.setString(3, telefono);
+                    ps.setString(4, correo);
+                    int filasAfectadas=ps.executeUpdate();
+                    if (filasAfectadas>0){
+                        JOptionPane.showMessageDialog(this, "Provedor agregado exitosamente");
+                        cargarProductosPorDefecto();
+                    }else{
+                        JOptionPane.showMessageDialog(this, "Error al insertar provedor");
+                    }
+                }
+            } catch (Exception e) {
+                System.out.println(e.toString());
+            }
+            
+        }
+      
+        
+    }//GEN-LAST:event_btnCrearProvedorActionPerformed
+
+    private void tfBuscarProvedorFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tfBuscarProvedorFocusGained
+        if(tfBuscarProvedor.getText().equals("Buscar por id, nombre y dirección")){
+            tfBuscarProvedor.setText("");
+        }
+    }//GEN-LAST:event_tfBuscarProvedorFocusGained
+
+    private void tfBuscarProvedorFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tfBuscarProvedorFocusLost
+        if (tfBuscarProvedor.getText().isEmpty()) {
+                    tfBuscarProvedor.setText("Buscar por id, nombre y dirección");
+        }
+    }//GEN-LAST:event_tfBuscarProvedorFocusLost
+
+    private void tfBuscarProvedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfBuscarProvedorActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tfBuscarProvedorActionPerformed
+
+    private void tfBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfBuscarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tfBuscarActionPerformed
+
+    private void btnBuscarProvedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarProvedorActionPerformed
+        String criterio=tfBuscarProvedor.getText();
+        String sql="Select * from proveedores where id like ? or nombre like ? or dirección like ?";
+        try (Connection conexion=MySQLConexion.getConexion()){
+            try(PreparedStatement ps =conexion.prepareStatement(sql)){
+                ps.setString(1, "%" + criterio + "%");
+                ps.setString(2, "%" + criterio + "%");
+                ps.setString(3, "%" + criterio + "%");
+                ResultSet rs = ps.executeQuery();
+                DefaultTableModel tabla=(DefaultTableModel) tableProvedor.getModel();
+                tabla.setRowCount(0);
+                while(rs.next()){
+                    Object[] fila={rs.getString("id"),rs.getString("nombre"),rs.getString("dirección"),rs.getString("teléfono"),rs.getString("correo")};
+                    tabla.addRow(fila);
+                }
+                
+            }
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+    }//GEN-LAST:event_btnBuscarProvedorActionPerformed
+
+    private void btnEliminarProvedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarProvedorActionPerformed
+        int filaSeleccionada=tableProvedor.getSelectedRow();
+        if(filaSeleccionada!=-1){
+            DefaultTableModel tabla=(DefaultTableModel) tableProvedor.getModel();
+            String idProvedor=tabla.getValueAt(filaSeleccionada, 0).toString();
+            tabla.removeRow(filaSeleccionada);
+            String sql = "DELETE FROM proveedores WHERE id = ?";
+
+            try (Connection conexion = MySQLConexion.getConexion();
+                 PreparedStatement ps = conexion.prepareStatement(sql)) {
+                    ps.setString(1, idProvedor);
+                int filasAfectadas = ps.executeUpdate();
+                
+                if (filasAfectadas > 0) {
+                    JOptionPane.showMessageDialog(this, "Proveedor Eliminado exitosamente!");
+                } else {
+                    System.out.println("No se pudo eliminar la fila de la base de datos.");
+                }
+            } catch (SQLException e) {
+                System.out.println("Error al eliminar fila de la base de datos: " + e.getMessage());
+            }
+        }
+    }//GEN-LAST:event_btnEliminarProvedorActionPerformed
+
+    private void btnModificarProvedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarProvedorActionPerformed
+        int filaSeleccionada=tableProvedor.getSelectedRow();
+        String nombre=tfNombreProvedor.getText().trim();
+        String direccion=tfDireccionProvedor.getText().trim();
+        String telefono=tfTelefonoProvedor.getText().trim();
+        String correo=tfCorreoProvedor.getText().trim();
+        if(filaSeleccionada!=-1){
+            DefaultTableModel tabla=(DefaultTableModel) tableProvedor.getModel();
+            String idProvedor=tabla.getValueAt(filaSeleccionada, 0).toString();
+            
+            String sql = "UPDATE proveedores SET nombre = ?, dirección = ?, teléfono = ?, correo = ?WHERE id = ?";
+
+            try (Connection conexion = MySQLConexion.getConexion();
+                 PreparedStatement ps = conexion.prepareStatement(sql)) {
+                    ps.setString(1, nombre);
+                    ps.setString(2, direccion);
+                    ps.setString(3, telefono);
+                    ps.setString(4, correo);
+                    ps.setString(5, idProvedor);
+                int filasAfectadas = ps.executeUpdate();
+
+                if (filasAfectadas > 0) {
+                    JOptionPane.showMessageDialog(this, "Proveedor Actulizado exitosamente!");
+                    cargarProveedoresPorDefecto();
+                } else {
+                    System.out.println("No se pudo actualizar la fila de la base de datos.");
+                }
+            } catch (SQLException e) {
+                System.out.println("Error al eliminar fila de la base de datos: " + e.getMessage());
+            }
+        }
+        
+    }//GEN-LAST:event_btnModificarProvedorActionPerformed
+
+    private void btnMostrarProvedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMostrarProvedorActionPerformed
+        cargarProveedoresPorDefecto();
+    }//GEN-LAST:event_btnMostrarProvedorActionPerformed
+
+    private void tfCantidadProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfCantidadProductoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tfCantidadProductoActionPerformed
+
+    private void btnIngresarProductoAlmacenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarProductoAlmacenActionPerformed
+       String nombreProveedor = (String) cbProveedores.getSelectedItem();
+    String nombreProducto = (String) cbProductos.getSelectedItem();
+    int cantidad = Integer.parseInt(tfCantidadProducto.getText());
+    BigDecimal idProveedor = obtenerCampo(nombreProveedor, "proveedores", "id");
+    BigDecimal idProducto = obtenerCampo(nombreProducto, "productos", "id");
+    BigDecimal precioProducto = obtenerCampo(nombreProducto, "productos", "precio");
+    double montoTotal = precioProducto.doubleValue() * cantidad;
+
+    String sqlInsertAlmacen = "INSERT INTO almacen (proveedor_id, producto_id, precio_compra, cantidad_unitaria) VALUES (?, ?, ?, ?)";
+    String sqlUpdateProducto = "UPDATE productos SET stock = stock + ? WHERE id = ?";
+
+    try (Connection conexion = MySQLConexion.getConexion()) {
+        conexion.setAutoCommit(false);
+        try (PreparedStatement psInsertAlmacen = conexion.prepareStatement(sqlInsertAlmacen);
+             PreparedStatement psUpdateProducto = conexion.prepareStatement(sqlUpdateProducto)) {
+            psInsertAlmacen.setInt(1, idProveedor.intValue());
+            psInsertAlmacen.setInt(2, idProducto.intValue());
+            psInsertAlmacen.setDouble(3, montoTotal);
+            psInsertAlmacen.setInt(4, cantidad);
+
+            psUpdateProducto.setInt(1, cantidad);
+            psUpdateProducto.setInt(2, idProducto.intValue());
+
+            psInsertAlmacen.executeUpdate();
+            psUpdateProducto.executeUpdate();
+            // Confirmar la transacción
+            conexion.commit();
+            JOptionPane.showMessageDialog(this, "Registro de almacén realizado exitosamente");
+            cargarAlmacen();
+            cargarProductosPorDefecto();
+        } catch (SQLException ex) {
+            // Si hay un error, hacer rollback
+            conexion.rollback();
+            JOptionPane.showMessageDialog(this, "Ocurrió un error en el registro al almacén");
+            System.out.println(ex.toString());
+        } finally {
+            // Restaurar el modo de autocommit
+            conexion.setAutoCommit(true);
+        }
+    } catch (SQLException ex) {
+        System.out.println(ex.toString());
+    }
+    }//GEN-LAST:event_btnIngresarProductoAlmacenActionPerformed
+    
+    private BigDecimal obtenerCampo(String nombre, String tabla, String campo) {
+    BigDecimal valorCampo = BigDecimal.ZERO;
+
+    String sql = "SELECT p." + campo + " FROM " + tabla + " p WHERE p.nombre=?";
+    
+    try (Connection conexion = MySQLConexion.getConexion()) {
+        try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+            ps.setString(1, nombre);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    valorCampo = rs.getBigDecimal(campo);
+                } else {
+                    System.out.println("No se encontró el elemento con el nombre: " + nombre);
+                }
+            }
+        }
+    } catch (SQLException ex) {
+        System.out.println("Error al obtener el campo " + campo + ": " + ex.toString());
+    }
+
+    return valorCampo;
+}
+
+
+    private void cbProveedoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbProveedoresActionPerformed
+        
+    }//GEN-LAST:event_cbProveedoresActionPerformed
+
+    private void tfBuscarInventarioFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tfBuscarInventarioFocusGained
+        if(tfBuscarInventario.getText().equals("Buscar por Fecha, Proveedor y Producto")){
+            tfBuscarInventario.setText("");
+        }
+    }//GEN-LAST:event_tfBuscarInventarioFocusGained
+
+    private void tfBuscarInventarioFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tfBuscarInventarioFocusLost
+        if(tfBuscarInventario.getText().isEmpty()){
+            tfBuscarInventario.setText("Buscar por Fecha, Proveedor y Producto");
+        }
+    
+    }//GEN-LAST:event_tfBuscarInventarioFocusLost
+
+    private void tfBuscarInventarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfBuscarInventarioActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tfBuscarInventarioActionPerformed
+
+    private void btnBuscarProvedor1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarProvedor1ActionPerformed
+        String criterio=tfBuscarInventario.getText();
+        String sql="SELECT a.id, a.fecha_entrada,p.nombre as Producto,a.cantidad_unitaria,p.precio,a.precio_compra,pro.nombre as Proveedor FROM productos p INNER JOIN almacen a on  a.producto_id=p.id INNER JOIN proveedores pro on pro.id=a.proveedor_id WHERE a.fecha_entrada LIKE ? or pro.nombre like ? OR p.nombre like ?";
+        if(criterio.isEmpty()){
+            JOptionPane.showMessageDialog(this, "Ingresar la expresion que quiere buscar");
+        }else{
+            try(Connection conexion=MySQLConexion.getConexion()){
+                try(PreparedStatement ps=conexion.prepareStatement(sql)){
+                    ps.setString(1,"%" + criterio+ "%");
+                    ps.setString(2,"%" + criterio+ "%");
+                    ps.setString(3,"%" + criterio+ "%");
+                    ResultSet rs= ps.executeQuery();
+                    DefaultTableModel tabla= (DefaultTableModel) tableAlmacen.getModel();
+                    tabla.setRowCount(0);
+                    while(rs.next()){
+                        Object[] fila={rs.getString("id"),rs.getString("fecha_entrada"),rs.getString("Producto"),rs.getString("cantidad_unitaria"),rs.getString("precio"),rs.getString("precio_compra"),rs.getString("Proveedor")};
+                        tabla.addRow(fila);
+                    }
+                }
+                
+            } catch (SQLException ex) {
+                System.out.println(ex.toString());
+            }
+        }
+    }//GEN-LAST:event_btnBuscarProvedor1ActionPerformed
+
+    private void btnEliminarProvedor1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarProvedor1ActionPerformed
+        int filaSeleccionada = tableAlmacen.getSelectedRow();
+
+        if (filaSeleccionada != -1) {
+            DefaultTableModel tabla = (DefaultTableModel) tableAlmacen.getModel();
+            String nombreProducto = tabla.getValueAt(filaSeleccionada, 2).toString(); 
+            String idalmacen = tabla.getValueAt(filaSeleccionada, 0).toString(); 
+            System.out.println(nombreProducto);
+            BigDecimal idProducto = obtenerCampo(nombreProducto, "productos", "id");
+            System.out.println("el id es:"+idProducto);
+            BigDecimal cantidadUnitaria = new BigDecimal(tabla.getValueAt(filaSeleccionada, 3).toString()); 
+            System.out.println("cantidad"+cantidadUnitaria);
+            tabla.removeRow(filaSeleccionada);
+
+            String sqlEliminar = "DELETE FROM almacen WHERE id = ?";
+            String sqlActualizarStock = "UPDATE productos SET stock = stock - ? WHERE id = ?";
+            try (Connection conexion = MySQLConexion.getConexion()) {
+                try (PreparedStatement psEliminar = conexion.prepareStatement(sqlEliminar)) {
+                    psEliminar.setInt(1, Integer.parseInt(idalmacen));
+                    int filasAfectadasEliminar = psEliminar.executeUpdate();
+                    if (filasAfectadasEliminar > 0) {
+                        try (PreparedStatement psActualizarStock = conexion.prepareStatement(sqlActualizarStock)) {
+                            psActualizarStock.setInt(1, cantidadUnitaria.intValueExact());
+                            psActualizarStock.setInt(2, idProducto.intValue());
+                            int filasAfectadasActualizarStock = psActualizarStock.executeUpdate();
+
+                            if (filasAfectadasActualizarStock > 0) {
+                                JOptionPane.showMessageDialog(this, "Registro eliminado y stock actualizado exitosamente!");
+                                cargarAlmacen();
+                                cargarProductosPorDefecto();
+                                cargarProductos();
+                            } else {
+                                System.out.println("No se pudo actualizar el stock del producto.");
+                            }
+                        }
+                    } else {
+                        System.out.println("No se pudo eliminar el registro de la tabla almacen.");
+                    }
+                }
+            } catch (SQLException e) {
+                System.out.println("Error al realizar la eliminación y actualizar el stock: " + e.getMessage());
+            }
+        }
+
+           
+
+    }//GEN-LAST:event_btnEliminarProvedor1ActionPerformed
+
+    private void btnModificarProvedor1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarProvedor1ActionPerformed
+       String nuevoNombreProveedor = (String) cbProveedores.getSelectedItem();
+                    String nuevoNombreProducto = (String) cbProductos.getSelectedItem();
+                    String nuevaCantidad = tfCantidadProducto.getText();
+        if(nuevoNombreProveedor.isEmpty()||nuevoNombreProducto.isEmpty()||nuevaCantidad.isEmpty()){
+            JOptionPane.showMessageDialog(this, "No a completado todos los campos");
+        }else{
+        int filaSeleccionada = tableAlmacen.getSelectedRow();
+        if (filaSeleccionada != -1) {
+            DefaultTableModel tabla = (DefaultTableModel) tableAlmacen.getModel();
+            String nombreProductoAntiguo = tabla.getValueAt(filaSeleccionada, 2).toString();
+            BigDecimal idProductoAntiguo = obtenerCampo(nombreProductoAntiguo, "productos", "id");
+            BigDecimal cantidadAntigua = new BigDecimal(tabla.getValueAt(filaSeleccionada, 3).toString());
+            // Eliminar la cantidad asignada al antiguo producto
+            String sqlRestarStockAntiguo = "UPDATE productos SET stock = stock - ? WHERE id = ?";
+            try (Connection conexion = MySQLConexion.getConexion();
+                 PreparedStatement psRestarStockAntiguo = conexion.prepareStatement(sqlRestarStockAntiguo)) {
+                psRestarStockAntiguo.setBigDecimal(1, cantidadAntigua);
+                psRestarStockAntiguo.setInt(2, idProductoAntiguo.intValue());
+                int filasAfectadasRestarStockAntiguo = psRestarStockAntiguo.executeUpdate();
+
+                if (filasAfectadasRestarStockAntiguo > 0) {
+                    
+
+                    BigDecimal idProductoNuevo = obtenerCampo(nuevoNombreProducto, "productos", "id");
+                    BigDecimal idProveedorNuevo = obtenerCampo(nuevoNombreProveedor, "proveedores", "id");
+
+                    tabla.setValueAt(nuevoNombreProveedor, filaSeleccionada, 6);
+                    tabla.setValueAt(nuevoNombreProducto, filaSeleccionada, 2);
+                    tabla.setValueAt(nuevaCantidad, filaSeleccionada, 3);
+
+                     String sqlActualizar = "UPDATE almacen SET proveedor_id = ?, producto_id = ?, cantidad_unitaria = ? WHERE id = ?";
+
+                    try (PreparedStatement psActualizar = conexion.prepareStatement(sqlActualizar)) {
+                        psActualizar.setInt(1, idProveedorNuevo.intValue());
+                        psActualizar.setInt(2, idProductoNuevo.intValue());
+                        psActualizar.setInt(3, Integer.parseInt(nuevaCantidad));
+                        psActualizar.setInt(4, Integer.parseInt(tabla.getValueAt(filaSeleccionada, 0).toString()));
+
+                        int filasAfectadasActualizar = psActualizar.executeUpdate();
+
+                        if (filasAfectadasActualizar > 0) {
+                            // Restar el stock del nuevo producto
+                            String sqlRestarStockNuevo = "UPDATE productos SET stock = stock + ? WHERE id = ?";
+                            try (PreparedStatement psRestarStockNuevo = conexion.prepareStatement(sqlRestarStockNuevo)) {
+                                psRestarStockNuevo.setInt(1, Integer.parseInt(nuevaCantidad));
+                                psRestarStockNuevo.setInt(2, idProductoNuevo.intValue());
+
+                                int filasAfectadasRestarStockNuevo = psRestarStockNuevo.executeUpdate();
+
+                                if (filasAfectadasRestarStockNuevo > 0) {
+                                    JOptionPane.showMessageDialog(this, "Registro actualizado y stock actualizado exitosamente!");
+                                    cargarAlmacen();;
+                                    cargarProductosPorDefecto();
+                                } else {
+                                    System.out.println("No se pudo actualizar el stock del nuevo producto.");
+                                }
+                            }
+                        } else {
+                            System.out.println("No se pudo actualizar el registro de la tabla almacen.");
+                        }
+                    }
+                } else {
+                    System.out.println("No se pudo restar el stock del producto antiguo.");
+                }
+            } catch (SQLException e) {
+                System.out.println("Error al realizar la actualización y actualizar el stock: " + e.getMessage());
+            }
+        }
+        }
+
+    }//GEN-LAST:event_btnModificarProvedor1ActionPerformed
+
+    private void btnMostrarProvedor1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMostrarProvedor1ActionPerformed
+        cargarAlmacen();
+    }//GEN-LAST:event_btnMostrarProvedor1ActionPerformed
+
+    private void btnBuscarProvedorFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_btnBuscarProvedorFocusGained
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnBuscarProvedorFocusGained
     private void limpiarCamposDeTexto() {
     tfAlmacenProducto.setText("");
     taDescripcionProducto.setText("");
@@ -1204,6 +2077,55 @@ public class Inicio extends javax.swing.JFrame {
             System.out.println("Error al cargar productos por defecto: " + e.getMessage());
         }
     }
+     private void cargarProveedoresPorDefecto() {
+        String sql = "SELECT * FROM proveedores";
+
+        try (Connection conexion = MySQLConexion.getConexion();
+             Statement statement = conexion.createStatement();
+             ResultSet resultSet = statement.executeQuery(sql)) {
+            DefaultTableModel modeloTabla = (DefaultTableModel) tableProvedor.getModel();
+            modeloTabla.setRowCount(0);
+            while (resultSet.next()) {
+                Object[] fila = {
+                    resultSet.getString("id"),
+                    resultSet.getString("nombre"),
+                    resultSet.getString("dirección"),
+                    resultSet.getString("teléfono"),
+                    resultSet.getString("correo"),
+                };
+                modeloTabla.addRow(fila);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al cargar proveedores por defecto: " + e.getMessage());
+        }
+    }
+     private void cargarAlmacen() {
+        String sql = "SELECT a.id, a.fecha_entrada,p.nombre as Producto,a.cantidad_unitaria,p.precio,a.precio_compra,pro.nombre as Proveedor FROM productos p INNER JOIN almacen a on  a.producto_id=p.id INNER JOIN proveedores pro on pro.id=a.proveedor_id";
+
+        try (Connection conexion = MySQLConexion.getConexion();
+             Statement statement = conexion.createStatement();
+             ResultSet resultSet = statement.executeQuery(sql)) {
+            DefaultTableModel modeloTabla = (DefaultTableModel) tableAlmacen.getModel();
+            modeloTabla.setRowCount(0);
+            while (resultSet.next()) {
+                Object[] fila = {
+                    resultSet.getString("id"),
+                    resultSet.getString("fecha_entrada"),
+                    resultSet.getString("Producto"),
+                    resultSet.getString("cantidad_unitaria"),
+                    resultSet.getString("precio"),
+                    resultSet.getString("precio_compra"),
+                    resultSet.getString("Proveedor"),
+                };
+                modeloTabla.addRow(fila);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al cargar proveedores por defecto: " + e.getMessage());
+        }
+    }
+     
+    
+
     /**
      * @param args the command line arguments
      */
@@ -1242,13 +2164,25 @@ public class Inicio extends javax.swing.JFrame {
     private javax.swing.JPanel PanelGraph;
     private javax.swing.JButton Provedores;
     private rsbuttongradiente.RSButtonGradiente btnBuscar;
+    private rsbuttongradiente.RSButtonGradiente btnBuscarProvedor;
+    private rsbuttongradiente.RSButtonGradiente btnBuscarProvedor1;
+    private rsbuttongradiente.RSButtonGradiente btnCrearProvedor;
     private rsbuttongradiente.RSButtonGradiente btnEliminar;
+    private rsbuttongradiente.RSButtonGradiente btnEliminarProvedor;
+    private rsbuttongradiente.RSButtonGradiente btnEliminarProvedor1;
     private javax.swing.JButton btnHome;
+    private rsbuttongradiente.RSButtonGradiente btnIngresarProductoAlmacen;
     private javax.swing.JButton btnInventario;
     private rsbuttongradiente.RSButtonGradiente btnModificar;
+    private rsbuttongradiente.RSButtonGradiente btnModificarProvedor;
+    private rsbuttongradiente.RSButtonGradiente btnModificarProvedor1;
     private rsbuttongradiente.RSButtonGradiente btnMostrarProductos;
+    private rsbuttongradiente.RSButtonGradiente btnMostrarProvedor;
+    private rsbuttongradiente.RSButtonGradiente btnMostrarProvedor1;
     private javax.swing.JButton btnProductos;
     private javax.swing.JButton btnUsuarios;
+    private javax.swing.JComboBox<String> cbProductos;
+    private javax.swing.JComboBox<String> cbProveedores;
     private javax.swing.JPanel contentClients1;
     private javax.swing.JPanel contentPendings1;
     private javax.swing.JPanel contentProducts1;
@@ -1260,8 +2194,15 @@ public class Inicio extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -1271,9 +2212,11 @@ public class Inicio extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
+    private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JSeparator jSeparator5;
     private javax.swing.JSeparator jSeparator6;
     private javax.swing.JSeparator jSeparator8;
@@ -1302,12 +2245,21 @@ public class Inicio extends javax.swing.JFrame {
     private rsbuttongradiente.RSButtonGradiente rSButtonGradiente2;
     private rojerusan.componentes.RSProgressCircleAnimatedBeanInfo rSProgressCircleAnimatedBeanInfo1;
     private javax.swing.JTextArea taDescripcionProducto;
+    private rojerusan.RSTableMetro tableAlmacen;
     private rojerusan.RSTableMetro tableProductos;
+    private rojerusan.RSTableMetro tableProvedor;
     private javax.swing.JTextField tfAlmacenProducto;
     private javax.swing.JTextField tfBuscar;
+    private javax.swing.JTextField tfBuscarInventario;
+    private javax.swing.JTextField tfBuscarProvedor;
+    private javax.swing.JTextField tfCantidadProducto;
     private javax.swing.JTextField tfCategoriaProducto;
+    private javax.swing.JTextField tfCorreoProvedor;
+    private javax.swing.JTextField tfDireccionProvedor;
     private javax.swing.JTextField tfNombreProducto;
+    private javax.swing.JTextField tfNombreProvedor;
     private javax.swing.JTextField tfPrecioProducto;
     private javax.swing.JTextField tfStockProducto;
+    private javax.swing.JTextField tfTelefonoProvedor;
     // End of variables declaration//GEN-END:variables
 }
