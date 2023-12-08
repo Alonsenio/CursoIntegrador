@@ -34,6 +34,14 @@ public class Usuarios {
         this.modificadoPor = modificadoPor;
     }
 
+    public Usuarios(String nombre, String contraseña, int activo, String correo) {
+        this.nombre = nombre;
+        this.contraseña = contraseña;
+        this.activo = activo;
+        this.correo = correo;
+    }
+    
+
     // Métodos getters y setters para acceder y modificar los atributos
 
     public int getId() {

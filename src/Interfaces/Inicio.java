@@ -3,7 +3,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package Interfaces;
-
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Graphics;
@@ -20,10 +19,7 @@ import javax.swing.border.EmptyBorder;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import util.MySQLConexion;
@@ -56,13 +52,7 @@ public class Inicio extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Inicio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Inicio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Inicio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(Inicio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         cargarProductosPorDefecto();
@@ -70,6 +60,8 @@ public class Inicio extends javax.swing.JFrame {
         cargarProveedores();
         cargarProductos();
         cargarAlmacen();
+        cargarRoles();
+        cargarUsuarios();
         
     }
 
@@ -86,7 +78,7 @@ private void cargarProveedores() {
             }
         }
     } catch (SQLException e) {
-        e.printStackTrace();
+        System.out.println(e.toString());
     }
 }
 private void cargarProductos() {
@@ -102,7 +94,7 @@ private void cargarProductos() {
             }
         }
     } catch (SQLException e) {
-        e.printStackTrace();
+        System.out.println(e.toString());
     }
 }
 
@@ -202,7 +194,25 @@ private void cargarProductos() {
         jSeparator9 = new javax.swing.JSeparator();
         jSeparator5 = new javax.swing.JSeparator();
         panelUsuarios = new util.PanelRound();
-        jLabel1 = new javax.swing.JLabel();
+        jLabel20 = new javax.swing.JLabel();
+        jLabel21 = new javax.swing.JLabel();
+        tfNombreUsuario = new javax.swing.JTextField();
+        jLabel22 = new javax.swing.JLabel();
+        tfContraseñaUsuario = new javax.swing.JPasswordField();
+        jLabel23 = new javax.swing.JLabel();
+        jLabel24 = new javax.swing.JLabel();
+        jLabel25 = new javax.swing.JLabel();
+        btnCrearUsuario = new rsbuttongradiente.RSButtonGradiente();
+        tfBuscarUsuarios = new javax.swing.JTextField();
+        btnBuscarUsuarios = new rsbuttongradiente.RSButtonGradiente();
+        btnEliminarUsuarios = new rsbuttongradiente.RSButtonGradiente();
+        btnModificarUsuarios = new rsbuttongradiente.RSButtonGradiente();
+        btnMostrarUsuarios = new rsbuttongradiente.RSButtonGradiente();
+        jScrollPane8 = new javax.swing.JScrollPane();
+        tableUsuarios = new rojerusan.RSTableMetro();
+        tfActivoUUU = new javax.swing.JTextField();
+        tfCorreoUUU = new javax.swing.JTextField();
+        cbRolUUU = new javax.swing.JComboBox<>();
         panelProductos = new util.PanelRound();
         jLabel2 = new javax.swing.JLabel();
         btnBuscar = new rsbuttongradiente.RSButtonGradiente();
@@ -680,24 +690,235 @@ private void cargarProductos() {
 
         panelUsuarios.setBackground(new java.awt.Color(35, 35, 35));
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
-        jLabel1.setText("PANEL USUARIOS");
+        jLabel20.setFont(new java.awt.Font("Roboto", 1, 36)); // NOI18N
+        jLabel20.setForeground(new java.awt.Color(153, 153, 153));
+        jLabel20.setText("Usuarios");
+
+        jLabel21.setForeground(new java.awt.Color(204, 204, 204));
+        jLabel21.setText("Nombre:");
+
+        tfNombreUsuario.setBackground(new java.awt.Color(56, 56, 56));
+        tfNombreUsuario.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        tfNombreUsuario.setForeground(new java.awt.Color(204, 204, 204));
+        tfNombreUsuario.setBorder(new EmptyBorder(10, 10, 10, 10));
+        tfNombreUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tfNombreUsuarioActionPerformed(evt);
+            }
+        });
+
+        jLabel22.setForeground(new java.awt.Color(204, 204, 204));
+        jLabel22.setText("Contraseña:");
+
+        tfContraseñaUsuario.setBackground(new java.awt.Color(56, 56, 56));
+        tfContraseñaUsuario.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        tfContraseñaUsuario.setForeground(new java.awt.Color(204, 204, 204));
+        tfContraseñaUsuario.setBorder(new EmptyBorder(10,10,10,10));
+        tfContraseñaUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tfContraseñaUsuarioActionPerformed(evt);
+            }
+        });
+
+        jLabel23.setForeground(new java.awt.Color(204, 204, 204));
+        jLabel23.setText("Activo:");
+
+        jLabel24.setForeground(new java.awt.Color(204, 204, 204));
+        jLabel24.setText("Correo:");
+
+        jLabel25.setForeground(new java.awt.Color(204, 204, 204));
+        jLabel25.setText("Rol:");
+
+        btnCrearUsuario.setBackground(new java.awt.Color(43, 209, 195));
+        btnCrearUsuario.setText("Crear Usuario");
+        btnCrearUsuario.setColorPrimario(new java.awt.Color(43, 209, 195));
+        btnCrearUsuario.setColorPrimarioHover(new java.awt.Color(43, 209, 195));
+        btnCrearUsuario.setColorSecundario(new java.awt.Color(0, 102, 102));
+        btnCrearUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCrearUsuarioActionPerformed(evt);
+            }
+        });
+
+        tfBuscarUsuarios.setBackground(new java.awt.Color(56, 56, 56));
+        tfBuscarUsuarios.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        tfBuscarUsuarios.setForeground(new java.awt.Color(204, 204, 204));
+        tfBuscarUsuarios.setText("Buscar por Nombre, Rol y Activo");
+        tfBuscarUsuarios.setBorder(new EmptyBorder(10, 10, 10, 10));
+        tfBuscarUsuarios.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                tfBuscarUsuariosFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                tfBuscarUsuariosFocusLost(evt);
+            }
+        });
+        tfBuscarUsuarios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tfBuscarUsuariosActionPerformed(evt);
+            }
+        });
+
+        btnBuscarUsuarios.setBackground(new java.awt.Color(43, 209, 195));
+        btnBuscarUsuarios.setText("Buscar");
+        btnBuscarUsuarios.setColorPrimario(new java.awt.Color(43, 209, 195));
+        btnBuscarUsuarios.setColorPrimarioHover(new java.awt.Color(43, 209, 195));
+        btnBuscarUsuarios.setColorSecundario(new java.awt.Color(0, 102, 102));
+        btnBuscarUsuarios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarUsuariosActionPerformed(evt);
+            }
+        });
+
+        btnEliminarUsuarios.setBackground(new java.awt.Color(43, 209, 195));
+        btnEliminarUsuarios.setText("Eliminar");
+        btnEliminarUsuarios.setColorPrimario(new java.awt.Color(43, 209, 195));
+        btnEliminarUsuarios.setColorPrimarioHover(new java.awt.Color(43, 209, 195));
+        btnEliminarUsuarios.setColorSecundario(new java.awt.Color(0, 102, 102));
+        btnEliminarUsuarios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarUsuariosActionPerformed(evt);
+            }
+        });
+
+        btnModificarUsuarios.setBackground(new java.awt.Color(43, 209, 195));
+        btnModificarUsuarios.setText("Editar");
+        btnModificarUsuarios.setColorPrimario(new java.awt.Color(43, 209, 195));
+        btnModificarUsuarios.setColorPrimarioHover(new java.awt.Color(43, 209, 195));
+        btnModificarUsuarios.setColorSecundario(new java.awt.Color(0, 102, 102));
+        btnModificarUsuarios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModificarUsuariosActionPerformed(evt);
+            }
+        });
+
+        btnMostrarUsuarios.setBackground(new java.awt.Color(43, 209, 195));
+        btnMostrarUsuarios.setText("Todos");
+        btnMostrarUsuarios.setColorPrimario(new java.awt.Color(43, 209, 195));
+        btnMostrarUsuarios.setColorPrimarioHover(new java.awt.Color(43, 209, 195));
+        btnMostrarUsuarios.setColorSecundario(new java.awt.Color(0, 102, 102));
+        btnMostrarUsuarios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMostrarUsuariosActionPerformed(evt);
+            }
+        });
+
+        tableUsuarios.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "Id", "Nombre ", "activo", "Rol", "Correo", "Creación", "Modificado"
+            }
+        ));
+        tableUsuarios.setColorBackgoundHead(new java.awt.Color(0, 102, 102));
+        jScrollPane8.setViewportView(tableUsuarios);
+
+        tfActivoUUU.setBackground(new java.awt.Color(56, 56, 56));
+        tfActivoUUU.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        tfActivoUUU.setForeground(new java.awt.Color(204, 204, 204));
+        tfActivoUUU.setBorder(new EmptyBorder(10, 10, 10, 10));
+        tfActivoUUU.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tfActivoUUUActionPerformed(evt);
+            }
+        });
+
+        tfCorreoUUU.setBackground(new java.awt.Color(56, 56, 56));
+        tfCorreoUUU.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        tfCorreoUUU.setForeground(new java.awt.Color(204, 204, 204));
+        tfCorreoUUU.setBorder(new EmptyBorder(10, 10, 10, 10));
+        tfCorreoUUU.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tfCorreoUUUActionPerformed(evt);
+            }
+        });
+
+        cbRolUUU.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         javax.swing.GroupLayout panelUsuariosLayout = new javax.swing.GroupLayout(panelUsuarios);
         panelUsuarios.setLayout(panelUsuariosLayout);
         panelUsuariosLayout.setHorizontalGroup(
             panelUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelUsuariosLayout.createSequentialGroup()
-                .addGap(32, 32, 32)
-                .addComponent(jLabel1)
-                .addContainerGap(437, Short.MAX_VALUE))
+                .addGap(24, 24, 24)
+                .addGroup(panelUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelUsuariosLayout.createSequentialGroup()
+                        .addComponent(btnCrearUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(561, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelUsuariosLayout.createSequentialGroup()
+                        .addGroup(panelUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel21)
+                            .addComponent(jLabel22)
+                            .addComponent(jLabel25))
+                        .addGap(18, 18, 18)
+                        .addGroup(panelUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(cbRolUUU, 0, 256, Short.MAX_VALUE)
+                            .addComponent(tfNombreUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE)
+                            .addComponent(tfContraseñaUsuario))
+                        .addGap(18, 18, Short.MAX_VALUE)
+                        .addGroup(panelUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(panelUsuariosLayout.createSequentialGroup()
+                                .addComponent(jLabel24)
+                                .addGap(18, 18, 18)
+                                .addComponent(tfCorreoUUU, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(panelUsuariosLayout.createSequentialGroup()
+                                .addComponent(jLabel23)
+                                .addGap(18, 18, 18)
+                                .addComponent(tfActivoUUU)))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(panelUsuariosLayout.createSequentialGroup()
+                        .addGroup(panelUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel20)
+                            .addGroup(panelUsuariosLayout.createSequentialGroup()
+                                .addComponent(btnBuscarUsuarios, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnEliminarUsuarios, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnModificarUsuarios, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnMostrarUsuarios, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(tfBuscarUsuarios, javax.swing.GroupLayout.DEFAULT_SIZE, 722, Short.MAX_VALUE)
+                            .addComponent(jScrollPane8))
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         panelUsuariosLayout.setVerticalGroup(
             panelUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelUsuariosLayout.createSequentialGroup()
-                .addGap(32, 32, 32)
-                .addComponent(jLabel1)
-                .addContainerGap(550, Short.MAX_VALUE))
+                .addGap(27, 27, 27)
+                .addComponent(jLabel20)
+                .addGap(28, 28, 28)
+                .addGroup(panelUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(tfNombreUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel21)
+                    .addComponent(jLabel23)
+                    .addComponent(tfActivoUUU, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(panelUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(tfContraseñaUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel22)
+                    .addComponent(jLabel24)
+                    .addComponent(tfCorreoUUU, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(panelUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel25)
+                    .addComponent(cbRolUUU, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(btnCrearUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(tfBuscarUsuarios, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(panelUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnBuscarUsuarios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnEliminarUsuarios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnModificarUsuarios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnMostrarUsuarios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(29, 29, 29))
         );
 
         panelPrincipal.add(panelUsuarios, "card3");
@@ -1533,21 +1754,13 @@ private void cargarProductos() {
     }//GEN-LAST:event_tfBuscarFocusLost
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        // Obtener el índice de la fila seleccionada
+
         int filaSeleccionada = tableProductos.getSelectedRow();
-
-        // Verificar si hay una fila seleccionada
         if (filaSeleccionada != -1) {
-            // Obtener el modelo de la tabla
             DefaultTableModel modeloTabla = (DefaultTableModel) tableProductos.getModel();
-
-            // Obtener el valor de la columna "id" de la fila seleccionada
             String id = modeloTabla.getValueAt(filaSeleccionada, 0).toString();
 
-            // Eliminar la fila seleccionada del modelo de la tabla
             modeloTabla.removeRow(filaSeleccionada);
-
-            // Eliminar la fila correspondiente en la base de datos
             eliminarFilaEnBaseDeDatos(id);
         } else {
             JOptionPane.showMessageDialog(null, "Por favor, selecciona una fila para eliminar.");
@@ -1993,6 +2206,269 @@ private void cargarProductos() {
     private void btnBuscarProvedorFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_btnBuscarProvedorFocusGained
         // TODO add your handling code here:
     }//GEN-LAST:event_btnBuscarProvedorFocusGained
+
+    private void tfNombreUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfNombreUsuarioActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tfNombreUsuarioActionPerformed
+
+    private void tfContraseñaUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfContraseñaUsuarioActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tfContraseñaUsuarioActionPerformed
+
+    private void btnCrearUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearUsuarioActionPerformed
+        String nombre = tfNombreUsuario.getText();
+        String contra = new String(tfContraseñaUsuario.getPassword());
+        String correo = tfCorreoUUU.getText();
+        String rol = (String) cbRolUUU.getSelectedItem();
+        String activo = tfActivoUUU.getText();
+
+        if (nombre.isEmpty() || contra.isEmpty() || correo.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Por favor llenar todos los campos, solo se puede omitir el cmapo de activo");
+        } else {
+            String sqlInsert = "INSERT INTO usuarios(nombre, contraseña, activo, correo) VALUES (?, ?, ?, ?)";
+            try (Connection conexion = MySQLConexion.getConexion()) {
+                try (PreparedStatement psInsert = conexion.prepareStatement(sqlInsert)) {
+                    psInsert.setString(1, nombre);
+                    psInsert.setString(2, contra);
+                    psInsert.setString(3, activo);
+                    psInsert.setString(4, correo);
+                    int filasAfectadas = psInsert.executeUpdate();
+                    if (filasAfectadas > 0) {
+                        int idUsuario = obtenerIdUsuario(conexion, nombre, contra, correo);
+                        asignarRolUsuario(conexion, idUsuario, rol);
+                        JOptionPane.showMessageDialog(this, "Usuario creado correctamente! con su rol respectivo asignado");
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Usuario no se pudo crear");
+                    }
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }//GEN-LAST:event_btnCrearUsuarioActionPerformed
+   private int obtenerIdUsuario(Connection conexion, String nombre, String contra, String correo) throws SQLException {
+    int idUsuario = -1;
+    String sqlObtenerId = "SELECT id FROM usuarios WHERE nombre = ? AND contraseña = ? AND correo = ?";
+
+    try (PreparedStatement psObtenerId = conexion.prepareStatement(sqlObtenerId)) {
+        psObtenerId.setString(1, nombre);
+        psObtenerId.setString(2, contra);
+        psObtenerId.setString(3, correo);
+
+        try (ResultSet resultSet = psObtenerId.executeQuery()) {
+            if (resultSet.next()) {
+                idUsuario = resultSet.getInt("id");
+            }
+        }
+    }
+
+    return idUsuario;
+}
+    private void asignarRolUsuario(Connection conexion, int idUsuario, String rol) {
+    String sqlObtenerRolId = "SELECT id FROM rol WHERE nombreRol = ?";
+    String sqlAsignarRol = "INSERT INTO rol_usuarios(rol_id, usuarios_id) VALUES (?, ?)";
+
+    try (PreparedStatement psObtenerRolId = conexion.prepareStatement(sqlObtenerRolId)) {
+        psObtenerRolId.setString(1, rol);
+
+        try (ResultSet resultSet = psObtenerRolId.executeQuery()) {
+            if (resultSet.next()) {
+                int idRol = resultSet.getInt("id");
+
+                try (PreparedStatement psAsignarRol = conexion.prepareStatement(sqlAsignarRol)) {
+                    psAsignarRol.setInt(1, idRol);
+                    psAsignarRol.setInt(2, idUsuario);
+
+                    int filasAfectadas = psAsignarRol.executeUpdate();
+
+                    if (filasAfectadas > 0) {
+                        System.out.println("Rol asignado correctamente");
+                    } else {
+                        System.out.println("Error al asignar el rol");
+                    }
+                }
+            } else {
+                System.out.println("No se encontró el ID del rol");
+            }
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+}
+    
+    private void cargarRoles(){
+        try (Connection connection = MySQLConexion.getConexion()) {
+        String sql = "SELECT nombreRol FROM rol";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            try (ResultSet resultSet = statement.executeQuery()) {
+                List<String> rol = new ArrayList<>();
+                while (resultSet.next()) {
+                    rol.add(resultSet.getString("nombreRol"));
+                }
+                cbRolUUU.setModel(new DefaultComboBoxModel<>(rol.toArray(new String[0])));
+            }
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    }
+    private void tfBuscarUsuariosFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tfBuscarUsuariosFocusGained
+        if(tfBuscarUsuarios.getText().equals("Buscar por Nombre, Rol y Activo")){
+            tfBuscarUsuarios.setText("");
+        }
+    }//GEN-LAST:event_tfBuscarUsuariosFocusGained
+
+    private void tfBuscarUsuariosFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tfBuscarUsuariosFocusLost
+        if (tfBuscarUsuarios.getText().isEmpty()) {
+            tfBuscarUsuarios.setText("Buscar por Nombre, Rol y Activo");
+        }
+    }//GEN-LAST:event_tfBuscarUsuariosFocusLost
+
+    private void tfBuscarUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfBuscarUsuariosActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tfBuscarUsuariosActionPerformed
+
+    private void btnBuscarUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarUsuariosActionPerformed
+        String criterio=tfBuscarUsuarios.getText();
+        if (criterio.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "LLenar el campo de busqueda");
+        }else{
+            String sql="SELECT u.id,u.nombre,u.activo,ro.nombreRol,u.correo,u.fecha_creacion,u.fecha_modificacion FROM rol ro INNER JOIN rol_usuarios r on ro.id=r.rol_id INNER JOIN usuarios u on u.id=r.usuarios_id where u.nombre like ? or ro.nombreRol like ? or u.activo like ? ";
+            try (Connection con =MySQLConexion.getConexion()){
+                try(PreparedStatement ps =con.prepareStatement(sql)){
+                    ps.setString(1, "%" + criterio + "%");
+                    ps.setString(2, "%" + criterio + "%");
+                    ps.setString(3, "%" + criterio + "%");
+                    try(ResultSet rs=ps.executeQuery()){
+                        DefaultTableModel tabla= (DefaultTableModel)tableUsuarios.getModel();
+                        tabla.setRowCount(0);
+                        while(rs.next()){
+                           Object[] fila={
+                                rs.getString("u.id"),
+                                rs.getString("u.nombre"),
+                                rs.getString("u.activo"),
+                                rs.getString("ro.nombreRol"),
+                                rs.getString("u.correo"),
+                                rs.getString("u.fecha_creacion"),
+                                rs.getString("u.fecha_modificacion"),
+                            };
+                            tabla.addRow(fila);
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                System.out.println(e.toString());
+            }
+        }
+    }//GEN-LAST:event_btnBuscarUsuariosActionPerformed
+
+    private void btnEliminarUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarUsuariosActionPerformed
+        int filaSelecionada=tableUsuarios.getSelectedRow();
+        if (filaSelecionada!=-1) {
+            DefaultTableModel tabla=(DefaultTableModel) tableUsuarios.getModel();
+            String id=tabla.getValueAt(filaSelecionada, 0).toString();
+            tabla.removeRow(filaSelecionada);
+            eliminarFilaEnBaseDeDatos2(id);
+        }else{
+            JOptionPane.showMessageDialog(null, "Por favor, selecciona una fila para eliminar.");
+        }
+    }//GEN-LAST:event_btnEliminarUsuariosActionPerformed
+
+    private void btnModificarUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarUsuariosActionPerformed
+        String nombre = tfNombreUsuario.getText();
+        String contra = new String(tfContraseñaUsuario.getPassword());
+        String correo = tfCorreoUUU.getText();
+        String rol = (String) cbRolUUU.getSelectedItem();
+        String activo = tfActivoUUU.getText();
+        
+        int filaSelecionada=tableUsuarios.getSelectedRow();
+        if (filaSelecionada!=-1) {
+            DefaultTableModel tabla=(DefaultTableModel) tableUsuarios.getModel();
+            String id=tabla.getValueAt(filaSelecionada, 0).toString();
+            editarUsuario(id,nombre,contra,correo,rol,activo);
+        }else{
+            JOptionPane.showMessageDialog(null, "Por favor, selecciona una fila para eliminar.");
+        }
+    }//GEN-LAST:event_btnModificarUsuariosActionPerformed
+    public void editarUsuario(String id,String nombre,String contra, String correo, String rol, String activo){
+        
+        String sql="UPDATE usuarios\n" +
+                    "SET nombre = ?, correo = ?, contraseña=?, activo=?\n" +
+                    "WHERE id = ?;";
+        try (Connection con=MySQLConexion.getConexion()){
+            try(PreparedStatement ps=con.prepareStatement(sql)){
+                ps.setString(1, nombre);
+                ps.setString(2, correo);
+                ps.setString(3, contra);
+                ps.setString(4, activo);
+                ps.setString(5, id);
+                int filas=ps.executeUpdate();
+                if(filas>0){
+                    String sqlRol="update rol_usuarios set rol_id=? where usuarios_id=?";
+                    try (Connection co=MySQLConexion.getConexion()){
+                        try(PreparedStatement pss=co.prepareStatement(sqlRol)){
+                            if(rol.equals("Administrador")){
+                                rol="1";
+                            }else{
+                                rol="2";
+                            }
+                            pss.setString(1, rol);
+                            pss.setString(2, id);
+                            int filasRol = pss.executeUpdate();
+                            if (filasRol > 0) {
+                                JOptionPane.showMessageDialog(this, "El usuario fue actualizado exitosamente!");
+                                cargarUsuarios();
+                            } else {
+                                JOptionPane.showMessageDialog(this, "Ocurrió un error al actualizar el rol del usuario");
+                            }
+                        }
+                    } catch (Exception e) {
+                        System.out.println(e.toString());
+                    }
+                }else{
+                    JOptionPane.showMessageDialog(this, "Ocurrio un error al actualizar el usuario");
+                }
+               
+            }
+        } catch (Exception e) {
+        }
+    }
+    private void btnMostrarUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMostrarUsuariosActionPerformed
+        cargarUsuarios();
+    }//GEN-LAST:event_btnMostrarUsuariosActionPerformed
+    
+    public void cargarUsuarios(){
+        String sql="SELECT u.id,u.nombre,u.activo,ro.nombreRol,u.correo,u.fecha_creacion,u.fecha_modificacion FROM rol ro INNER JOIN rol_usuarios r on ro.id=r.rol_id INNER JOIN usuarios u on u.id=r.usuarios_id";
+        try(Connection con=MySQLConexion.getConexion()){
+            try(PreparedStatement ps=con.prepareStatement(sql)){
+                ResultSet rs =ps.executeQuery();
+                DefaultTableModel tabla= (DefaultTableModel) tableUsuarios.getModel();
+                tabla.setRowCount(0);
+                while(rs.next()){
+                    Object[] fila={
+                        rs.getString("u.id"),
+                        rs.getString("u.nombre"),
+                        rs.getString("u.activo"),
+                        rs.getString("ro.nombreRol"),
+                        rs.getString("u.correo"),
+                        rs.getString("u.fecha_creacion"),
+                        rs.getString("u.fecha_modificacion"),
+                    };
+                    tabla.addRow(fila);
+                }
+                
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.toString());
+        }
+    }
+    private void tfActivoUUUActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfActivoUUUActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tfActivoUUUActionPerformed
+
+    private void tfCorreoUUUActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfCorreoUUUActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tfCorreoUUUActionPerformed
     private void limpiarCamposDeTexto() {
     tfAlmacenProducto.setText("");
     taDescripcionProducto.setText("");
@@ -2050,6 +2526,33 @@ private void cargarProductos() {
     }
     
 }
+private void eliminarFilaEnBaseDeDatos2(String id) {
+    String deleteRolUsuariosSql = "DELETE FROM rol_usuarios WHERE usuarios_id = ?";
+    try (Connection conexion = MySQLConexion.getConexion();
+         PreparedStatement psDeleteRolUsuarios = conexion.prepareStatement(deleteRolUsuariosSql)) {
+        psDeleteRolUsuarios.setString(1, id);
+        psDeleteRolUsuarios.executeUpdate();
+    } catch (SQLException e) {
+        System.out.println("Error al eliminar registros relacionados en rol_usuarios: " + e.getMessage());
+        return; 
+    }
+    String deleteUsuarioSql = "DELETE FROM usuarios WHERE id = ?";
+    try (Connection conexion = MySQLConexion.getConexion();
+         PreparedStatement psDeleteUsuario = conexion.prepareStatement(deleteUsuarioSql)) {
+        psDeleteUsuario.setString(1, id);
+        int filasAfectadas = psDeleteUsuario.executeUpdate();
+        if (filasAfectadas > 0) {
+            System.out.println("Fila eliminada de la base de datos.");
+            JOptionPane.showMessageDialog(this, "Usuario eliminado correctamente");
+            cargarUsuarios();
+        } else {
+            System.out.println("No se pudo eliminar la fila de la base de datos.");
+        }
+    } catch (SQLException e) {
+        System.out.println("Error al eliminar fila de la base de datos: " + e.getMessage());
+    }
+}
+
      private void cargarProductosPorDefecto() {
         String sql = "SELECT * FROM productos";
 
@@ -2166,23 +2669,29 @@ private void cargarProductos() {
     private rsbuttongradiente.RSButtonGradiente btnBuscar;
     private rsbuttongradiente.RSButtonGradiente btnBuscarProvedor;
     private rsbuttongradiente.RSButtonGradiente btnBuscarProvedor1;
+    private rsbuttongradiente.RSButtonGradiente btnBuscarUsuarios;
     private rsbuttongradiente.RSButtonGradiente btnCrearProvedor;
+    private rsbuttongradiente.RSButtonGradiente btnCrearUsuario;
     private rsbuttongradiente.RSButtonGradiente btnEliminar;
     private rsbuttongradiente.RSButtonGradiente btnEliminarProvedor;
     private rsbuttongradiente.RSButtonGradiente btnEliminarProvedor1;
+    private rsbuttongradiente.RSButtonGradiente btnEliminarUsuarios;
     private javax.swing.JButton btnHome;
     private rsbuttongradiente.RSButtonGradiente btnIngresarProductoAlmacen;
     private javax.swing.JButton btnInventario;
     private rsbuttongradiente.RSButtonGradiente btnModificar;
     private rsbuttongradiente.RSButtonGradiente btnModificarProvedor;
     private rsbuttongradiente.RSButtonGradiente btnModificarProvedor1;
+    private rsbuttongradiente.RSButtonGradiente btnModificarUsuarios;
     private rsbuttongradiente.RSButtonGradiente btnMostrarProductos;
     private rsbuttongradiente.RSButtonGradiente btnMostrarProvedor;
     private rsbuttongradiente.RSButtonGradiente btnMostrarProvedor1;
+    private rsbuttongradiente.RSButtonGradiente btnMostrarUsuarios;
     private javax.swing.JButton btnProductos;
     private javax.swing.JButton btnUsuarios;
     private javax.swing.JComboBox<String> cbProductos;
     private javax.swing.JComboBox<String> cbProveedores;
+    private javax.swing.JComboBox<String> cbRolUUU;
     private javax.swing.JPanel contentClients1;
     private javax.swing.JPanel contentPendings1;
     private javax.swing.JPanel contentProducts1;
@@ -2190,7 +2699,6 @@ private void cargarProductos() {
     private util.PanelRound exit;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton7;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -2202,6 +2710,12 @@ private void cargarProductos() {
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel23;
+    private javax.swing.JLabel jLabel24;
+    private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -2217,6 +2731,7 @@ private void cargarProductos() {
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
+    private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JSeparator jSeparator5;
     private javax.swing.JSeparator jSeparator6;
     private javax.swing.JSeparator jSeparator8;
@@ -2248,16 +2763,22 @@ private void cargarProductos() {
     private rojerusan.RSTableMetro tableAlmacen;
     private rojerusan.RSTableMetro tableProductos;
     private rojerusan.RSTableMetro tableProvedor;
+    private rojerusan.RSTableMetro tableUsuarios;
+    private javax.swing.JTextField tfActivoUUU;
     private javax.swing.JTextField tfAlmacenProducto;
     private javax.swing.JTextField tfBuscar;
     private javax.swing.JTextField tfBuscarInventario;
     private javax.swing.JTextField tfBuscarProvedor;
+    private javax.swing.JTextField tfBuscarUsuarios;
     private javax.swing.JTextField tfCantidadProducto;
     private javax.swing.JTextField tfCategoriaProducto;
+    private javax.swing.JPasswordField tfContraseñaUsuario;
     private javax.swing.JTextField tfCorreoProvedor;
+    private javax.swing.JTextField tfCorreoUUU;
     private javax.swing.JTextField tfDireccionProvedor;
     private javax.swing.JTextField tfNombreProducto;
     private javax.swing.JTextField tfNombreProvedor;
+    private javax.swing.JTextField tfNombreUsuario;
     private javax.swing.JTextField tfPrecioProducto;
     private javax.swing.JTextField tfStockProducto;
     private javax.swing.JTextField tfTelefonoProvedor;
