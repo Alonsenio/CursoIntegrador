@@ -21,12 +21,13 @@ public class ProductosDAO {
             try (ResultSet rs = ps.executeQuery()) {
                 if(rs == null) return null;
                 while(rs.next()){
+                    int id = rs.getInt("id");
                     int stock = rs.getInt("stock");
                     float precio = rs.getFloat("precio");
                     String nombre = rs.getString("nombre");
                     String descripcion = rs.getString("descripción");
                     
-                    var producto = new ProductoModelo(nombre, descripcion, precio, stock);
+                    var producto = new ProductoModelo(id, nombre, descripcion, precio, stock, -1);
                     
                     productos.add(producto);
                 }

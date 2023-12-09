@@ -24,6 +24,8 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 
 /**
  *
@@ -38,6 +40,7 @@ public class InicioClientes extends javax.swing.JFrame {
     private final List<ProductoModelo> filtrado = new ArrayList<>(productos);
     private final List<String[]> carrito = new ArrayList<>();
     private String lastText = "";
+    private double total = 0.00;
 
     /**
      * Creates new form ProductosClientes
@@ -69,13 +72,9 @@ public class InicioClientes extends javax.swing.JFrame {
         searchWorker = new SwingWorker<Void, Void>() {
             @Override
             protected Void doInBackground() throws Exception {
-                // Simular una búsqueda que puede llevar tiempo
-                // Sustituye esto con tu lógica de búsqueda real
                 System.out.println("Realizando búsqueda para: " + textoBusqueda);
                 filtrado.clear();
                 for (int i = 0; i < productos.size(); i++) {
-                    // Simular la espera
-                    Thread.sleep(50);
                     // Comprobar si se cancela la tarea
                     if (isCancelled()) {
                         filtrado.clear();
@@ -105,6 +104,7 @@ public class InicioClientes extends javax.swing.JFrame {
         model.setRowCount(0);
         filtrado.forEach(producto -> {
             model.addRow(new Object[]{
+                producto.getId(),
                 producto.getNombre(),
                 producto.getDescripcion(),
                 producto.getStock(),
@@ -116,7 +116,11 @@ public class InicioClientes extends javax.swing.JFrame {
     private void updateTableCart() {
         modelCarrito.setRowCount(0);
         carrito.forEach(producto -> {
-            modelCarrito.addRow(producto);
+            modelCarrito.addRow(new Object[]{
+                producto[0],
+                producto[1],
+                producto[2],
+                producto[3],});
         });
     }
 
@@ -142,13 +146,47 @@ public class InicioClientes extends javax.swing.JFrame {
     }
 
     private void handleRowClick() {
+        if (tblProducts.getSelectedRow() == -1) {
+            sldCantidad.setMaximum(0);
+
+            btnComprar.setBackground(new Color(0, 102, 0));
+            return;
+        }
+
         int selected = tblProducts.getSelectedRow();
-        int stock = Integer.parseInt(tblProducts.getValueAt(selected, 2).toString());
+        int stock = Integer.parseInt(tblProducts.getValueAt(selected, 3).toString());
 
         sldCantidad.setMaximum(stock);
 
-        btnComprar.setEnabled(true);
         btnComprar.setBackground(new Color(51, 204, 0));
+    }
+
+    private void updateStockRow(int productId, int selected, String cantidadCarrito, boolean isEncrease) {
+        var producto = findProductoById(productId);
+        if(producto == null) return;
+        
+        int stock = producto.getStock();
+
+        if (isEncrease) {
+            stock += Integer.parseInt(cantidadCarrito);
+        } else {
+            stock -= Integer.parseInt(cantidadCarrito);
+        }
+        
+        producto.setStock(stock);
+
+        tblProducts.setValueAt(stock, selected, 3);
+        sldCantidad.setMaximum(stock);
+        updateTableProducts();
+    }
+    
+    private ProductoModelo findProductoById(int id){
+        for (var producto : productos) {
+            if(producto.getId() == id) {
+                return producto;
+            }
+        }
+        return null;
     }
 
     /**
@@ -168,20 +206,24 @@ public class InicioClientes extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Nombre", "Cantidad", "Precio"
+                "ID","Nombre", "Cantidad", "Precio"
             }
-        );
+        ){
+            @Override
+            public boolean isCellEditable(int row, int column){
+                return false;
+            }
+        };
         tblCarrito = new rojerusan.RSTableMetro();
-        tblCarrito.setModel(modelCarrito);
         jScrollPane8 = new javax.swing.JScrollPane();
         model = new javax.swing.table.DefaultTableModel(
             new Object [][]{},
             new String [] {
-                "Nombre ", "Descripción", "Stock", "Precio",
+                "ID","Nombre ", "Descripción", "Stock", "Precio",
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Double.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Double.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -195,6 +237,15 @@ public class InicioClientes extends javax.swing.JFrame {
         };
         tblProducts = new rojerusan.RSTableMetro();
         tblProducts.setModel(model);
+        TableColumnModel columnModel = tblProducts.getColumnModel();
+
+        // Obtener la columna por nombre ("ID" en este caso)
+        TableColumn columnID = columnModel.getColumn(columnModel.getColumnIndex("ID"));
+
+        // Establecer el tamaño de la columna ID en 0
+        columnID.setMinWidth(0);
+        columnID.setMaxWidth(0);
+        columnID.setPreferredWidth(0);
         DefaultTableCellRenderer modelocentrar = new DefaultTableCellRenderer();
         modelocentrar.setHorizontalAlignment(SwingConstants.CENTER);
         for (int i = 0; i < tblProducts.getColumnCount(); i++) {
@@ -223,6 +274,8 @@ public class InicioClientes extends javax.swing.JFrame {
         btnAgregar = new javax.swing.JButton();
         sldCantidad = new javax.swing.JSlider();
         lblCantidad = new javax.swing.JLabel();
+        lblTotal = new javax.swing.JLabel();
+        btnEliminar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Productos");
@@ -261,9 +314,34 @@ public class InicioClientes extends javax.swing.JFrame {
         panelRound1.add(btnClose, new org.netbeans.lib.awtextra.AbsoluteConstraints(980, 18, 30, -1));
 
         tblCarrito.setColorBackgoundHead(new java.awt.Color(0, 102, 102));
+        tblCarrito.setModel(modelCarrito);
+
+        TableColumnModel columnCartModel = tblCarrito.getColumnModel();
+
+        // Obtener la columna por nombre ("ID" en este caso)
+        TableColumn columnCartID = columnCartModel.getColumn(0);
+
+        // Establecer el tamaño de la columna ID en 0
+        columnCartID.setMinWidth(0);
+        columnCartID.setMaxWidth(0);
+        columnCartID.setPreferredWidth(0);
+
+        modelocentrar.setHorizontalAlignment(SwingConstants.CENTER);
+        for (int i = 0; i < tblCarrito.getColumnCount(); i++) {
+            tblCarrito.getColumnModel().getColumn(i).setCellRenderer(modelocentrar);
+        }
+        tblCarrito.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        var selectionCartModel = tblCarrito.getSelectionModel();
+        selectionCartModel.addListSelectionListener(new ListSelectionListener(){
+            public void valueChanged(ListSelectionEvent e) {
+                if(!e.getValueIsAdjusting()) {
+                    btnEliminar.setEnabled(true);
+                }
+            }
+        });
         jScrollPane9.setViewportView(tblCarrito);
 
-        panelRound1.add(jScrollPane9, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 330, 270, 180));
+        panelRound1.add(jScrollPane9, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 210, 270, 180));
 
         tblProducts.setColorBackgoundHead(new java.awt.Color(0, 102, 102));
         jScrollPane8.setViewportView(tblProducts);
@@ -292,7 +370,7 @@ public class InicioClientes extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Buscar:");
-        panelRound1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 120, -1, -1));
+        panelRound1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 30, -1, -1));
 
         btnComprar.setBackground(new java.awt.Color(0, 102, 0));
         btnComprar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -309,6 +387,7 @@ public class InicioClientes extends javax.swing.JFrame {
         panelRound1.add(btnComprar, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 520, 100, 30));
 
         panelRound2.setBackground(new java.awt.Color(0, 0, 0));
+        panelRound2.setRequestFocusEnabled(false);
         panelRound2.setRoundBottomLeft(30);
         panelRound2.setRoundBottomRight(30);
         panelRound2.setRoundTopLeft(30);
@@ -316,6 +395,7 @@ public class InicioClientes extends javax.swing.JFrame {
         panelRound2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         search.setBackground(new java.awt.Color(255, 0, 0));
+        search.setRequestFocusEnabled(false);
         panelRound2.add(search, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 0, 40, 40));
 
         ImageIcon originalIcon = new ImageIcon(getClass().getResource("/Iconos/search-50.png"));
@@ -359,13 +439,15 @@ public class InicioClientes extends javax.swing.JFrame {
         txtBuscar.setMargin(new Insets(7, 30, 7, 20));
         panelRound2.add(txtBuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 7, 190, 25));
 
-        panelRound1.add(panelRound2, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 150, 240, 40));
+        panelRound1.add(panelRound2, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 60, 240, 40));
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Carrito");
-        panelRound1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 280, -1, -1));
+        panelRound1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 170, -1, -1));
 
+        btnAgregar.setBackground(new java.awt.Color(0, 0, 153));
+        btnAgregar.setForeground(new java.awt.Color(255, 255, 255));
         btnAgregar.setText("Agregar");
         btnAgregar.setEnabled(false);
         btnAgregar.addActionListener(new java.awt.event.ActionListener() {
@@ -373,21 +455,36 @@ public class InicioClientes extends javax.swing.JFrame {
                 btnAgregarActionPerformed(evt);
             }
         });
-        panelRound1.add(btnAgregar, new org.netbeans.lib.awtextra.AbsoluteConstraints(940, 230, -1, -1));
+        panelRound1.add(btnAgregar, new org.netbeans.lib.awtextra.AbsoluteConstraints(940, 127, -1, -1));
 
         sldCantidad.setMaximum(0);
-        sldCantidad.setValue(0);
         sldCantidad.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 sldCantidadStateChanged(evt);
             }
         });
-        panelRound1.add(sldCantidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 233, 180, -1));
+        panelRound1.add(sldCantidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 130, 180, -1));
 
         lblCantidad.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblCantidad.setForeground(new java.awt.Color(255, 255, 255));
         lblCantidad.setText("Cantidad: 0");
-        panelRound1.add(lblCantidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(807, 210, -1, -1));
+        panelRound1.add(lblCantidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 110, -1, -1));
+
+        lblTotal.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        lblTotal.setForeground(new java.awt.Color(255, 255, 255));
+        lblTotal.setText("Total: S/0.00");
+        panelRound1.add(lblTotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 460, 270, -1));
+
+        btnEliminar.setBackground(new java.awt.Color(204, 0, 0));
+        btnEliminar.setForeground(new java.awt.Color(255, 255, 255));
+        btnEliminar.setText("Eliminar");
+        btnEliminar.setEnabled(false);
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
+        panelRound1.add(btnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 400, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -438,6 +535,7 @@ public class InicioClientes extends javax.swing.JFrame {
     }//GEN-LAST:event_txtBuscarFocusLost
 
     private void txtBuscarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscarKeyReleased
+        tblProducts.getSelectionModel().clearSelection();
         initializeSearch();
     }//GEN-LAST:event_txtBuscarKeyReleased
 
@@ -455,28 +553,64 @@ public class InicioClientes extends javax.swing.JFrame {
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         int selected = tblProducts.getSelectedRow();
-        var nombre = String.valueOf(tblProducts.getValueAt(selected, 0));
-        var precio = String.valueOf(tblProducts.getValueAt(selected, 3));
+        var id = String.valueOf(tblProducts.getValueAt(selected, 0));
+        var nombre = String.valueOf(tblProducts.getValueAt(selected, 1));
+        var precio = String.valueOf(tblProducts.getValueAt(selected, 4));
         var cantidad = String.valueOf(sldCantidad.getValue());
-        boolean updated =false;
-        
+        boolean updated = false;
+
         for (var values : carrito) {
-            if(values[0].equals(nombre)){
-                values[1] = String.valueOf(Integer.parseInt(values[1])+Integer.parseInt(cantidad));
+            if (values[0].equals(id)) {
+                values[2] = String.valueOf(Integer.parseInt(values[2]) + Integer.parseInt(cantidad));
                 updated = true;
             }
         }
-        
-        if(!updated) carrito.add(new String[]{nombre, cantidad, precio});
-        
+
+        if (!updated) {
+            carrito.add(new String[]{id, nombre, cantidad, precio});
+        }
+
+        //Actualizar la tabla carrito
         updateTableCart();
+
+        // Actualizar total
+        total += Double.parseDouble(precio) * Integer.parseInt(cantidad);
+        lblTotal.setText(lblTotal.getText().substring(0, 9) + total);
+
+        //Actualizar el stock de forma local
+        updateStockRow(Integer.parseInt(id), selected, cantidad, false);
+
+        //Actualizar el el estado de los botones
+        btnEliminar.setEnabled(false);
+        btnComprar.setEnabled(true);
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void sldCantidadStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_sldCantidadStateChanged
         lblCantidad.setText("Cantidad: " + sldCantidad.getValue());
-        if(sldCantidad.getValue() > 0) btnAgregar.setEnabled(true);
-        else btnAgregar.setEnabled(false);
+        if (sldCantidad.getValue() > 0)
+            btnAgregar.setEnabled(true);
+        else
+            btnAgregar.setEnabled(false);
     }//GEN-LAST:event_sldCantidadStateChanged
+
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        int selected = tblCarrito.getSelectedRow();
+        var id = String.valueOf(tblCarrito.getValueAt(selected, 0));
+        var precio = String.valueOf(tblCarrito.getValueAt(selected, 3));
+        var cantidad = String.valueOf(tblCarrito.getValueAt(selected, 2));
+
+        carrito.remove(selected);
+        updateTableCart();
+
+        total -= Double.parseDouble(precio) * Integer.parseInt(cantidad);
+        lblTotal.setText(lblTotal.getText().substring(0, 9) + total);
+
+        //Actualizar stock
+        updateStockRow(Integer.parseInt(id), selected, cantidad, true);
+
+        if (carrito.isEmpty())
+            btnComprar.setEnabled(false);
+    }//GEN-LAST:event_btnEliminarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -520,6 +654,7 @@ public class InicioClientes extends javax.swing.JFrame {
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnClose;
     private javax.swing.JButton btnComprar;
+    private javax.swing.JButton btnEliminar;
     private javax.swing.JComboBox<String> cbOrdenar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -528,6 +663,7 @@ public class InicioClientes extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JScrollPane jScrollPane9;
     private javax.swing.JLabel lblCantidad;
+    private javax.swing.JLabel lblTotal;
     private util.PanelRound panelRound1;
     private util.PanelRound panelRound2;
     private javax.swing.JLabel placeholder;

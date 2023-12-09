@@ -17,20 +17,13 @@ public class ProductoModelo {
     }
 
     // Constructor con todos los campos
-    public ProductoModelo(int id, String nombre, String descripcion, int precio, int stock, int proveedorId) {
+    public ProductoModelo(int id, String nombre, String descripcion, float precio, int stock, int proveedorId) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.precio = precio;
         this.stock = stock;
         this.proveedorId = proveedorId;
-    }
-    
-    public ProductoModelo(String nombre, String descripcion, float precio, int stock) {
-        this.stock = stock;
-        this.nombre = nombre;
-        this.descripcion = descripcion;
-        this.precio = precio;
     }
 
     // Métodos getters y setters para acceder y modificar los atributos

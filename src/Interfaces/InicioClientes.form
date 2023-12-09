@@ -102,7 +102,7 @@
           </AuxValues>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="740" y="330" width="270" height="180"/>
+              <AbsoluteConstraints x="740" y="210" width="270" height="180"/>
             </Constraint>
           </Constraints>
 
@@ -121,8 +121,8 @@
                 </Property>
               </Properties>
               <AuxValues>
-                <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="tblCarrito.setModel(modelCarrito);&#xd;&#xa;"/>
-                <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="modelCarrito = new javax.swing.table.DefaultTableModel(&#xa;            new Object [][] {&#xa;&#xa;            },&#xa;            new String [] {&#xa;                &quot;Nombre&quot;, &quot;Cantidad&quot;, &quot;Precio&quot;&#xa;            }&#xa;        );"/>
+                <AuxValue name="JavaCodeGenerator_AddingCodePre" type="java.lang.String" value="tblCarrito.setModel(modelCarrito);&#xd;&#xa;&#xd;&#xa;TableColumnModel columnCartModel = tblCarrito.getColumnModel();&#xd;&#xa;&#xd;&#xa;// Obtener la columna por nombre (&quot;ID&quot; en este caso)&#xd;&#xa;TableColumn columnCartID = columnCartModel.getColumn(0);&#xd;&#xa;&#xd;&#xa;// Establecer el tama&#xf1;o de la columna ID en 0&#xd;&#xa;columnCartID.setMinWidth(0);&#xd;&#xa;columnCartID.setMaxWidth(0);&#xd;&#xa;columnCartID.setPreferredWidth(0);&#xd;&#xa;&#xd;&#xa;modelocentrar.setHorizontalAlignment(SwingConstants.CENTER);&#xd;&#xa;for (int i = 0; i &lt; tblCarrito.getColumnCount(); i++) {&#xd;&#xa;    tblCarrito.getColumnModel().getColumn(i).setCellRenderer(modelocentrar);&#xd;&#xa;}&#xd;&#xa;tblCarrito.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);&#xd;&#xa;var selectionCartModel = tblCarrito.getSelectionModel();&#xd;&#xa;selectionCartModel.addListSelectionListener(new ListSelectionListener(){&#xd;&#xa;    public void valueChanged(ListSelectionEvent e) {&#xd;&#xa;        if(!e.getValueIsAdjusting()) {&#xd;&#xa;            btnEliminar.setEnabled(true);&#xd;&#xa;        }&#xd;&#xa;    }&#xd;&#xa;});&#xd;&#xa;"/>
+                <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="modelCarrito = new javax.swing.table.DefaultTableModel(&#xa;            new Object [][] {&#xa;&#xa;            },&#xa;            new String [] {&#xa;                &quot;ID&quot;,&quot;Nombre&quot;, &quot;Cantidad&quot;, &quot;Precio&quot;&#xa;            }&#xa;        ){&#xa;            @Override&#xa;            public boolean isCellEditable(int row, int column){&#xa;                return false;&#xa;            }&#xa;        };"/>
               </AuxValues>
             </Component>
           </SubComponents>
@@ -152,8 +152,8 @@
                 </Property>
               </Properties>
               <AuxValues>
-                <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="tblProducts.setModel(model);&#xd;&#xa;DefaultTableCellRenderer modelocentrar = new DefaultTableCellRenderer();&#xd;&#xa;modelocentrar.setHorizontalAlignment(SwingConstants.CENTER);&#xd;&#xa;for (int i = 0; i &lt; tblProducts.getColumnCount(); i++) {&#xd;&#xa;    tblProducts.getColumnModel().getColumn(i).setCellRenderer(modelocentrar);&#xd;&#xa;}&#xd;&#xa;tblProducts.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);&#xd;&#xa;var selectionModel = tblProducts.getSelectionModel();&#xd;&#xa;selectionModel.addListSelectionListener(new ListSelectionListener(){&#xd;&#xa;    public void valueChanged(ListSelectionEvent e) {&#xd;&#xa;        if(!e.getValueIsAdjusting()) {&#xd;&#xa;            handleRowClick();&#xd;&#xa;        }&#xd;&#xa;    }&#xd;&#xa;});&#xd;&#xa;"/>
-                <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="model = new javax.swing.table.DefaultTableModel(&#xa;            new Object [][]{},&#xa;            new String [] {&#xa;                &quot;Nombre &quot;, &quot;Descripci&#xf3;n&quot;, &quot;Stock&quot;, &quot;Precio&quot;,&#xa;            }&#xa;        ) {&#xa;            Class[] types = new Class [] {&#xa;                java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Double.class&#xa;            };&#xa;&#xa;            public Class getColumnClass(int columnIndex) {&#xa;                return types [columnIndex];&#xa;            }&#xa;            &#xa;            @Override&#xa;            public boolean isCellEditable(int row, int column){&#xa;                return false;&#xa;            }&#xa;        };"/>
+                <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="tblProducts.setModel(model);&#xd;&#xa;TableColumnModel columnModel = tblProducts.getColumnModel();&#xd;&#xa;&#xd;&#xa;// Obtener la columna por nombre (&quot;ID&quot; en este caso)&#xd;&#xa;TableColumn columnID = columnModel.getColumn(columnModel.getColumnIndex(&quot;ID&quot;));&#xd;&#xa;&#xd;&#xa;// Establecer el tama&#xf1;o de la columna ID en 0&#xd;&#xa;columnID.setMinWidth(0);&#xd;&#xa;columnID.setMaxWidth(0);&#xd;&#xa;columnID.setPreferredWidth(0);&#xd;&#xa;DefaultTableCellRenderer modelocentrar = new DefaultTableCellRenderer();&#xd;&#xa;modelocentrar.setHorizontalAlignment(SwingConstants.CENTER);&#xd;&#xa;for (int i = 0; i &lt; tblProducts.getColumnCount(); i++) {&#xd;&#xa;    tblProducts.getColumnModel().getColumn(i).setCellRenderer(modelocentrar);&#xd;&#xa;}&#xd;&#xa;tblProducts.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);&#xd;&#xa;var selectionModel = tblProducts.getSelectionModel();&#xd;&#xa;selectionModel.addListSelectionListener(new ListSelectionListener(){&#xd;&#xa;    public void valueChanged(ListSelectionEvent e) {&#xd;&#xa;        if(!e.getValueIsAdjusting()) {&#xd;&#xa;            handleRowClick();&#xd;&#xa;        }&#xd;&#xa;    }&#xd;&#xa;});&#xd;&#xa;"/>
+                <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="model = new javax.swing.table.DefaultTableModel(&#xa;            new Object [][]{},&#xa;            new String [] {&#xa;                &quot;ID&quot;,&quot;Nombre &quot;, &quot;Descripci&#xf3;n&quot;, &quot;Stock&quot;, &quot;Precio&quot;,&#xa;            }&#xa;        ) {&#xa;            Class[] types = new Class [] {&#xa;                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Double.class&#xa;            };&#xa;&#xa;            public Class getColumnClass(int columnIndex) {&#xa;                return types [columnIndex];&#xa;            }&#xa;            &#xa;            @Override&#xa;            public boolean isCellEditable(int row, int column){&#xa;                return false;&#xa;            }&#xa;        };"/>
               </AuxValues>
             </Component>
           </SubComponents>
@@ -228,7 +228,7 @@
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="760" y="120" width="-1" height="-1"/>
+              <AbsoluteConstraints x="520" y="30" width="-1" height="-1"/>
             </Constraint>
           </Constraints>
         </Component>
@@ -264,6 +264,7 @@
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="0" green="0" red="0" type="rgb"/>
             </Property>
+            <Property name="requestFocusEnabled" type="boolean" value="false"/>
             <Property name="roundBottomLeft" type="int" value="30"/>
             <Property name="roundBottomRight" type="int" value="30"/>
             <Property name="roundTopLeft" type="int" value="30"/>
@@ -271,7 +272,7 @@
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="760" y="150" width="240" height="40"/>
+              <AbsoluteConstraints x="520" y="60" width="240" height="40"/>
             </Constraint>
           </Constraints>
 
@@ -284,6 +285,7 @@
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="0" green="0" red="ff" type="rgb"/>
                 </Property>
+                <Property name="requestFocusEnabled" type="boolean" value="false"/>
               </Properties>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="&#xd;&#xa;ImageIcon originalIcon = new ImageIcon(getClass().getResource(&quot;/Iconos/search-50.png&quot;));&#xd;&#xa;&#xd;&#xa;// Obtener el tama&#xf1;o del JLabel&#xd;&#xa;int labelWidth = 25;&#xd;&#xa;int labelHeight = 25;&#xd;&#xa;&#xd;&#xa;// Escalar la imagen al tama&#xf1;o del JLabel&#xd;&#xa;Image scaledImage = originalIcon.getImage().getScaledInstance(labelWidth, labelHeight, Image.SCALE_SMOOTH);&#xd;&#xa;&#xd;&#xa;// Crear un nuevo ImageIcon con la imagen escalada&#xd;&#xa;ImageIcon scaledIcon = new ImageIcon(scaledImage);&#xd;&#xa;&#xd;&#xa;// Establecer el ImageIcon en el JLabel&#xd;&#xa;search.setIcon(scaledIcon);"/>
@@ -356,12 +358,18 @@
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="840" y="280" width="-1" height="-1"/>
+              <AbsoluteConstraints x="840" y="170" width="-1" height="-1"/>
             </Constraint>
           </Constraints>
         </Component>
         <Component class="javax.swing.JButton" name="btnAgregar">
           <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="99" green="0" red="0" type="rgb"/>
+            </Property>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="ff" green="ff" red="ff" type="rgb"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Agregar"/>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
@@ -370,21 +378,20 @@
           </Events>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="940" y="230" width="-1" height="-1"/>
+              <AbsoluteConstraints x="940" y="127" width="-1" height="-1"/>
             </Constraint>
           </Constraints>
         </Component>
         <Component class="javax.swing.JSlider" name="sldCantidad">
           <Properties>
             <Property name="maximum" type="int" value="0"/>
-            <Property name="value" type="int" value="0"/>
           </Properties>
           <Events>
             <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="sldCantidadStateChanged"/>
           </Events>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="740" y="233" width="180" height="-1"/>
+              <AbsoluteConstraints x="740" y="130" width="180" height="-1"/>
             </Constraint>
           </Constraints>
         </Component>
@@ -400,7 +407,43 @@
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="807" y="210" width="-1" height="-1"/>
+              <AbsoluteConstraints x="800" y="110" width="-1" height="-1"/>
+            </Constraint>
+          </Constraints>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lblTotal">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Tahoma" size="24" style="1"/>
+            </Property>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="ff" green="ff" red="ff" type="rgb"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Total: S/0.00"/>
+          </Properties>
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
+              <AbsoluteConstraints x="740" y="460" width="270" height="-1"/>
+            </Constraint>
+          </Constraints>
+        </Component>
+        <Component class="javax.swing.JButton" name="btnEliminar">
+          <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="0" green="0" red="cc" type="rgb"/>
+            </Property>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="ff" green="ff" red="ff" type="rgb"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Eliminar"/>
+            <Property name="enabled" type="boolean" value="false"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnEliminarActionPerformed"/>
+          </Events>
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
+              <AbsoluteConstraints x="840" y="400" width="-1" height="-1"/>
             </Constraint>
           </Constraints>
         </Component>
