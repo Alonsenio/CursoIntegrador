@@ -10,7 +10,7 @@ public class Proveedores {
     private String direccion;
     private String telefono;
     private String correo;
-    private List<Productos> productos;
+    private List<ProductoModelo> productos;
     
     // Constructor vacío
     public Proveedores() {
@@ -67,7 +67,7 @@ public class Proveedores {
         this.correo = correo;
     }
     
-    public void agregarProducto(Productos producto) {
+    public void agregarProducto(ProductoModelo producto) {
         if (productos == null) {
             productos = new ArrayList<>();
         }

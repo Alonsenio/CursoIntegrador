@@ -5,8 +5,10 @@
 package Interfaces;
 
 import java.awt.Color;
+import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -114,10 +116,7 @@ public class Cargando extends javax.swing.JFrame implements Runnable{
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-               
-            }
+        java.awt.EventQueue.invokeLater(() -> {
         });
     }
 
@@ -143,9 +142,14 @@ public class Cargando extends javax.swing.JFrame implements Runnable{
             Inicio view = new Inicio();
             view.setVisible(true);
         }else if(privilegios.equals("Cliente")){
-            dispose();
-            InicioCliente vie= new InicioCliente();
-            vie.setVisible(true);
+            try {
+                dispose();
+                InicioClientes vie= new InicioClientes();
+                vie.setVisible(true);
+            } catch (SQLException ex) {
+                System.out.println(ex.getCause());
+                JOptionPane.showMessageDialog(rootPane, "Ocurrió un error al iniciar el cliente. Por favor inténtelo más tarde.", "Error inesperado", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
 

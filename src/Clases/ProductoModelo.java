@@ -1,7 +1,10 @@
-
 package Clases;
 
-public class Productos {
+/**
+ *
+ * @author JMMOLLER
+ */
+public class ProductoModelo {
     private int id;
     private String nombre;
     private String descripcion;
@@ -10,11 +13,11 @@ public class Productos {
     private int proveedorId;
 
     // Constructor vacío
-    public Productos() {
+    public ProductoModelo() {
     }
 
     // Constructor con todos los campos
-    public Productos(int id, String nombre, String descripcion, int precio, int stock, int proveedorId) {
+    public ProductoModelo(int id, String nombre, String descripcion, int precio, int stock, int proveedorId) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
@@ -23,8 +26,8 @@ public class Productos {
         this.proveedorId = proveedorId;
     }
     
-    public Productos(int id, String nombre, String descripcion, float precio) {
-        this.id = id;
+    public ProductoModelo(String nombre, String descripcion, float precio, int stock) {
+        this.stock = stock;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.precio = precio;

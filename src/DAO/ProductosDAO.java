@@ -1,6 +1,6 @@
 package DAO;
 
-import Clases.Productos;
+import Clases.ProductoModelo;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,24 +12,21 @@ import util.MySQLConexion;
  */
 public class ProductosDAO {
     
-    public static List<Productos> getAllProducts() throws SQLException{
+    public static List<ProductoModelo> getAllProducts() throws SQLException{
         String sql = "SELECT * FROM productos";
         var conn = MySQLConexion.getConexion();
-        var productos = new ArrayList<Productos>();
+        var productos = new ArrayList<ProductoModelo>();
         try(PreparedStatement ps = conn.prepareStatement(sql)){
             
             try (ResultSet rs = ps.executeQuery()) {
                 if(rs == null) return null;
                 while(rs.next()){
-                    int id = rs.getInt("id");
                     int stock = rs.getInt("stock");
                     float precio = rs.getFloat("precio");
                     String nombre = rs.getString("nombre");
-                    String almacen = rs.getString("almacen");
-                    String categoria = rs.getString("categoria");
                     String descripcion = rs.getString("descripción");
                     
-                    var producto = new Productos(id, nombre, descripcion, precio);
+                    var producto = new ProductoModelo(nombre, descripcion, precio, stock);
                     
                     productos.add(producto);
                 }

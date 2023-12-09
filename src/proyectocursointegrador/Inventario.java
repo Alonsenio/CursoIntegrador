@@ -4,19 +4,19 @@ package proyectocursointegrador;
 
 import Clases.Clientes;
 import Clases.Detalles_venta;
-import Clases.Productos;
+import Clases.ProductoModelo;
 import Clases.Ventas;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Inventario {
-    private final List<Productos> productos;
+    private final List<ProductoModelo> productos;
 
     public Inventario() {
         productos = new ArrayList<>();
     }
     //Metodos de inventario
-    public void agregarProducto(Productos producto) {
+    public void agregarProducto(ProductoModelo producto) {
         productos.add(producto);
     }
 
@@ -24,9 +24,9 @@ public class Inventario {
         productos.removeIf(p -> p.getId() == productoId);
     }
 
-    public void actualizarProducto(Productos productoActualizado) {
+    public void actualizarProducto(ProductoModelo productoActualizado) {
         for (int i = 0; i < productos.size(); i++) {
-            Productos producto = productos.get(i);
+            ProductoModelo producto = productos.get(i);
             if (producto.getId() == productoActualizado.getId()) {
                 productos.set(i, productoActualizado);
                 break;
@@ -34,8 +34,8 @@ public class Inventario {
         }
     }
 
-    public Productos obtenerProductoPorId(int productoId) {
-        for (Productos producto : productos) {
+    public ProductoModelo obtenerProductoPorId(int productoId) {
+        for (ProductoModelo producto : productos) {
             if (producto.getId() == productoId) {
                 return producto;
             }
@@ -43,7 +43,7 @@ public class Inventario {
         return null; 
     }
 
-    public List<Productos> obtenerTodosLosProductos() {
+    public List<ProductoModelo> obtenerTodosLosProductos() {
         return new ArrayList<>(productos); 
     }
     
@@ -81,7 +81,7 @@ public class Inventario {
             int productoId = detalleVenta.getProductoId();
             int cantidad = detalleVenta.getCantidad();
 
-            Productos producto = obtenerProductoPorId(productoId);
+            ProductoModelo producto = obtenerProductoPorId(productoId);
 
             if (producto != null && producto.getStock() < cantidad) {
                 return false; 
@@ -95,7 +95,7 @@ public class Inventario {
             int productoId = detalleVenta.getProductoId();
             int cantidad = detalleVenta.getCantidad();
 
-            Productos producto = obtenerProductoPorId(productoId);
+            ProductoModelo producto = obtenerProductoPorId(productoId);
 
             if (producto != null) {
                 producto.setStock(producto.getStock() - cantidad);

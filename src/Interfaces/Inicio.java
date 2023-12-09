@@ -186,7 +186,6 @@ private void cargarProductos() {
         lblTitlePendings1 = new javax.swing.JLabel();
         lblPenText1 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
-        jSeparator6 = new javax.swing.JSeparator();
         jPanel5 = new javax.swing.JPanel();
         lblPenTextC1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
@@ -315,6 +314,7 @@ private void cargarProductos() {
         btnHome.setForeground(new java.awt.Color(255, 255, 255));
         btnHome.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/casa (1).png"))); // NOI18N
         btnHome.setText("            Home");
+        btnHome.setBorder(null);
         btnHome.setContentAreaFilled(false);
         btnHome.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         btnHome.addActionListener(new java.awt.event.ActionListener() {
@@ -328,6 +328,7 @@ private void cargarProductos() {
         btnUsuarios.setForeground(new java.awt.Color(255, 255, 255));
         btnUsuarios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/usuario.png"))); // NOI18N
         btnUsuarios.setText("          Usuarios");
+        btnUsuarios.setBorder(null);
         btnUsuarios.setContentAreaFilled(false);
         btnUsuarios.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         btnUsuarios.addActionListener(new java.awt.event.ActionListener() {
@@ -341,6 +342,7 @@ private void cargarProductos() {
         btnProductos.setForeground(new java.awt.Color(255, 255, 255));
         btnProductos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/gas.png"))); // NOI18N
         btnProductos.setText("       Productos");
+        btnProductos.setBorder(null);
         btnProductos.setContentAreaFilled(false);
         btnProductos.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         btnProductos.addActionListener(new java.awt.event.ActionListener() {
@@ -354,6 +356,7 @@ private void cargarProductos() {
         Provedores.setForeground(new java.awt.Color(255, 255, 255));
         Provedores.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/proveedor.png"))); // NOI18N
         Provedores.setText("      Provedores");
+        Provedores.setBorder(null);
         Provedores.setContentAreaFilled(false);
         Provedores.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         Provedores.addActionListener(new java.awt.event.ActionListener() {
@@ -372,6 +375,7 @@ private void cargarProductos() {
         jButton7.setBackground(new java.awt.Color(27, 27, 27));
         jButton7.setForeground(new java.awt.Color(255, 255, 255));
         jButton7.setText("Exit");
+        jButton7.setBorder(null);
         jButton7.setContentAreaFilled(false);
         jButton7.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         jButton7.addActionListener(new java.awt.event.ActionListener() {
@@ -385,9 +389,8 @@ private void cargarProductos() {
         exitLayout.setHorizontalGroup(
             exitLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(exitLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         exitLayout.setVerticalGroup(
             exitLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -460,6 +463,7 @@ private void cargarProductos() {
         btnInventario.setForeground(new java.awt.Color(255, 255, 255));
         btnInventario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/inventario (1).png"))); // NOI18N
         btnInventario.setText("        Inventario");
+        btnInventario.setBorder(null);
         btnInventario.setContentAreaFilled(false);
         btnInventario.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         btnInventario.addActionListener(new java.awt.event.ActionListener() {
@@ -481,10 +485,12 @@ private void cargarProductos() {
         panelHome.setBackground(new java.awt.Color(35, 35, 35));
         panelHome.setRoundBottomRight(30);
         panelHome.setRoundTopRight(30);
+        panelHome.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel7.setFont(new java.awt.Font("Arial Black", 0, 24)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setText("¡Bienvenido, usuario!");
+        panelHome.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(21, 41, -1, -1));
 
         contentRecent1.setBackground(new java.awt.Color(35, 35, 35));
         contentRecent1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -517,13 +523,15 @@ private void cargarProductos() {
         lblTitleRecent1.setText("Ventas Recientes");
         contentRecent1.add(lblTitleRecent1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, -1, -1));
 
+        panelHome.add(contentRecent1, new org.netbeans.lib.awtextra.AbsoluteConstraints(21, 94, 417, -1));
+
         contentClients1.setBackground(new java.awt.Color(35, 35, 35));
         contentClients1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         lblTitleClients1.setFont(new java.awt.Font("Arial Black", 0, 20)); // NOI18N
         lblTitleClients1.setForeground(new java.awt.Color(255, 255, 255));
         lblTitleClients1.setText("Mejores Clientes");
-        contentClients1.add(lblTitleClients1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 300, -1));
+        contentClients1.add(lblTitleClients1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 190, -1));
 
         jTable5.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -546,7 +554,9 @@ private void cargarProductos() {
         });
         jScrollPane5.setViewportView(jTable5);
 
-        contentClients1.add(jScrollPane5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 30, 330, 170));
+        contentClients1.add(jScrollPane5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 40, 330, 170));
+
+        panelHome.add(contentClients1, new org.netbeans.lib.awtextra.AbsoluteConstraints(21, 390, -1, 210));
 
         contentProducts1.setBackground(new java.awt.Color(35, 35, 35));
         contentProducts1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -569,7 +579,9 @@ private void cargarProductos() {
         ));
         jScrollPane6.setViewportView(jTable6);
 
-        contentProducts1.add(jScrollPane6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 40, 350, 160));
+        contentProducts1.add(jScrollPane6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 40, 350, 170));
+
+        panelHome.add(contentProducts1, new org.netbeans.lib.awtextra.AbsoluteConstraints(386, 390, 355, 210));
 
         contentPendings1.setBackground(new java.awt.Color(35, 35, 35));
         contentPendings1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -585,22 +597,15 @@ private void cargarProductos() {
 
         jPanel4.setBackground(new java.awt.Color(102, 255, 102));
 
-        jSeparator6.setOrientation(javax.swing.SwingConstants.VERTICAL);
-
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jSeparator6, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGap(0, 22, Short.MAX_VALUE)
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jSeparator6, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGap(0, 20, Short.MAX_VALUE)
         );
 
         contentPendings1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 180, -1, 20));
@@ -632,59 +637,12 @@ private void cargarProductos() {
         });
         contentPendings1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 220, -1, -1));
 
-        jSeparator5.setOrientation(javax.swing.SwingConstants.VERTICAL);
+        panelHome.add(contentPendings1, new org.netbeans.lib.awtextra.AbsoluteConstraints(444, 94, 297, 254));
+        panelHome.add(jSeparator8, new org.netbeans.lib.awtextra.AbsoluteConstraints(385, 322, -1, -1));
+        panelHome.add(jSeparator9, new org.netbeans.lib.awtextra.AbsoluteConstraints(44, 377, 697, 17));
 
-        javax.swing.GroupLayout panelHomeLayout = new javax.swing.GroupLayout(panelHome);
-        panelHome.setLayout(panelHomeLayout);
-        panelHomeLayout.setHorizontalGroup(
-            panelHomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelHomeLayout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addGroup(panelHomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jSeparator9, javax.swing.GroupLayout.PREFERRED_SIZE, 697, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(panelHomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelHomeLayout.createSequentialGroup()
-                            .addComponent(contentRecent1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(contentPendings1, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(jLabel7)
-                        .addGroup(panelHomeLayout.createSequentialGroup()
-                            .addComponent(contentClients1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(13, 13, 13)
-                            .addComponent(jSeparator5, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(contentProducts1, javax.swing.GroupLayout.PREFERRED_SIZE, 355, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(panelHomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(panelHomeLayout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(jSeparator8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
-        );
-        panelHomeLayout.setVerticalGroup(
-            panelHomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelHomeLayout.createSequentialGroup()
-                .addGap(41, 41, 41)
-                .addComponent(jLabel7)
-                .addGap(18, 18, 18)
-                .addGroup(panelHomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(contentRecent1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(contentPendings1, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSeparator5, javax.swing.GroupLayout.DEFAULT_SIZE, 1, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSeparator9, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panelHomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(contentProducts1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(contentClients1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(47, 47, 47))
-            .addGroup(panelHomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(panelHomeLayout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(jSeparator8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
-        );
+        jSeparator5.setOrientation(javax.swing.SwingConstants.VERTICAL);
+        panelHome.add(jSeparator5, new org.netbeans.lib.awtextra.AbsoluteConstraints(364, 370, 10, 1));
 
         panelPrincipal.add(panelHome, "card2");
 
@@ -2733,7 +2691,6 @@ private void eliminarFilaEnBaseDeDatos2(String id) {
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JSeparator jSeparator5;
-    private javax.swing.JSeparator jSeparator6;
     private javax.swing.JSeparator jSeparator8;
     private javax.swing.JSeparator jSeparator9;
     private javax.swing.JTable jTable4;
