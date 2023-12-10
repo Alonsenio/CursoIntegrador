@@ -1,9 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package Interfaces;
 
+import Clases.MejoresClientes;
+import Clases.MejoresProductos;
 import Clases.ResumenVenta;
 import DAO.VentaDAO;
 import java.awt.Color;
@@ -38,7 +36,11 @@ public final class Inicio extends javax.swing.JFrame {
     private int total_p = 10;
     private int pendientes = 3;
     private DefaultTableModel modeloResumen;
+    private DefaultTableModel modeloBestClients;
+    private DefaultTableModel modeloBestProducts;
     private final List<ResumenVenta> resumenList;
+    private final List<MejoresClientes> bestClientsList;
+    private final List<MejoresProductos> bestProductsList;
 
     /**
      * Creates new form Inicio
@@ -69,7 +71,11 @@ public final class Inicio extends javax.swing.JFrame {
         cargarRoles();
         cargarUsuarios();
         resumenList = new VentaDAO().getResumenVentas();
+        bestClientsList = new VentaDAO().getMejoresClientes();
+        bestProductsList = new VentaDAO().getMejoresProductos();
         updateTableResumen();
+        updateBestClientsTable();
+        updateBestProductsTable();
     }
 
     private void cargarProveedores() {
@@ -142,7 +148,7 @@ public final class Inicio extends javax.swing.JFrame {
         }
     }
     
-    public void updateTableResumen(){
+    private void updateTableResumen(){
         modeloResumen.setRowCount(0);
         resumenList.forEach(venta -> {
             modeloResumen.addRow(new Object[]{
@@ -151,6 +157,28 @@ public final class Inicio extends javax.swing.JFrame {
                 venta.getCantidadProductos(),
                 venta.getCliente(),
                 venta.getTotal()
+            });
+        });
+    }
+    
+    private void updateBestClientsTable(){
+        modeloBestClients.setRowCount(0);
+        bestClientsList.forEach(cliente -> {
+            modeloBestClients.addRow(new Object[]{
+                cliente.getNombre(),
+                cliente.getTotalCompras(),
+            });
+        });
+    }
+    
+    private void updateBestProductsTable(){
+        modeloBestProducts.setRowCount(0);
+        bestProductsList.forEach(producto -> {
+            modeloBestProducts.addRow(new Object[]{
+                producto.getNombre(),
+                producto.getPrecio(),
+                producto.getStock(),
+                producto.getTotalVendido()
             });
         });
     }
@@ -214,11 +242,35 @@ public final class Inicio extends javax.swing.JFrame {
         contentClients1 = new javax.swing.JPanel();
         lblTitleClients1 = new javax.swing.JLabel();
         jScrollPane5 = new javax.swing.JScrollPane();
-        jTable5 = new javax.swing.JTable();
+        modeloBestClients = new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+            },
+            new String [] {
+                "Nombres", "Total compras"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        };
+        tblBestClients = new javax.swing.JTable();
+        tblBestClients.setModel(modeloBestClients);
         contentProducts1 = new javax.swing.JPanel();
         lblTitleProducts1 = new javax.swing.JLabel();
         jScrollPane6 = new javax.swing.JScrollPane();
-        jTable6 = new javax.swing.JTable();
+        modeloBestProducts = new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+            },
+            new String [] {
+                "Nombre", "Precio", "Stock", "Vendidos"
+            }
+        );
+        tblBestProducts = new javax.swing.JTable();
+        tblBestProducts.setModel(modeloBestProducts);
         contentPendings1 = new javax.swing.JPanel();
         lblTitlePendings1 = new javax.swing.JLabel();
         lblPenText1 = new javax.swing.JLabel();
@@ -551,26 +603,7 @@ public final class Inicio extends javax.swing.JFrame {
         lblTitleClients1.setText("Mejores Clientes");
         contentClients1.add(lblTitleClients1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 190, -1));
 
-        jTable5.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
-            },
-            new String [] {
-                "Nombres", "Total compras"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jScrollPane5.setViewportView(jTable5);
+        jScrollPane5.setViewportView(tblBestClients);
 
         contentClients1.add(jScrollPane5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 40, 330, 170));
 
@@ -584,18 +617,7 @@ public final class Inicio extends javax.swing.JFrame {
         lblTitleProducts1.setText("Productos Más Vendidos");
         contentProducts1.add(lblTitleProducts1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
-        jTable6.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
-            },
-            new String [] {
-                "Nombre", "Precio", "Stock"
-            }
-        ));
-        jScrollPane6.setViewportView(jTable6);
+        jScrollPane6.setViewportView(tblBestProducts);
 
         contentProducts1.add(jScrollPane6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 40, 350, 170));
 
@@ -2692,8 +2714,6 @@ public final class Inicio extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator5;
     private javax.swing.JSeparator jSeparator8;
     private javax.swing.JSeparator jSeparator9;
-    private javax.swing.JTable jTable5;
-    private javax.swing.JTable jTable6;
     private javax.swing.JLabel jlFotoUsuario;
     private javax.swing.JLabel lblLogo;
     private javax.swing.JLabel lblPenText1;
@@ -2719,6 +2739,8 @@ public final class Inicio extends javax.swing.JFrame {
     private rojerusan.RSTableMetro tableProductos;
     private rojerusan.RSTableMetro tableProvedor;
     private rojerusan.RSTableMetro tableUsuarios;
+    private javax.swing.JTable tblBestClients;
+    private javax.swing.JTable tblBestProducts;
     private javax.swing.JTable tblResumen;
     private javax.swing.JTextField tfActivoUUU;
     private javax.swing.JTextField tfAlmacenProducto;

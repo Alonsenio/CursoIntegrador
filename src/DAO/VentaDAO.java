@@ -4,7 +4,9 @@
  */
 package DAO;
 
+import Clases.MejoresProductos;
 import Clases.CarritoModelo;
+import Clases.MejoresClientes;
 import Clases.ResumenVenta;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -97,5 +99,50 @@ public class VentaDAO {
             System.out.println(e.getMessage());
         }
         return resumen;
+    }
+    
+    public List<MejoresClientes> getMejoresClientes(){
+        String sql = "SELECT u.nombre AS nombre_cliente, COUNT(v.id) AS total_ventas FROM "
+                + "usuarios u JOIN ventas v ON u.id = v.cliente_id GROUP BY u.id, u.nombre ORDER BY total_ventas DESC;";
+        List<MejoresClientes> clientes = new ArrayList<>();
+        try(conn) {
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            ResultSet res = stmt.executeQuery();
+            
+            while(res.next()){
+                clientes.add(new MejoresClientes(
+                        res.getString("nombre_cliente"),
+                        res.getInt("total_ventas")
+                    )
+                );
+            }
+        } catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
+        return clientes;
+    }
+    
+    public List<MejoresProductos> getMejoresProductos(){
+        String sql = "SELECT p.nombre AS nombre_producto, p.precio, p.stock, SUM(dv.cantidad) AS total_vendido "
+                + "FROM detalles_venta dv JOIN productos p ON dv.producto_id = p.id GROUP BY dv.producto_id, "
+                + "p.nombre ORDER BY total_vendido DESC;";
+        List<MejoresProductos> productos = new ArrayList<>();
+        try(conn) {
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            ResultSet res = stmt.executeQuery();
+            
+            while(res.next()){
+                productos.add(new MejoresProductos(
+                        res.getString("nombre_producto"),
+                        res.getFloat("precio"),
+                        res.getInt("stock"),
+                        res.getInt("total_vendido")
+                    )
+                );
+            }
+        } catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
+        return productos;
     }
 }

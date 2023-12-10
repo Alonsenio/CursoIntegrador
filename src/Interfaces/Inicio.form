@@ -580,32 +580,19 @@
 
                       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                       <SubComponents>
-                        <Component class="javax.swing.JTable" name="jTable5">
+                        <Component class="javax.swing.JTable" name="tblBestClients">
                           <Properties>
-                            <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                              <Table columnCount="2" rowCount="4">
-                                <Column editable="false" title="Nombres" type="java.lang.Object"/>
-                                <Column editable="false" title="Total compras" type="java.lang.Object"/>
-                              </Table>
-                            </Property>
                             <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
-                              <TableColumnModel selectionModel="0">
-                                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                                  <Title/>
-                                  <Editor/>
-                                  <Renderer/>
-                                </Column>
-                                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                                  <Title/>
-                                  <Editor/>
-                                  <Renderer/>
-                                </Column>
-                              </TableColumnModel>
+                              <TableColumnModel selectionModel="0"/>
                             </Property>
                             <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
                               <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
                             </Property>
                           </Properties>
+                          <AuxValues>
+                            <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="tblBestClients.setModel(modeloBestClients);&#xd;&#xa;"/>
+                            <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="modeloBestClients = new javax.swing.table.DefaultTableModel(&#xa;            new Object [][] {&#xa;            },&#xa;            new String [] {&#xa;                &quot;Nombres&quot;, &quot;Total compras&quot;&#xa;            }&#xa;        ) {&#xa;            boolean[] canEdit = new boolean [] {&#xa;                false, false&#xa;            };&#xa;&#xa;            public boolean isCellEditable(int rowIndex, int columnIndex) {&#xa;                return canEdit [columnIndex];&#xa;            }&#xa;        };"/>
+                          </AuxValues>
                         </Component>
                       </SubComponents>
                     </Container>
@@ -655,38 +642,19 @@
 
                       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                       <SubComponents>
-                        <Component class="javax.swing.JTable" name="jTable6">
+                        <Component class="javax.swing.JTable" name="tblBestProducts">
                           <Properties>
-                            <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                              <Table columnCount="3" rowCount="4">
-                                <Column editable="true" title="Nombre" type="java.lang.Object"/>
-                                <Column editable="true" title="Precio" type="java.lang.Object"/>
-                                <Column editable="true" title="Stock" type="java.lang.Object"/>
-                              </Table>
-                            </Property>
                             <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
-                              <TableColumnModel selectionModel="0">
-                                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                                  <Title/>
-                                  <Editor/>
-                                  <Renderer/>
-                                </Column>
-                                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                                  <Title/>
-                                  <Editor/>
-                                  <Renderer/>
-                                </Column>
-                                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                                  <Title/>
-                                  <Editor/>
-                                  <Renderer/>
-                                </Column>
-                              </TableColumnModel>
+                              <TableColumnModel selectionModel="0"/>
                             </Property>
                             <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
                               <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
                             </Property>
                           </Properties>
+                          <AuxValues>
+                            <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="tblBestProducts.setModel(modeloBestProducts);&#xd;&#xa;"/>
+                            <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="modeloBestProducts = new javax.swing.table.DefaultTableModel(&#xa;            new Object [][] {&#xa;            },&#xa;            new String [] {&#xa;                &quot;Nombre&quot;, &quot;Precio&quot;, &quot;Stock&quot;, &quot;Vendidos&quot;&#xa;            }&#xa;        );"/>
+                          </AuxValues>
                         </Component>
                       </SubComponents>
                     </Container>
