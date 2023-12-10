@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import util.RenderImage;
 
 /**
  *
@@ -17,8 +18,8 @@ import javax.swing.JOptionPane;
 public class Cargando extends javax.swing.JFrame implements Runnable{
 
     Thread h1;
-    private boolean credencialesCorrectas;
-    private String privilegios;
+    private final boolean credencialesCorrectas;
+    private final String privilegios;
     
     public Cargando(boolean credencialesCorrectas,String privilegios) {
         this.credencialesCorrectas = credencialesCorrectas;
@@ -27,8 +28,7 @@ public class Cargando extends javax.swing.JFrame implements Runnable{
         h1=new Thread(this);
         h1.start();
         setBackground(new Color(1.0f,1.0f,1.0f,0.0f));
-        
-        
+        new RenderImage(this).setIconFrame();
     }
 
     /**

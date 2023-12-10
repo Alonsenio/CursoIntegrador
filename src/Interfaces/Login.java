@@ -11,8 +11,6 @@ import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
 import javax.swing.border.EmptyBorder;
 import util.RenderImage;
-import util.MySQLConexion;
-import java.sql.*;
 import javax.swing.ImageIcon;
 
 /**

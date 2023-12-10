@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package Interfaces;
 
 import Clases.CarritoModelo;
@@ -30,6 +26,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
+import util.RenderImage;
 
 /**
  *
@@ -53,7 +50,9 @@ public class InicioClientes extends javax.swing.JFrame {
      */
     public InicioClientes() throws SQLException {
         initComponents();
+        var RI = new RenderImage(this);
         setBackground(new Color(1.0f, 1.0f, 1.0f, 0.0f));
+        RI.setIconFrame();
         updateTableProducts();
     }
 
@@ -382,7 +381,7 @@ public class InicioClientes extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Buscar:");
-        panelRound1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 30, -1, -1));
+        panelRound1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 30, -1, -1));
 
         btnComprar.setBackground(new java.awt.Color(0, 102, 0));
         btnComprar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -408,7 +407,7 @@ public class InicioClientes extends javax.swing.JFrame {
 
         search.setBackground(new java.awt.Color(255, 0, 0));
         search.setRequestFocusEnabled(false);
-        panelRound2.add(search, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 0, 40, 40));
+        panelRound2.add(search, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 0, 40, 40));
 
         ImageIcon originalIcon = new ImageIcon(getClass().getResource("/Iconos/search-50.png"));
 
@@ -427,7 +426,7 @@ public class InicioClientes extends javax.swing.JFrame {
 
         placeholder.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         placeholder.setForeground(new java.awt.Color(153, 153, 153));
-        placeholder.setText("Buscar algo...");
+        placeholder.setText("Buscar por nombre o descripción...");
         panelRound2.add(placeholder, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 11, -1, -1));
 
         txtBuscar.setBackground(new java.awt.Color(0, 0, 0));
@@ -449,9 +448,9 @@ public class InicioClientes extends javax.swing.JFrame {
             }
         });
         txtBuscar.setMargin(new Insets(7, 30, 7, 20));
-        panelRound2.add(txtBuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 7, 190, 25));
+        panelRound2.add(txtBuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 7, 230, 25));
 
-        panelRound1.add(panelRound2, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 60, 240, 40));
+        panelRound1.add(panelRound2, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 60, 290, 40));
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
