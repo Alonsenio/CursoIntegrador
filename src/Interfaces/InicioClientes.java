@@ -4,9 +4,13 @@
  */
 package Interfaces;
 
+import Clases.CarritoModelo;
 import Clases.ProductoModelo;
+import Clases.UserLogged;
 import DAO.ProductosDAO;
+import DAO.VentaDAO;
 import java.awt.Color;
+import java.awt.HeadlessException;
 import java.awt.Image;
 import java.awt.Insets;
 import java.sql.SQLException;
@@ -17,6 +21,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingWorker;
@@ -36,9 +41,9 @@ public class InicioClientes extends javax.swing.JFrame {
     private DefaultTableModel model;
     private DefaultTableModel modelCarrito;
     private SwingWorker<Void, Void> searchWorker;
-    private final List<ProductoModelo> productos = ProductosDAO.getAllProducts();
+    private List<ProductoModelo> productos = ProductosDAO.getAllProducts();
     private final List<ProductoModelo> filtrado = new ArrayList<>(productos);
-    private final List<String[]> carrito = new ArrayList<>();
+    private final List<CarritoModelo> carrito = new ArrayList<>();
     private String lastText = "";
     private double total = 0.00;
 
@@ -115,12 +120,13 @@ public class InicioClientes extends javax.swing.JFrame {
 
     private void updateTableCart() {
         modelCarrito.setRowCount(0);
-        carrito.forEach(producto -> {
+        carrito.forEach(cart -> {
             modelCarrito.addRow(new Object[]{
-                producto[0],
-                producto[1],
-                producto[2],
-                producto[3],});
+                cart.getId(),
+                cart.getNombre(),
+                cart.getCantidad(),
+                cart.getPrecio()
+            });
         });
     }
 
@@ -161,7 +167,7 @@ public class InicioClientes extends javax.swing.JFrame {
         btnComprar.setBackground(new Color(51, 204, 0));
     }
 
-    private void updateStockRow(int productId, int selected, String cantidadCarrito, boolean isEncrease) {
+    private void updateStockRow(int productId, String cantidadCarrito, boolean isEncrease) {
         var producto = findProductoById(productId);
         if(producto == null) return;
         
@@ -175,7 +181,6 @@ public class InicioClientes extends javax.swing.JFrame {
         
         producto.setStock(stock);
 
-        tblProducts.setValueAt(stock, selected, 3);
         sldCantidad.setMaximum(stock);
         updateTableProducts();
     }
@@ -187,6 +192,12 @@ public class InicioClientes extends javax.swing.JFrame {
             }
         }
         return null;
+    }
+    
+    private void updateTotal(){
+        total = 0.0;
+        carrito.forEach(cart -> total += cart.getSubTotal());
+        lblTotal.setText("Total: S/" + total);
     }
 
     /**
@@ -358,6 +369,8 @@ public class InicioClientes extends javax.swing.JFrame {
         jLabel3.setText("Ordenar por:");
         panelRound1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 93, -1, -1));
 
+        cbOrdenar.setBackground(new java.awt.Color(35, 35, 35));
+        cbOrdenar.setForeground(new java.awt.Color(255, 255, 255));
         cbOrdenar.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccionar", "Nombre", "Descripción", "Stock", "Precio" }));
         cbOrdenar.setToolTipText("");
         cbOrdenar.addItemListener(new java.awt.event.ItemListener() {
@@ -457,6 +470,8 @@ public class InicioClientes extends javax.swing.JFrame {
         });
         panelRound1.add(btnAgregar, new org.netbeans.lib.awtextra.AbsoluteConstraints(940, 127, -1, -1));
 
+        sldCantidad.setBackground(new java.awt.Color(35, 35, 35));
+        sldCantidad.setForeground(new java.awt.Color(0, 0, 204));
         sldCantidad.setMaximum(0);
         sldCantidad.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
@@ -548,37 +563,56 @@ public class InicioClientes extends javax.swing.JFrame {
     }//GEN-LAST:event_cbOrdenarItemStateChanged
 
     private void btnComprarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnComprarActionPerformed
-        // TODO add your handling code here:
+        carrito.forEach(producto -> System.out.println(producto.toString()));
+        
+        try {
+            var res = new VentaDAO().crearVenta(UserLogged.getID(), carrito, total);
+            if(!res) throw new Error();
+            
+            JOptionPane.showMessageDialog(
+                    this, 
+                    "Se registró su reserva de compra con éxito. Puede realizar la compra en la sucursal.", 
+                    "Pedido completado", 
+                    JOptionPane.INFORMATION_MESSAGE
+            );
+            
+            carrito.clear();
+            productos = ProductosDAO.getAllProducts();
+            updateTableProducts();
+            updateTableCart();
+        } catch (SQLException | Error ex ) {
+            JOptionPane.showMessageDialog(this, "Ocurrió un error al intentar registrar su pedido. Inténtelo más tarde.", "Error inesperado", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnComprarActionPerformed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         int selected = tblProducts.getSelectedRow();
         var id = String.valueOf(tblProducts.getValueAt(selected, 0));
-        var nombre = String.valueOf(tblProducts.getValueAt(selected, 1));
-        var precio = String.valueOf(tblProducts.getValueAt(selected, 4));
-        var cantidad = String.valueOf(sldCantidad.getValue());
+        var cantidad = sldCantidad.getValue();
         boolean updated = false;
 
         for (var values : carrito) {
-            if (values[0].equals(id)) {
-                values[2] = String.valueOf(Integer.parseInt(values[2]) + Integer.parseInt(cantidad));
+            if (values.getId() == Integer.parseInt(id)) {
+                var producto = findProductoById(Integer.parseInt(id));
+                int updatedStock = producto.getId() - cantidad;
+                producto.setStock(updatedStock);
+                values.setCantidad(cantidad);
                 updated = true;
             }
         }
 
         if (!updated) {
-            carrito.add(new String[]{id, nombre, cantidad, precio});
+            carrito.add(new CarritoModelo(findProductoById(Integer.parseInt(id)), cantidad));
         }
 
         //Actualizar la tabla carrito
         updateTableCart();
 
         // Actualizar total
-        total += Double.parseDouble(precio) * Integer.parseInt(cantidad);
-        lblTotal.setText(lblTotal.getText().substring(0, 9) + total);
+        updateTotal();
 
         //Actualizar el stock de forma local
-        updateStockRow(Integer.parseInt(id), selected, cantidad, false);
+        updateStockRow(Integer.parseInt(id), String.valueOf(cantidad), false);
 
         //Actualizar el el estado de los botones
         btnEliminar.setEnabled(false);
@@ -596,17 +630,16 @@ public class InicioClientes extends javax.swing.JFrame {
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         int selected = tblCarrito.getSelectedRow();
         var id = String.valueOf(tblCarrito.getValueAt(selected, 0));
-        var precio = String.valueOf(tblCarrito.getValueAt(selected, 3));
         var cantidad = String.valueOf(tblCarrito.getValueAt(selected, 2));
 
         carrito.remove(selected);
         updateTableCart();
 
-        total -= Double.parseDouble(precio) * Integer.parseInt(cantidad);
-        lblTotal.setText(lblTotal.getText().substring(0, 9) + total);
+        //Actualizar total
+        updateTotal();
 
         //Actualizar stock
-        updateStockRow(Integer.parseInt(id), selected, cantidad, true);
+        updateStockRow(Integer.parseInt(id), cantidad, true);
 
         if (carrito.isEmpty())
             btnComprar.setEnabled(false);

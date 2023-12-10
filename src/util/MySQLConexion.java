@@ -10,7 +10,7 @@ public class MySQLConexion {
             String usr = "root"; // Reemplaza con tu nombre de usuario de la base de datos.
             String psw = ""; // Reemplaza con tu contraseña de la base de datos.
             con = DriverManager.getConnection(url, usr, psw); 
-            System.out.println("Conexion exitosa a esta");
+            System.out.println("Conexion exitosa a la BD");
         } catch (ClassNotFoundException ex) {
             System.out.println("Error al cargar el controlador JDBC: " + ex.getMessage());
             ex.printStackTrace();

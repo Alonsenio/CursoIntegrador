@@ -4,7 +4,10 @@
  */
 package Interfaces;
 
+import Clases.UserLogged;
+import DAO.UsuarioDAO;
 import java.awt.Color;
+import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
 import javax.swing.border.EmptyBorder;
 import util.RenderImage;
@@ -20,8 +23,8 @@ public final class Login extends javax.swing.JFrame {
 
     public Login() {
         initComponents();
-        setBackground(new Color(1.0f,1.0f,1.0f,0.0f));
-        
+        setBackground(new Color(1.0f, 1.0f, 1.0f, 0.0f));
+
         var RI = new RenderImage(this);
         RI.setImageLabel(jlLogin, "CamionGas.png");
         RI.setIconFrame();
@@ -95,6 +98,7 @@ public final class Login extends javax.swing.JFrame {
         tfNombreUser.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         tfNombreUser.setForeground(new java.awt.Color(204, 204, 204));
         tfNombreUser.setBorder(new EmptyBorder(10, 10, 10, 10));
+        tfNombreUser.setCaretColor(new java.awt.Color(255, 255, 255));
         panelRound2.add(tfNombreUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(42, 162, 236, 40));
 
         jLabel19.setFont(new java.awt.Font("Segoe UI Semibold", 0, 13)); // NOI18N
@@ -106,9 +110,15 @@ public final class Login extends javax.swing.JFrame {
         tfContraseñaUser.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         tfContraseñaUser.setForeground(new java.awt.Color(204, 204, 204));
         tfContraseñaUser.setBorder(new EmptyBorder(10,10,10,10));
+        tfContraseñaUser.setCaretColor(new java.awt.Color(255, 255, 255));
         tfContraseñaUser.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tfContraseñaUserActionPerformed(evt);
+            }
+        });
+        tfContraseñaUser.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                tfContraseñaUserKeyPressed(evt);
             }
         });
         panelRound2.add(tfContraseñaUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(42, 252, 236, 40));
@@ -225,38 +235,22 @@ public final class Login extends javax.swing.JFrame {
 
     if (nombre.isEmpty() || contraseña.isEmpty()) {
         JOptionPane.showMessageDialog(null, "Por favor, complete todos los campos.");
-    } else {
-        String sql = "SELECT u.nombre, u.contraseña, ro.nombreRol, u.activo FROM usuarios u INNER JOIN rol_usuarios r ON r.usuarios_id=u.id INNER JOIN rol ro ON ro.id=r.rol_id WHERE activo=1 and u.nombre=? AND u.contraseña=?";
-
-        try (Connection conexion = MySQLConexion.getConexion();
-             PreparedStatement ps = conexion.prepareStatement(sql)) {
-
-            ps.setString(1, nombre);
-            ps.setString(2, contraseña);
-
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    String usuario = rs.getString("nombre");
-                    String contraseñaAlmacenada = rs.getString("contraseña");
-                    String privilegio = rs.getString("nombreRol");
-                        if (contraseña.equals(contraseñaAlmacenada)) {
-                            dispose();
-                            Cargando view = new Cargando(true,privilegio);
-                            view.setVisible(true);
-                        } else {
-                            JOptionPane.showMessageDialog(null, "La contraseña no es correcta");
-                        }
-                } else {
-                    JOptionPane.showMessageDialog(null, "Credenciales incorrectas. Por favor, inténtelo de nuevo.");
-                }
+            JOptionPane.showMessageDialog(null, "Por favor, complete todos los campos.");
+        } else {
+            new UsuarioDAO().authUser(nombre, contraseña);
+            
+            if(UserLogged.getIsLogged() == null) {
+                JOptionPane.showMessageDialog(null, "Credenciales no válidas.");
+                return;
             }
 
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Error en la conexión a la base de datos1: " + e.getMessage());
             e.printStackTrace();
+            dispose();
+            Cargando view = new Cargando(true, UserLogged.getPRIVILEGIO());
+            view.setVisible(true);
         }
-    }
-    
     }//GEN-LAST:event_handleLoginClick
 
     private void tfContraseñaUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfContraseñaUserActionPerformed
@@ -279,6 +273,12 @@ public final class Login extends javax.swing.JFrame {
         btnClose.setIcon(new ImageIcon(getClass().getResource("/Iconos/celestex.png"))); 
     }//GEN-LAST:event_btnCloseMouseExited
 
+    private void tfContraseñaUserKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfContraseñaUserKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            btnIngresarLogin.doClick();
+        }
+    }//GEN-LAST:event_tfContraseñaUserKeyPressed
+
     /**
      * @param args the command line arguments
      */
@@ -293,16 +293,28 @@ public final class Login extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
-                }
+
+}
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Login.class  
+
+.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
+} catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(Login.class  
+
+.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
+} catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(Login.class  
+
+.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
+} catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(Login.class  
+
+.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
