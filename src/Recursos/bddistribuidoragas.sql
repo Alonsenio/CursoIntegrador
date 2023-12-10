@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 10-12-2023 a las 02:14:47
+-- Tiempo de generación: 10-12-2023 a las 04:46:26
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -63,6 +63,17 @@ CREATE TABLE `detalles_venta` (
   `subtotal` decimal(10,2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
+--
+-- Volcado de datos para la tabla `detalles_venta`
+--
+
+INSERT INTO `detalles_venta` (`id`, `venta_id`, `producto_id`, `cantidad`, `subtotal`) VALUES
+(9, 17, 5, 6, 540.00),
+(10, 17, 2, 2, 146.00),
+(11, 17, 4, 1, 34.00),
+(12, 18, 4, 1, 34.00),
+(13, 18, 2, 4, 292.00);
+
 -- --------------------------------------------------------
 
 --
@@ -84,11 +95,11 @@ CREATE TABLE `productos` (
 --
 
 INSERT INTO `productos` (`id`, `nombre`, `descripción`, `precio`, `stock`, `categoria`, `almacen`) VALUES
-(1, 'Gas Z', 'balon de 15kg', 45.00, 110, 'Balones 15kg', 'Sección A'),
-(4, 'gas 22', 'dfdfsd', 23.00, 23, '23', 'sfsdf'),
-(5, 'gas 77777', 'fewfe', 34.00, 223, 'wfefewf', 'wdwefew'),
-(6, 'gas 9999', 'efewfewfew', 34.00, 1, 'ewfew', 'wefewf'),
-(14, 'gas hoy', 'efwefwef', 10.00, 80, '30', 'efewf');
+(1, 'Gas Z', 'balon de 15kg', 45.00, 110, 'Balones', 'A'),
+(2, 'Gas ZX', 'balon de 35kg', 73.00, 23, 'Balones', 'B'),
+(3, 'Gas Premium', 'balon de 15kg', 34.00, 223, 'Balones', 'C'),
+(4, 'Valvula XA', 'válvula de seguridad para balon', 34.00, 5, 'Valvulas', 'D'),
+(5, 'Gas AnaPremium', 'balon de 15kg', 90.00, 80, 'Balones', 'A');
 
 -- --------------------------------------------------------
 
@@ -109,8 +120,8 @@ CREATE TABLE `proveedores` (
 --
 
 INSERT INTO `proveedores` (`id`, `nombre`, `dirección`, `teléfono`, `correo`) VALUES
-(1, 'GRAÑA Y MONTERO PETROLERA S.A.\r\n', '123 Flores, Breña, Lima, Perú.', '956879987', 'graña_montero@gamil.com'),
-(6, 'pedro', 'wfwpf wf', '777777777', 'juan@gmail.com');
+(1, 'GRAÑA Y MONTERO PETROLERA S.A.\r\n', 'Av las flores 314, Breña, Lima, Perú.', '956879987', 'graña_montero@gamil.com'),
+(2, 'AnaGas', 'Javier Prado cdr 34, San borja, Lima Perú', '937056242', 'anagas@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -177,11 +188,11 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`id`, `nombre`, `contraseña`, `activo`, `correo`, `fecha_creacion`, `fecha_modificacion`, `creado_por`, `modificado_por`) VALUES
-(2, 'Alonso', 'hola', 1, 'U21231837@utp.edu.pe', '2023-11-09 17:13:05', '2023-11-09 17:13:05', NULL, NULL),
-(3, 'Anthony', 'hola', 1, 'anthony2003@gmail.com', '2023-11-10 22:38:05', '2023-11-10 22:38:05', NULL, NULL),
-(4, 'Elder', 'hola', 1, 'elder2002@gmail.com', '2023-11-10 22:53:33', '2023-11-10 22:53:33', NULL, NULL),
-(5, 'Pooul', 'hola', 1, 'pooul2003@gmail.com', '2023-11-11 16:42:18', '2023-11-11 16:42:18', 2, NULL),
-(6, 'Juan', 'hola', 1, 'juan@gmail.com', '2023-12-04 18:54:05', '2023-12-04 18:54:05', NULL, NULL);
+(1, 'Alonso', 'Q2023', 1, 'U21231837@utp.edu.pe', '2023-11-09 17:13:05', '2023-11-09 17:13:05', NULL, NULL),
+(2, 'Anthony', 'A2023', 1, 'anthony2003@gmail.com', '2023-11-10 22:38:05', '2023-11-10 22:38:05', NULL, NULL),
+(3, 'Elder', 'B2023', 1, 'elder2002@gmail.com', '2023-11-10 22:53:33', '2023-11-10 22:53:33', NULL, NULL),
+(4, 'Pooul', 'R2023', 1, 'pooul2003@gmail.com', '2023-11-11 16:42:18', '2023-11-11 16:42:18', 2, NULL),
+(5, 'Juan', 'C2023', 1, 'juan@gmail.com', '2023-12-04 18:54:05', '2023-12-04 18:54:05', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -195,6 +206,14 @@ CREATE TABLE `ventas` (
   `cliente_id` int(11) DEFAULT NULL,
   `total_venta` decimal(10,2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Volcado de datos para la tabla `ventas`
+--
+
+INSERT INTO `ventas` (`id`, `fecha_venta`, `cliente_id`, `total_venta`) VALUES
+(17, '2023-12-09', 4, 720.00),
+(18, '2023-12-09', 4, 326.00);
 
 --
 -- Índices para tablas volcadas
@@ -269,7 +288,7 @@ ALTER TABLE `almacen`
 -- AUTO_INCREMENT de la tabla `detalles_venta`
 --
 ALTER TABLE `detalles_venta`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT de la tabla `productos`
@@ -305,38 +324,7 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de la tabla `ventas`
 --
 ALTER TABLE `ventas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
-
---
--- Restricciones para tablas volcadas
---
-
---
--- Filtros para la tabla `almacen`
---
-ALTER TABLE `almacen`
-  ADD CONSTRAINT `fk_proveedor_productos_productos` FOREIGN KEY (`producto_id`) REFERENCES `productos` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_proveedor_productos_proveedores` FOREIGN KEY (`proveedor_id`) REFERENCES `proveedores` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Filtros para la tabla `detalles_venta`
---
-ALTER TABLE `detalles_venta`
-  ADD CONSTRAINT `detalles_venta_ibfk_1` FOREIGN KEY (`venta_id`) REFERENCES `ventas` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `detalles_venta_ibfk_2` FOREIGN KEY (`producto_id`) REFERENCES `productos` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Filtros para la tabla `rol_usuarios`
---
-ALTER TABLE `rol_usuarios`
-  ADD CONSTRAINT `rol_usuarios_ibfk_1` FOREIGN KEY (`rol_id`) REFERENCES `rol` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `rol_usuarios_ibfk_2` FOREIGN KEY (`usuarios_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Filtros para la tabla `ventas`
---
-ALTER TABLE `ventas`
-  ADD CONSTRAINT `ventas_ibfk_1` FOREIGN KEY (`cliente_id`) REFERENCES `usuarios` (`id`);
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
