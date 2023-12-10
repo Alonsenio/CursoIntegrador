@@ -10,7 +10,6 @@ import Clases.UserLogged;
 import DAO.ProductosDAO;
 import DAO.VentaDAO;
 import java.awt.Color;
-import java.awt.HeadlessException;
 import java.awt.Image;
 import java.awt.Insets;
 import java.sql.SQLException;
