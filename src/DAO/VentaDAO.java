@@ -5,11 +5,13 @@
 package DAO;
 
 import Clases.CarritoModelo;
+import Clases.ResumenVenta;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 import util.MySQLConexion;
 
@@ -69,5 +71,31 @@ public class VentaDAO {
             System.out.println(e.getMessage());
         }
         return false;
+    }
+    
+    public List<ResumenVenta> getResumenVentas(){
+        String sql = "SELECT v.id, u.nombre AS cliente, v.fecha_venta, v.total_venta, "
+                + "(SELECT COUNT(*) FROM detalles_venta WHERE venta_id = v.id) AS productos FROM ventas v JOIN "
+                + "usuarios u ON v.cliente_id = u.id;";
+        
+        List<ResumenVenta> resumen = new ArrayList<>();
+        try(conn){
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            ResultSet res = stmt.executeQuery();
+            
+            while(res.next()){
+                resumen.add(new ResumenVenta(
+                        res.getInt("id"), 
+                        res.getString("cliente"), 
+                        res.getInt("productos"), 
+                        res.getDouble("total_venta"),
+                        res.getString("fecha_venta"))
+                );
+            }
+            
+        }catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
+        return resumen;
     }
 }

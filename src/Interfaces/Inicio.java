@@ -3,6 +3,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package Interfaces;
+
+import Clases.ResumenVenta;
+import DAO.VentaDAO;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Graphics;
@@ -30,20 +33,23 @@ import util.RenderImage;
  *
  * @author JMMOLLER
  */
-public class Inicio extends javax.swing.JFrame {
+public final class Inicio extends javax.swing.JFrame {
+
     private int total_p = 10;
     private int pendientes = 3;
+    private DefaultTableModel modeloResumen;
+    private final List<ResumenVenta> resumenList;
 
     /**
      * Creates new form Inicio
      */
     public Inicio() {
         initComponents();
-        setBackground(new Color(1.0f,1.0f,1.0f,0.0f));
-        
+        setBackground(new Color(1.0f, 1.0f, 1.0f, 0.0f));
+
         var RI = new RenderImage(this);
         RI.setImageLabel(jlFotoUsuario, "siNoTieneFoto2.jpg");
-        
+
         RI.setIconFrame();
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -62,50 +68,51 @@ public class Inicio extends javax.swing.JFrame {
         cargarAlmacen();
         cargarRoles();
         cargarUsuarios();
-        
+        resumenList = new VentaDAO().getResumenVentas();
+        updateTableResumen();
     }
 
-private void cargarProveedores() {
-    try (Connection connection = MySQLConexion.getConexion()) {
-        String sql = "SELECT nombre FROM proveedores";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            try (ResultSet resultSet = statement.executeQuery()) {
-                List<String> proveedores = new ArrayList<>();
-                while (resultSet.next()) {
-                    proveedores.add(resultSet.getString("nombre"));
+    private void cargarProveedores() {
+        try (Connection connection = MySQLConexion.getConexion()) {
+            String sql = "SELECT nombre FROM proveedores";
+            try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    List<String> proveedores = new ArrayList<>();
+                    while (resultSet.next()) {
+                        proveedores.add(resultSet.getString("nombre"));
+                    }
+                    cbProveedores.setModel(new DefaultComboBoxModel<>(proveedores.toArray(new String[0])));
                 }
-                cbProveedores.setModel(new DefaultComboBoxModel<>(proveedores.toArray(new String[0])));
             }
+        } catch (SQLException e) {
+            System.out.println(e.toString());
         }
-    } catch (SQLException e) {
-        System.out.println(e.toString());
     }
-}
-private void cargarProductos() {
-    try (Connection connection = MySQLConexion.getConexion()) {
-        String sql = "SELECT nombre FROM productos";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            try (ResultSet resultSet = statement.executeQuery()) {
-                List<String> proveedores = new ArrayList<>();
-                while (resultSet.next()) {
-                    proveedores.add(resultSet.getString("nombre"));
-                }
-                cbProductos.setModel(new DefaultComboBoxModel<>(proveedores.toArray(new String[0])));
-            }
-        }
-    } catch (SQLException e) {
-        System.out.println(e.toString());
-    }
-}
 
-    
+    private void cargarProductos() {
+        try (Connection connection = MySQLConexion.getConexion()) {
+            String sql = "SELECT nombre FROM productos";
+            try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    List<String> proveedores = new ArrayList<>();
+                    while (resultSet.next()) {
+                        proveedores.add(resultSet.getString("nombre"));
+                    }
+                    cbProductos.setModel(new DefaultComboBoxModel<>(proveedores.toArray(new String[0])));
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+        }
+    }
+
     private void mostrarPendientes(int total, int completado, Graphics graph) {
         lblPenText1.setText("Pendiente(s): " + Integer.toString(total - completado));
         lblPenTextC1.setText("Completado(s): " + completado);
         graficar(total, completado, graph);
     }
-    
-    public void graficar(int total, int completado, Graphics graph){
+
+    public void graficar(int total, int completado, Graphics graph) {
 
         int tareasPendientes = total - completado;
 
@@ -118,21 +125,34 @@ private void cargarProductos() {
         int radio = 100;
         int centroPanel = 75; // Mitad de 150 (tamaño del JPanel)
         int centroCirculo = centroPanel - radio / 2; // Centra el círculo en el JPanel
-        Color color_completado = new Color(102,255,102); // Crea el color para los completados
-        Color color_pendiene = new Color(255,255,51); // Crea el color para los pendientes
+        Color color_completado = new Color(102, 255, 102); // Crea el color para los completados
+        Color color_pendiene = new Color(255, 255, 51); // Crea el color para los pendientes
 
         graph.setColor(color_completado);
         graph.fillArc(centroCirculo, centroCirculo, radio, radio, 0, anguloCompletadas);
         graph.setColor(color_pendiene);
         graph.fillArc(centroCirculo, centroCirculo, radio, radio, anguloCompletadas, anguloPendientes);
     }
-    
-    public void handleCursorChange(boolean mouseEntered){
-        if(mouseEntered){
+
+    public void handleCursorChange(boolean mouseEntered) {
+        if (mouseEntered) {
             this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        }else{
+        } else {
             this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
         }
+    }
+    
+    public void updateTableResumen(){
+        modeloResumen.setRowCount(0);
+        resumenList.forEach(venta -> {
+            modeloResumen.addRow(new Object[]{
+                venta.getIdVenta(),
+                venta.getFecha(),
+                venta.getCantidadProductos(),
+                venta.getCliente(),
+                venta.getTotal()
+            });
+        });
     }
 
     /**
@@ -172,7 +192,24 @@ private void cargarProductos() {
         jLabel7 = new javax.swing.JLabel();
         contentRecent1 = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
-        jTable4 = new javax.swing.JTable();
+        modeloResumen = new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ID", "Fecha", "Productos", "Cliente", "Total"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        };
+        tblResumen = new javax.swing.JTable();
+        tblResumen.setModel(modeloResumen);
         lblTitleRecent1 = new javax.swing.JLabel();
         contentClients1 = new javax.swing.JPanel();
         lblTitleClients1 = new javax.swing.JLabel();
@@ -495,26 +532,7 @@ private void cargarProductos() {
         contentRecent1.setBackground(new java.awt.Color(35, 35, 35));
         contentRecent1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jTable4.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
-            },
-            new String [] {
-                "ID", "Fecha", "Producto", "Cantidad", "Cliente", "Total"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                true, false, true, true, true, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jScrollPane4.setViewportView(jTable4);
+        jScrollPane4.setViewportView(tblResumen);
 
         contentRecent1.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 50, 410, 220));
 
@@ -1544,7 +1562,7 @@ private void cargarProductos() {
         panelProductos.setVisible(false);
         panelProvedores.setVisible(false);
         panelInventario.setVisible(false);
-        
+
     }//GEN-LAST:event_btnHomeActionPerformed
 
     private void btnUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUsuariosActionPerformed
@@ -1589,25 +1607,25 @@ private void cargarProductos() {
 
     private void rSButtonCustom2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rSButtonCustom2ActionPerformed
         JFileChooser jf = new JFileChooser();
-            jf.setMultiSelectionEnabled(false);
+        jf.setMultiSelectionEnabled(false);
 
-            if (jf.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-                File selectedFile = jf.getSelectedFile();
-                try {
-                    BufferedImage originalImage = ImageIO.read(selectedFile);
-                    int newWidth = 100;  
-                    int newHeight = 130; 
-                    Image resizedImage = originalImage.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
-  
-                    BufferedImage bufferedResizedImage = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB);
-                    bufferedResizedImage.getGraphics().drawImage(resizedImage, 0, 0, null);
-                    ImageIO.write(bufferedResizedImage, "png", new File("src/Imagenes/siNoTieneFoto2.jpg"));
+        if (jf.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = jf.getSelectedFile();
+            try {
+                BufferedImage originalImage = ImageIO.read(selectedFile);
+                int newWidth = 100;
+                int newHeight = 130;
+                Image resizedImage = originalImage.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
 
-                    jlFotoUsuario.setIcon(new ImageIcon(resizedImage));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                BufferedImage bufferedResizedImage = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB);
+                bufferedResizedImage.getGraphics().drawImage(resizedImage, 0, 0, null);
+                ImageIO.write(bufferedResizedImage, "png", new File("src/Imagenes/siNoTieneFoto2.jpg"));
+
+                jlFotoUsuario.setIcon(new ImageIcon(resizedImage));
+            } catch (IOException e) {
+                e.printStackTrace();
             }
+        }
     }//GEN-LAST:event_rSButtonCustom2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -1622,9 +1640,8 @@ private void cargarProductos() {
         String criterio = tfBuscar.getText();
         String sql = "SELECT * FROM productos WHERE nombre LIKE ? OR precio LIKE ? OR categoria LIKE ?";
 
-        try (Connection conexion = MySQLConexion.getConexion();
-             PreparedStatement ps = conexion.prepareStatement(sql)) {
-            
+        try (Connection conexion = MySQLConexion.getConexion(); PreparedStatement ps = conexion.prepareStatement(sql)) {
+
             ps.setString(1, "%" + criterio + "%");
             ps.setString(2, "%" + criterio + "%");
             ps.setString(3, "%" + criterio + "%");
@@ -1632,7 +1649,7 @@ private void cargarProductos() {
             DefaultTableModel modeloTabla = (DefaultTableModel) tableProductos.getModel();
             modeloTabla.setRowCount(0);
             while (rs.next()) {
-                Object[] fila = {rs.getString("id"),rs.getString("nombre"), rs.getString("descripción"), rs.getString("precio"), rs.getString("stock"),rs.getString("categoria"), rs.getString("almacen")};
+                Object[] fila = {rs.getString("id"), rs.getString("nombre"), rs.getString("descripción"), rs.getString("precio"), rs.getString("stock"), rs.getString("categoria"), rs.getString("almacen")};
                 modeloTabla.addRow(fila);
             }
         } catch (SQLException e) {
@@ -1661,19 +1678,19 @@ private void cargarProductos() {
     }//GEN-LAST:event_tfStockProductoActionPerformed
 
     private void rSButtonGradiente2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rSButtonGradiente2ActionPerformed
-        String nombre=tfNombreProducto.getText();
-        String descripcion=taDescripcionProducto.getText();
-        String precio=tfPrecioProducto.getText();
-        String stock=tfStockProducto.getText();
-        String categoria=tfStockProducto.getText();
-        String almacen=tfAlmacenProducto.getText();
-        
-        if (nombre.isEmpty()||descripcion.isEmpty()||almacen.isEmpty()||precio.isEmpty()||categoria.isEmpty() ) {
+        String nombre = tfNombreProducto.getText();
+        String descripcion = taDescripcionProducto.getText();
+        String precio = tfPrecioProducto.getText();
+        String stock = tfStockProducto.getText();
+        String categoria = tfStockProducto.getText();
+        String almacen = tfAlmacenProducto.getText();
+
+        if (nombre.isEmpty() || descripcion.isEmpty() || almacen.isEmpty() || precio.isEmpty() || categoria.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Por favor, complete todos los campos.");
-        }else{
-            String sql="INSERT into productos (nombre,descripción,precio,stock,categoria,almacen) VALUES (?,?,?,?,?,?)";
-            try (Connection conexion= MySQLConexion.getConexion()){
-                try(PreparedStatement ps=conexion.prepareStatement(sql)){
+        } else {
+            String sql = "INSERT into productos (nombre,descripción,precio,stock,categoria,almacen) VALUES (?,?,?,?,?,?)";
+            try (Connection conexion = MySQLConexion.getConexion()) {
+                try (PreparedStatement ps = conexion.prepareStatement(sql)) {
                     ps.setString(1, nombre);
                     ps.setString(2, descripcion);
                     ps.setInt(3, Integer.parseInt(precio));
@@ -1687,28 +1704,26 @@ private void cargarProductos() {
                     } else {
                         JOptionPane.showMessageDialog(null, "Error al insertar el producto");
                     }
-                    
+
                 }
             } catch (Exception e) {
-                 System.out.println(e.toString());
+                System.out.println(e.toString());
             }
         }
-       
-        
-        
-        
+
+
     }//GEN-LAST:event_rSButtonGradiente2ActionPerformed
 
     private void tfBuscarFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tfBuscarFocusGained
         if (tfBuscar.getText().equals("Buscar por nombre, precio y categoria")) {
-                    tfBuscar.setText("");
-                }
+            tfBuscar.setText("");
+        }
     }//GEN-LAST:event_tfBuscarFocusGained
 
     private void tfBuscarFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tfBuscarFocusLost
         if (tfBuscar.getText().isEmpty()) {
-                    tfBuscar.setText("Buscar por nombre, precio y categoria");
-                }
+            tfBuscar.setText("Buscar por nombre, precio y categoria");
+        }
     }//GEN-LAST:event_tfBuscarFocusLost
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
@@ -1774,53 +1789,53 @@ private void cargarProductos() {
     }//GEN-LAST:event_tfCorreoProvedorActionPerformed
 
     private void btnCrearProvedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearProvedorActionPerformed
-        String nombre=tfNombreProvedor.getText().trim();
-        String direccion=tfDireccionProvedor.getText().trim();
-        String telefono=tfTelefonoProvedor.getText().trim();
-        String correo=tfCorreoProvedor.getText().trim();
-        if(nombre.isEmpty()||correo.isEmpty()||telefono.isEmpty()||correo.isEmpty()){
+        String nombre = tfNombreProvedor.getText().trim();
+        String direccion = tfDireccionProvedor.getText().trim();
+        String telefono = tfTelefonoProvedor.getText().trim();
+        String correo = tfCorreoProvedor.getText().trim();
+        if (nombre.isEmpty() || correo.isEmpty() || telefono.isEmpty() || correo.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Todos los campos son obligaotios, por favor llenar todos");
             return;
-        }else if(!telefono.matches("\\d{9}")){
+        } else if (!telefono.matches("\\d{9}")) {
             JOptionPane.showMessageDialog(this, "Formato de teléfono incorrecto", "Error", JOptionPane.ERROR_MESSAGE);
-             return;
-        }else if(!correo.matches("\\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z|a-z]{2,}\\b")){
+            return;
+        } else if (!correo.matches("\\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z|a-z]{2,}\\b")) {
             JOptionPane.showMessageDialog(this, "Formato de correo electrónico incorrecto", "Error", JOptionPane.ERROR_MESSAGE);
-        return; 
-        }else{
-            String sql="INSERT INTO proveedores (nombre,dirección,teléfono,correo) values(?,?,?,?)";
-            try(Connection conexion=MySQLConexion.getConexion()) {
-                try(PreparedStatement ps=conexion.prepareStatement(sql)) {
+            return;
+        } else {
+            String sql = "INSERT INTO proveedores (nombre,dirección,teléfono,correo) values(?,?,?,?)";
+            try (Connection conexion = MySQLConexion.getConexion()) {
+                try (PreparedStatement ps = conexion.prepareStatement(sql)) {
                     ps.setString(1, nombre);
                     ps.setString(2, direccion);
                     ps.setString(3, telefono);
                     ps.setString(4, correo);
-                    int filasAfectadas=ps.executeUpdate();
-                    if (filasAfectadas>0){
+                    int filasAfectadas = ps.executeUpdate();
+                    if (filasAfectadas > 0) {
                         JOptionPane.showMessageDialog(this, "Provedor agregado exitosamente");
                         cargarProductosPorDefecto();
-                    }else{
+                    } else {
                         JOptionPane.showMessageDialog(this, "Error al insertar provedor");
                     }
                 }
             } catch (Exception e) {
                 System.out.println(e.toString());
             }
-            
+
         }
-      
-        
+
+
     }//GEN-LAST:event_btnCrearProvedorActionPerformed
 
     private void tfBuscarProvedorFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tfBuscarProvedorFocusGained
-        if(tfBuscarProvedor.getText().equals("Buscar por id, nombre y dirección")){
+        if (tfBuscarProvedor.getText().equals("Buscar por id, nombre y dirección")) {
             tfBuscarProvedor.setText("");
         }
     }//GEN-LAST:event_tfBuscarProvedorFocusGained
 
     private void tfBuscarProvedorFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tfBuscarProvedorFocusLost
         if (tfBuscarProvedor.getText().isEmpty()) {
-                    tfBuscarProvedor.setText("Buscar por id, nombre y dirección");
+            tfBuscarProvedor.setText("Buscar por id, nombre y dirección");
         }
     }//GEN-LAST:event_tfBuscarProvedorFocusLost
 
@@ -1833,21 +1848,21 @@ private void cargarProductos() {
     }//GEN-LAST:event_tfBuscarActionPerformed
 
     private void btnBuscarProvedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarProvedorActionPerformed
-        String criterio=tfBuscarProvedor.getText();
-        String sql="Select * from proveedores where id like ? or nombre like ? or dirección like ?";
-        try (Connection conexion=MySQLConexion.getConexion()){
-            try(PreparedStatement ps =conexion.prepareStatement(sql)){
+        String criterio = tfBuscarProvedor.getText();
+        String sql = "Select * from proveedores where id like ? or nombre like ? or dirección like ?";
+        try (Connection conexion = MySQLConexion.getConexion()) {
+            try (PreparedStatement ps = conexion.prepareStatement(sql)) {
                 ps.setString(1, "%" + criterio + "%");
                 ps.setString(2, "%" + criterio + "%");
                 ps.setString(3, "%" + criterio + "%");
                 ResultSet rs = ps.executeQuery();
-                DefaultTableModel tabla=(DefaultTableModel) tableProvedor.getModel();
+                DefaultTableModel tabla = (DefaultTableModel) tableProvedor.getModel();
                 tabla.setRowCount(0);
-                while(rs.next()){
-                    Object[] fila={rs.getString("id"),rs.getString("nombre"),rs.getString("dirección"),rs.getString("teléfono"),rs.getString("correo")};
+                while (rs.next()) {
+                    Object[] fila = {rs.getString("id"), rs.getString("nombre"), rs.getString("dirección"), rs.getString("teléfono"), rs.getString("correo")};
                     tabla.addRow(fila);
                 }
-                
+
             }
         } catch (Exception e) {
             System.out.println(e.toString());
@@ -1855,18 +1870,17 @@ private void cargarProductos() {
     }//GEN-LAST:event_btnBuscarProvedorActionPerformed
 
     private void btnEliminarProvedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarProvedorActionPerformed
-        int filaSeleccionada=tableProvedor.getSelectedRow();
-        if(filaSeleccionada!=-1){
-            DefaultTableModel tabla=(DefaultTableModel) tableProvedor.getModel();
-            String idProvedor=tabla.getValueAt(filaSeleccionada, 0).toString();
+        int filaSeleccionada = tableProvedor.getSelectedRow();
+        if (filaSeleccionada != -1) {
+            DefaultTableModel tabla = (DefaultTableModel) tableProvedor.getModel();
+            String idProvedor = tabla.getValueAt(filaSeleccionada, 0).toString();
             tabla.removeRow(filaSeleccionada);
             String sql = "DELETE FROM proveedores WHERE id = ?";
 
-            try (Connection conexion = MySQLConexion.getConexion();
-                 PreparedStatement ps = conexion.prepareStatement(sql)) {
-                    ps.setString(1, idProvedor);
+            try (Connection conexion = MySQLConexion.getConexion(); PreparedStatement ps = conexion.prepareStatement(sql)) {
+                ps.setString(1, idProvedor);
                 int filasAfectadas = ps.executeUpdate();
-                
+
                 if (filasAfectadas > 0) {
                     JOptionPane.showMessageDialog(this, "Proveedor Eliminado exitosamente!");
                 } else {
@@ -1879,24 +1893,23 @@ private void cargarProductos() {
     }//GEN-LAST:event_btnEliminarProvedorActionPerformed
 
     private void btnModificarProvedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarProvedorActionPerformed
-        int filaSeleccionada=tableProvedor.getSelectedRow();
-        String nombre=tfNombreProvedor.getText().trim();
-        String direccion=tfDireccionProvedor.getText().trim();
-        String telefono=tfTelefonoProvedor.getText().trim();
-        String correo=tfCorreoProvedor.getText().trim();
-        if(filaSeleccionada!=-1){
-            DefaultTableModel tabla=(DefaultTableModel) tableProvedor.getModel();
-            String idProvedor=tabla.getValueAt(filaSeleccionada, 0).toString();
-            
+        int filaSeleccionada = tableProvedor.getSelectedRow();
+        String nombre = tfNombreProvedor.getText().trim();
+        String direccion = tfDireccionProvedor.getText().trim();
+        String telefono = tfTelefonoProvedor.getText().trim();
+        String correo = tfCorreoProvedor.getText().trim();
+        if (filaSeleccionada != -1) {
+            DefaultTableModel tabla = (DefaultTableModel) tableProvedor.getModel();
+            String idProvedor = tabla.getValueAt(filaSeleccionada, 0).toString();
+
             String sql = "UPDATE proveedores SET nombre = ?, dirección = ?, teléfono = ?, correo = ?WHERE id = ?";
 
-            try (Connection conexion = MySQLConexion.getConexion();
-                 PreparedStatement ps = conexion.prepareStatement(sql)) {
-                    ps.setString(1, nombre);
-                    ps.setString(2, direccion);
-                    ps.setString(3, telefono);
-                    ps.setString(4, correo);
-                    ps.setString(5, idProvedor);
+            try (Connection conexion = MySQLConexion.getConexion(); PreparedStatement ps = conexion.prepareStatement(sql)) {
+                ps.setString(1, nombre);
+                ps.setString(2, direccion);
+                ps.setString(3, telefono);
+                ps.setString(4, correo);
+                ps.setString(5, idProvedor);
                 int filasAfectadas = ps.executeUpdate();
 
                 if (filasAfectadas > 0) {
@@ -1909,7 +1922,7 @@ private void cargarProductos() {
                 System.out.println("Error al eliminar fila de la base de datos: " + e.getMessage());
             }
         }
-        
+
     }//GEN-LAST:event_btnModificarProvedorActionPerformed
 
     private void btnMostrarProvedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMostrarProvedorActionPerformed
@@ -1921,89 +1934,88 @@ private void cargarProductos() {
     }//GEN-LAST:event_tfCantidadProductoActionPerformed
 
     private void btnIngresarProductoAlmacenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarProductoAlmacenActionPerformed
-       String nombreProveedor = (String) cbProveedores.getSelectedItem();
-    String nombreProducto = (String) cbProductos.getSelectedItem();
-    int cantidad = Integer.parseInt(tfCantidadProducto.getText());
-    BigDecimal idProveedor = obtenerCampo(nombreProveedor, "proveedores", "id");
-    BigDecimal idProducto = obtenerCampo(nombreProducto, "productos", "id");
-    BigDecimal precioProducto = obtenerCampo(nombreProducto, "productos", "precio");
-    double montoTotal = precioProducto.doubleValue() * cantidad;
+        String nombreProveedor = (String) cbProveedores.getSelectedItem();
+        String nombreProducto = (String) cbProductos.getSelectedItem();
+        int cantidad = Integer.parseInt(tfCantidadProducto.getText());
+        BigDecimal idProveedor = obtenerCampo(nombreProveedor, "proveedores", "id");
+        BigDecimal idProducto = obtenerCampo(nombreProducto, "productos", "id");
+        BigDecimal precioProducto = obtenerCampo(nombreProducto, "productos", "precio");
+        double montoTotal = precioProducto.doubleValue() * cantidad;
 
-    String sqlInsertAlmacen = "INSERT INTO almacen (proveedor_id, producto_id, precio_compra, cantidad_unitaria) VALUES (?, ?, ?, ?)";
-    String sqlUpdateProducto = "UPDATE productos SET stock = stock + ? WHERE id = ?";
+        String sqlInsertAlmacen = "INSERT INTO almacen (proveedor_id, producto_id, precio_compra, cantidad_unitaria) VALUES (?, ?, ?, ?)";
+        String sqlUpdateProducto = "UPDATE productos SET stock = stock + ? WHERE id = ?";
 
-    try (Connection conexion = MySQLConexion.getConexion()) {
-        conexion.setAutoCommit(false);
-        try (PreparedStatement psInsertAlmacen = conexion.prepareStatement(sqlInsertAlmacen);
-             PreparedStatement psUpdateProducto = conexion.prepareStatement(sqlUpdateProducto)) {
-            psInsertAlmacen.setInt(1, idProveedor.intValue());
-            psInsertAlmacen.setInt(2, idProducto.intValue());
-            psInsertAlmacen.setDouble(3, montoTotal);
-            psInsertAlmacen.setInt(4, cantidad);
+        try (Connection conexion = MySQLConexion.getConexion()) {
+            conexion.setAutoCommit(false);
+            try (PreparedStatement psInsertAlmacen = conexion.prepareStatement(sqlInsertAlmacen); PreparedStatement psUpdateProducto = conexion.prepareStatement(sqlUpdateProducto)) {
+                psInsertAlmacen.setInt(1, idProveedor.intValue());
+                psInsertAlmacen.setInt(2, idProducto.intValue());
+                psInsertAlmacen.setDouble(3, montoTotal);
+                psInsertAlmacen.setInt(4, cantidad);
 
-            psUpdateProducto.setInt(1, cantidad);
-            psUpdateProducto.setInt(2, idProducto.intValue());
+                psUpdateProducto.setInt(1, cantidad);
+                psUpdateProducto.setInt(2, idProducto.intValue());
 
-            psInsertAlmacen.executeUpdate();
-            psUpdateProducto.executeUpdate();
-            // Confirmar la transacción
-            conexion.commit();
-            JOptionPane.showMessageDialog(this, "Registro de almacén realizado exitosamente");
-            cargarAlmacen();
-            cargarProductosPorDefecto();
+                psInsertAlmacen.executeUpdate();
+                psUpdateProducto.executeUpdate();
+                // Confirmar la transacción
+                conexion.commit();
+                JOptionPane.showMessageDialog(this, "Registro de almacén realizado exitosamente");
+                cargarAlmacen();
+                cargarProductosPorDefecto();
+            } catch (SQLException ex) {
+                // Si hay un error, hacer rollback
+                conexion.rollback();
+                JOptionPane.showMessageDialog(this, "Ocurrió un error en el registro al almacén");
+                System.out.println(ex.toString());
+            } finally {
+                // Restaurar el modo de autocommit
+                conexion.setAutoCommit(true);
+            }
         } catch (SQLException ex) {
-            // Si hay un error, hacer rollback
-            conexion.rollback();
-            JOptionPane.showMessageDialog(this, "Ocurrió un error en el registro al almacén");
             System.out.println(ex.toString());
-        } finally {
-            // Restaurar el modo de autocommit
-            conexion.setAutoCommit(true);
         }
-    } catch (SQLException ex) {
-        System.out.println(ex.toString());
-    }
     }//GEN-LAST:event_btnIngresarProductoAlmacenActionPerformed
-    
-    private BigDecimal obtenerCampo(String nombre, String tabla, String campo) {
-    BigDecimal valorCampo = BigDecimal.ZERO;
 
-    String sql = "SELECT p." + campo + " FROM " + tabla + " p WHERE p.nombre=?";
-    
-    try (Connection conexion = MySQLConexion.getConexion()) {
-        try (PreparedStatement ps = conexion.prepareStatement(sql)) {
-            ps.setString(1, nombre);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    valorCampo = rs.getBigDecimal(campo);
-                } else {
-                    System.out.println("No se encontró el elemento con el nombre: " + nombre);
+    private BigDecimal obtenerCampo(String nombre, String tabla, String campo) {
+        BigDecimal valorCampo = BigDecimal.ZERO;
+
+        String sql = "SELECT p." + campo + " FROM " + tabla + " p WHERE p.nombre=?";
+
+        try (Connection conexion = MySQLConexion.getConexion()) {
+            try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+                ps.setString(1, nombre);
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        valorCampo = rs.getBigDecimal(campo);
+                    } else {
+                        System.out.println("No se encontró el elemento con el nombre: " + nombre);
+                    }
                 }
             }
+        } catch (SQLException ex) {
+            System.out.println("Error al obtener el campo " + campo + ": " + ex.toString());
         }
-    } catch (SQLException ex) {
-        System.out.println("Error al obtener el campo " + campo + ": " + ex.toString());
-    }
 
-    return valorCampo;
-}
+        return valorCampo;
+    }
 
 
     private void cbProveedoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbProveedoresActionPerformed
-        
+
     }//GEN-LAST:event_cbProveedoresActionPerformed
 
     private void tfBuscarInventarioFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tfBuscarInventarioFocusGained
-        if(tfBuscarInventario.getText().equals("Buscar por Fecha, Proveedor y Producto")){
+        if (tfBuscarInventario.getText().equals("Buscar por Fecha, Proveedor y Producto")) {
             tfBuscarInventario.setText("");
         }
     }//GEN-LAST:event_tfBuscarInventarioFocusGained
 
     private void tfBuscarInventarioFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tfBuscarInventarioFocusLost
-        if(tfBuscarInventario.getText().isEmpty()){
+        if (tfBuscarInventario.getText().isEmpty()) {
             tfBuscarInventario.setText("Buscar por Fecha, Proveedor y Producto");
         }
-    
+
     }//GEN-LAST:event_tfBuscarInventarioFocusLost
 
     private void tfBuscarInventarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfBuscarInventarioActionPerformed
@@ -2011,25 +2023,25 @@ private void cargarProductos() {
     }//GEN-LAST:event_tfBuscarInventarioActionPerformed
 
     private void btnBuscarProvedor1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarProvedor1ActionPerformed
-        String criterio=tfBuscarInventario.getText();
-        String sql="SELECT a.id, a.fecha_entrada,p.nombre as Producto,a.cantidad_unitaria,p.precio,a.precio_compra,pro.nombre as Proveedor FROM productos p INNER JOIN almacen a on  a.producto_id=p.id INNER JOIN proveedores pro on pro.id=a.proveedor_id WHERE a.fecha_entrada LIKE ? or pro.nombre like ? OR p.nombre like ?";
-        if(criterio.isEmpty()){
+        String criterio = tfBuscarInventario.getText();
+        String sql = "SELECT a.id, a.fecha_entrada,p.nombre as Producto,a.cantidad_unitaria,p.precio,a.precio_compra,pro.nombre as Proveedor FROM productos p INNER JOIN almacen a on  a.producto_id=p.id INNER JOIN proveedores pro on pro.id=a.proveedor_id WHERE a.fecha_entrada LIKE ? or pro.nombre like ? OR p.nombre like ?";
+        if (criterio.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Ingresar la expresion que quiere buscar");
-        }else{
-            try(Connection conexion=MySQLConexion.getConexion()){
-                try(PreparedStatement ps=conexion.prepareStatement(sql)){
-                    ps.setString(1,"%" + criterio+ "%");
-                    ps.setString(2,"%" + criterio+ "%");
-                    ps.setString(3,"%" + criterio+ "%");
-                    ResultSet rs= ps.executeQuery();
-                    DefaultTableModel tabla= (DefaultTableModel) tableAlmacen.getModel();
+        } else {
+            try (Connection conexion = MySQLConexion.getConexion()) {
+                try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+                    ps.setString(1, "%" + criterio + "%");
+                    ps.setString(2, "%" + criterio + "%");
+                    ps.setString(3, "%" + criterio + "%");
+                    ResultSet rs = ps.executeQuery();
+                    DefaultTableModel tabla = (DefaultTableModel) tableAlmacen.getModel();
                     tabla.setRowCount(0);
-                    while(rs.next()){
-                        Object[] fila={rs.getString("id"),rs.getString("fecha_entrada"),rs.getString("Producto"),rs.getString("cantidad_unitaria"),rs.getString("precio"),rs.getString("precio_compra"),rs.getString("Proveedor")};
+                    while (rs.next()) {
+                        Object[] fila = {rs.getString("id"), rs.getString("fecha_entrada"), rs.getString("Producto"), rs.getString("cantidad_unitaria"), rs.getString("precio"), rs.getString("precio_compra"), rs.getString("Proveedor")};
                         tabla.addRow(fila);
                     }
                 }
-                
+
             } catch (SQLException ex) {
                 System.out.println(ex.toString());
             }
@@ -2041,13 +2053,13 @@ private void cargarProductos() {
 
         if (filaSeleccionada != -1) {
             DefaultTableModel tabla = (DefaultTableModel) tableAlmacen.getModel();
-            String nombreProducto = tabla.getValueAt(filaSeleccionada, 2).toString(); 
-            String idalmacen = tabla.getValueAt(filaSeleccionada, 0).toString(); 
+            String nombreProducto = tabla.getValueAt(filaSeleccionada, 2).toString();
+            String idalmacen = tabla.getValueAt(filaSeleccionada, 0).toString();
             System.out.println(nombreProducto);
             BigDecimal idProducto = obtenerCampo(nombreProducto, "productos", "id");
-            System.out.println("el id es:"+idProducto);
-            BigDecimal cantidadUnitaria = new BigDecimal(tabla.getValueAt(filaSeleccionada, 3).toString()); 
-            System.out.println("cantidad"+cantidadUnitaria);
+            System.out.println("el id es:" + idProducto);
+            BigDecimal cantidadUnitaria = new BigDecimal(tabla.getValueAt(filaSeleccionada, 3).toString());
+            System.out.println("cantidad" + cantidadUnitaria);
             tabla.removeRow(filaSeleccionada);
 
             String sqlEliminar = "DELETE FROM almacen WHERE id = ?";
@@ -2080,79 +2092,76 @@ private void cargarProductos() {
             }
         }
 
-           
 
     }//GEN-LAST:event_btnEliminarProvedor1ActionPerformed
 
     private void btnModificarProvedor1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarProvedor1ActionPerformed
-       String nuevoNombreProveedor = (String) cbProveedores.getSelectedItem();
-                    String nuevoNombreProducto = (String) cbProductos.getSelectedItem();
-                    String nuevaCantidad = tfCantidadProducto.getText();
-        if(nuevoNombreProveedor.isEmpty()||nuevoNombreProducto.isEmpty()||nuevaCantidad.isEmpty()){
+        String nuevoNombreProveedor = (String) cbProveedores.getSelectedItem();
+        String nuevoNombreProducto = (String) cbProductos.getSelectedItem();
+        String nuevaCantidad = tfCantidadProducto.getText();
+        if (nuevoNombreProveedor.isEmpty() || nuevoNombreProducto.isEmpty() || nuevaCantidad.isEmpty()) {
             JOptionPane.showMessageDialog(this, "No a completado todos los campos");
-        }else{
-        int filaSeleccionada = tableAlmacen.getSelectedRow();
-        if (filaSeleccionada != -1) {
-            DefaultTableModel tabla = (DefaultTableModel) tableAlmacen.getModel();
-            String nombreProductoAntiguo = tabla.getValueAt(filaSeleccionada, 2).toString();
-            BigDecimal idProductoAntiguo = obtenerCampo(nombreProductoAntiguo, "productos", "id");
-            BigDecimal cantidadAntigua = new BigDecimal(tabla.getValueAt(filaSeleccionada, 3).toString());
-            // Eliminar la cantidad asignada al antiguo producto
-            String sqlRestarStockAntiguo = "UPDATE productos SET stock = stock - ? WHERE id = ?";
-            try (Connection conexion = MySQLConexion.getConexion();
-                 PreparedStatement psRestarStockAntiguo = conexion.prepareStatement(sqlRestarStockAntiguo)) {
-                psRestarStockAntiguo.setBigDecimal(1, cantidadAntigua);
-                psRestarStockAntiguo.setInt(2, idProductoAntiguo.intValue());
-                int filasAfectadasRestarStockAntiguo = psRestarStockAntiguo.executeUpdate();
+        } else {
+            int filaSeleccionada = tableAlmacen.getSelectedRow();
+            if (filaSeleccionada != -1) {
+                DefaultTableModel tabla = (DefaultTableModel) tableAlmacen.getModel();
+                String nombreProductoAntiguo = tabla.getValueAt(filaSeleccionada, 2).toString();
+                BigDecimal idProductoAntiguo = obtenerCampo(nombreProductoAntiguo, "productos", "id");
+                BigDecimal cantidadAntigua = new BigDecimal(tabla.getValueAt(filaSeleccionada, 3).toString());
+                // Eliminar la cantidad asignada al antiguo producto
+                String sqlRestarStockAntiguo = "UPDATE productos SET stock = stock - ? WHERE id = ?";
+                try (Connection conexion = MySQLConexion.getConexion(); PreparedStatement psRestarStockAntiguo = conexion.prepareStatement(sqlRestarStockAntiguo)) {
+                    psRestarStockAntiguo.setBigDecimal(1, cantidadAntigua);
+                    psRestarStockAntiguo.setInt(2, idProductoAntiguo.intValue());
+                    int filasAfectadasRestarStockAntiguo = psRestarStockAntiguo.executeUpdate();
 
-                if (filasAfectadasRestarStockAntiguo > 0) {
-                    
+                    if (filasAfectadasRestarStockAntiguo > 0) {
 
-                    BigDecimal idProductoNuevo = obtenerCampo(nuevoNombreProducto, "productos", "id");
-                    BigDecimal idProveedorNuevo = obtenerCampo(nuevoNombreProveedor, "proveedores", "id");
+                        BigDecimal idProductoNuevo = obtenerCampo(nuevoNombreProducto, "productos", "id");
+                        BigDecimal idProveedorNuevo = obtenerCampo(nuevoNombreProveedor, "proveedores", "id");
 
-                    tabla.setValueAt(nuevoNombreProveedor, filaSeleccionada, 6);
-                    tabla.setValueAt(nuevoNombreProducto, filaSeleccionada, 2);
-                    tabla.setValueAt(nuevaCantidad, filaSeleccionada, 3);
+                        tabla.setValueAt(nuevoNombreProveedor, filaSeleccionada, 6);
+                        tabla.setValueAt(nuevoNombreProducto, filaSeleccionada, 2);
+                        tabla.setValueAt(nuevaCantidad, filaSeleccionada, 3);
 
-                     String sqlActualizar = "UPDATE almacen SET proveedor_id = ?, producto_id = ?, cantidad_unitaria = ? WHERE id = ?";
+                        String sqlActualizar = "UPDATE almacen SET proveedor_id = ?, producto_id = ?, cantidad_unitaria = ? WHERE id = ?";
 
-                    try (PreparedStatement psActualizar = conexion.prepareStatement(sqlActualizar)) {
-                        psActualizar.setInt(1, idProveedorNuevo.intValue());
-                        psActualizar.setInt(2, idProductoNuevo.intValue());
-                        psActualizar.setInt(3, Integer.parseInt(nuevaCantidad));
-                        psActualizar.setInt(4, Integer.parseInt(tabla.getValueAt(filaSeleccionada, 0).toString()));
+                        try (PreparedStatement psActualizar = conexion.prepareStatement(sqlActualizar)) {
+                            psActualizar.setInt(1, idProveedorNuevo.intValue());
+                            psActualizar.setInt(2, idProductoNuevo.intValue());
+                            psActualizar.setInt(3, Integer.parseInt(nuevaCantidad));
+                            psActualizar.setInt(4, Integer.parseInt(tabla.getValueAt(filaSeleccionada, 0).toString()));
 
-                        int filasAfectadasActualizar = psActualizar.executeUpdate();
+                            int filasAfectadasActualizar = psActualizar.executeUpdate();
 
-                        if (filasAfectadasActualizar > 0) {
-                            // Restar el stock del nuevo producto
-                            String sqlRestarStockNuevo = "UPDATE productos SET stock = stock + ? WHERE id = ?";
-                            try (PreparedStatement psRestarStockNuevo = conexion.prepareStatement(sqlRestarStockNuevo)) {
-                                psRestarStockNuevo.setInt(1, Integer.parseInt(nuevaCantidad));
-                                psRestarStockNuevo.setInt(2, idProductoNuevo.intValue());
+                            if (filasAfectadasActualizar > 0) {
+                                // Restar el stock del nuevo producto
+                                String sqlRestarStockNuevo = "UPDATE productos SET stock = stock + ? WHERE id = ?";
+                                try (PreparedStatement psRestarStockNuevo = conexion.prepareStatement(sqlRestarStockNuevo)) {
+                                    psRestarStockNuevo.setInt(1, Integer.parseInt(nuevaCantidad));
+                                    psRestarStockNuevo.setInt(2, idProductoNuevo.intValue());
 
-                                int filasAfectadasRestarStockNuevo = psRestarStockNuevo.executeUpdate();
+                                    int filasAfectadasRestarStockNuevo = psRestarStockNuevo.executeUpdate();
 
-                                if (filasAfectadasRestarStockNuevo > 0) {
-                                    JOptionPane.showMessageDialog(this, "Registro actualizado y stock actualizado exitosamente!");
-                                    cargarAlmacen();;
-                                    cargarProductosPorDefecto();
-                                } else {
-                                    System.out.println("No se pudo actualizar el stock del nuevo producto.");
+                                    if (filasAfectadasRestarStockNuevo > 0) {
+                                        JOptionPane.showMessageDialog(this, "Registro actualizado y stock actualizado exitosamente!");
+                                        cargarAlmacen();;
+                                        cargarProductosPorDefecto();
+                                    } else {
+                                        System.out.println("No se pudo actualizar el stock del nuevo producto.");
+                                    }
                                 }
+                            } else {
+                                System.out.println("No se pudo actualizar el registro de la tabla almacen.");
                             }
-                        } else {
-                            System.out.println("No se pudo actualizar el registro de la tabla almacen.");
                         }
+                    } else {
+                        System.out.println("No se pudo restar el stock del producto antiguo.");
                     }
-                } else {
-                    System.out.println("No se pudo restar el stock del producto antiguo.");
+                } catch (SQLException e) {
+                    System.out.println("Error al realizar la actualización y actualizar el stock: " + e.getMessage());
                 }
-            } catch (SQLException e) {
-                System.out.println("Error al realizar la actualización y actualizar el stock: " + e.getMessage());
             }
-        }
         }
 
     }//GEN-LAST:event_btnModificarProvedor1ActionPerformed
@@ -2204,74 +2213,75 @@ private void cargarProductos() {
             }
         }
     }//GEN-LAST:event_btnCrearUsuarioActionPerformed
-   private int obtenerIdUsuario(Connection conexion, String nombre, String contra, String correo) throws SQLException {
-    int idUsuario = -1;
-    String sqlObtenerId = "SELECT id FROM usuarios WHERE nombre = ? AND contraseña = ? AND correo = ?";
+    private int obtenerIdUsuario(Connection conexion, String nombre, String contra, String correo) throws SQLException {
+        int idUsuario = -1;
+        String sqlObtenerId = "SELECT id FROM usuarios WHERE nombre = ? AND contraseña = ? AND correo = ?";
 
-    try (PreparedStatement psObtenerId = conexion.prepareStatement(sqlObtenerId)) {
-        psObtenerId.setString(1, nombre);
-        psObtenerId.setString(2, contra);
-        psObtenerId.setString(3, correo);
+        try (PreparedStatement psObtenerId = conexion.prepareStatement(sqlObtenerId)) {
+            psObtenerId.setString(1, nombre);
+            psObtenerId.setString(2, contra);
+            psObtenerId.setString(3, correo);
 
-        try (ResultSet resultSet = psObtenerId.executeQuery()) {
-            if (resultSet.next()) {
-                idUsuario = resultSet.getInt("id");
+            try (ResultSet resultSet = psObtenerId.executeQuery()) {
+                if (resultSet.next()) {
+                    idUsuario = resultSet.getInt("id");
+                }
             }
         }
+
+        return idUsuario;
     }
 
-    return idUsuario;
-}
     private void asignarRolUsuario(Connection conexion, int idUsuario, String rol) {
-    String sqlObtenerRolId = "SELECT id FROM rol WHERE nombreRol = ?";
-    String sqlAsignarRol = "INSERT INTO rol_usuarios(rol_id, usuarios_id) VALUES (?, ?)";
+        String sqlObtenerRolId = "SELECT id FROM rol WHERE nombreRol = ?";
+        String sqlAsignarRol = "INSERT INTO rol_usuarios(rol_id, usuarios_id) VALUES (?, ?)";
 
-    try (PreparedStatement psObtenerRolId = conexion.prepareStatement(sqlObtenerRolId)) {
-        psObtenerRolId.setString(1, rol);
+        try (PreparedStatement psObtenerRolId = conexion.prepareStatement(sqlObtenerRolId)) {
+            psObtenerRolId.setString(1, rol);
 
-        try (ResultSet resultSet = psObtenerRolId.executeQuery()) {
-            if (resultSet.next()) {
-                int idRol = resultSet.getInt("id");
+            try (ResultSet resultSet = psObtenerRolId.executeQuery()) {
+                if (resultSet.next()) {
+                    int idRol = resultSet.getInt("id");
 
-                try (PreparedStatement psAsignarRol = conexion.prepareStatement(sqlAsignarRol)) {
-                    psAsignarRol.setInt(1, idRol);
-                    psAsignarRol.setInt(2, idUsuario);
+                    try (PreparedStatement psAsignarRol = conexion.prepareStatement(sqlAsignarRol)) {
+                        psAsignarRol.setInt(1, idRol);
+                        psAsignarRol.setInt(2, idUsuario);
 
-                    int filasAfectadas = psAsignarRol.executeUpdate();
+                        int filasAfectadas = psAsignarRol.executeUpdate();
 
-                    if (filasAfectadas > 0) {
-                        System.out.println("Rol asignado correctamente");
-                    } else {
-                        System.out.println("Error al asignar el rol");
+                        if (filasAfectadas > 0) {
+                            System.out.println("Rol asignado correctamente");
+                        } else {
+                            System.out.println("Error al asignar el rol");
+                        }
                     }
+                } else {
+                    System.out.println("No se encontró el ID del rol");
                 }
-            } else {
-                System.out.println("No se encontró el ID del rol");
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
     }
-}
-    
-    private void cargarRoles(){
+
+    private void cargarRoles() {
         try (Connection connection = MySQLConexion.getConexion()) {
-        String sql = "SELECT nombreRol FROM rol";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            try (ResultSet resultSet = statement.executeQuery()) {
-                List<String> rol = new ArrayList<>();
-                while (resultSet.next()) {
-                    rol.add(resultSet.getString("nombreRol"));
+            String sql = "SELECT nombreRol FROM rol";
+            try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    List<String> rol = new ArrayList<>();
+                    while (resultSet.next()) {
+                        rol.add(resultSet.getString("nombreRol"));
+                    }
+                    cbRolUUU.setModel(new DefaultComboBoxModel<>(rol.toArray(new String[0])));
                 }
-                cbRolUUU.setModel(new DefaultComboBoxModel<>(rol.toArray(new String[0])));
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
-    }
     }
     private void tfBuscarUsuariosFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tfBuscarUsuariosFocusGained
-        if(tfBuscarUsuarios.getText().equals("Buscar por Nombre, Rol y Activo")){
+        if (tfBuscarUsuarios.getText().equals("Buscar por Nombre, Rol y Activo")) {
             tfBuscarUsuarios.setText("");
         }
     }//GEN-LAST:event_tfBuscarUsuariosFocusGained
@@ -2287,29 +2297,28 @@ private void cargarProductos() {
     }//GEN-LAST:event_tfBuscarUsuariosActionPerformed
 
     private void btnBuscarUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarUsuariosActionPerformed
-        String criterio=tfBuscarUsuarios.getText();
+        String criterio = tfBuscarUsuarios.getText();
         if (criterio.isEmpty()) {
             JOptionPane.showMessageDialog(this, "LLenar el campo de busqueda");
-        }else{
-            String sql="SELECT u.id,u.nombre,u.activo,ro.nombreRol,u.correo,u.fecha_creacion,u.fecha_modificacion FROM rol ro INNER JOIN rol_usuarios r on ro.id=r.rol_id INNER JOIN usuarios u on u.id=r.usuarios_id where u.nombre like ? or ro.nombreRol like ? or u.activo like ? ";
-            try (Connection con =MySQLConexion.getConexion()){
-                try(PreparedStatement ps =con.prepareStatement(sql)){
+        } else {
+            String sql = "SELECT u.id,u.nombre,u.activo,ro.nombreRol,u.correo,u.fecha_creacion,u.fecha_modificacion FROM rol ro INNER JOIN rol_usuarios r on ro.id=r.rol_id INNER JOIN usuarios u on u.id=r.usuarios_id where u.nombre like ? or ro.nombreRol like ? or u.activo like ? ";
+            try (Connection con = MySQLConexion.getConexion()) {
+                try (PreparedStatement ps = con.prepareStatement(sql)) {
                     ps.setString(1, "%" + criterio + "%");
                     ps.setString(2, "%" + criterio + "%");
                     ps.setString(3, "%" + criterio + "%");
-                    try(ResultSet rs=ps.executeQuery()){
-                        DefaultTableModel tabla= (DefaultTableModel)tableUsuarios.getModel();
+                    try (ResultSet rs = ps.executeQuery()) {
+                        DefaultTableModel tabla = (DefaultTableModel) tableUsuarios.getModel();
                         tabla.setRowCount(0);
-                        while(rs.next()){
-                           Object[] fila={
+                        while (rs.next()) {
+                            Object[] fila = {
                                 rs.getString("u.id"),
                                 rs.getString("u.nombre"),
                                 rs.getString("u.activo"),
                                 rs.getString("ro.nombreRol"),
                                 rs.getString("u.correo"),
                                 rs.getString("u.fecha_creacion"),
-                                rs.getString("u.fecha_modificacion"),
-                            };
+                                rs.getString("u.fecha_modificacion"),};
                             tabla.addRow(fila);
                         }
                     }
@@ -2321,13 +2330,13 @@ private void cargarProductos() {
     }//GEN-LAST:event_btnBuscarUsuariosActionPerformed
 
     private void btnEliminarUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarUsuariosActionPerformed
-        int filaSelecionada=tableUsuarios.getSelectedRow();
-        if (filaSelecionada!=-1) {
-            DefaultTableModel tabla=(DefaultTableModel) tableUsuarios.getModel();
-            String id=tabla.getValueAt(filaSelecionada, 0).toString();
+        int filaSelecionada = tableUsuarios.getSelectedRow();
+        if (filaSelecionada != -1) {
+            DefaultTableModel tabla = (DefaultTableModel) tableUsuarios.getModel();
+            String id = tabla.getValueAt(filaSelecionada, 0).toString();
             tabla.removeRow(filaSelecionada);
             eliminarFilaEnBaseDeDatos2(id);
-        }else{
+        } else {
             JOptionPane.showMessageDialog(null, "Por favor, selecciona una fila para eliminar.");
         }
     }//GEN-LAST:event_btnEliminarUsuariosActionPerformed
@@ -2338,37 +2347,37 @@ private void cargarProductos() {
         String correo = tfCorreoUUU.getText();
         String rol = (String) cbRolUUU.getSelectedItem();
         String activo = tfActivoUUU.getText();
-        
-        int filaSelecionada=tableUsuarios.getSelectedRow();
-        if (filaSelecionada!=-1) {
-            DefaultTableModel tabla=(DefaultTableModel) tableUsuarios.getModel();
-            String id=tabla.getValueAt(filaSelecionada, 0).toString();
-            editarUsuario(id,nombre,contra,correo,rol,activo);
-        }else{
+
+        int filaSelecionada = tableUsuarios.getSelectedRow();
+        if (filaSelecionada != -1) {
+            DefaultTableModel tabla = (DefaultTableModel) tableUsuarios.getModel();
+            String id = tabla.getValueAt(filaSelecionada, 0).toString();
+            editarUsuario(id, nombre, contra, correo, rol, activo);
+        } else {
             JOptionPane.showMessageDialog(null, "Por favor, selecciona una fila para eliminar.");
         }
     }//GEN-LAST:event_btnModificarUsuariosActionPerformed
-    public void editarUsuario(String id,String nombre,String contra, String correo, String rol, String activo){
-        
-        String sql="UPDATE usuarios\n" +
-                    "SET nombre = ?, correo = ?, contraseña=?, activo=?\n" +
-                    "WHERE id = ?;";
-        try (Connection con=MySQLConexion.getConexion()){
-            try(PreparedStatement ps=con.prepareStatement(sql)){
+    public void editarUsuario(String id, String nombre, String contra, String correo, String rol, String activo) {
+
+        String sql = "UPDATE usuarios\n"
+                + "SET nombre = ?, correo = ?, contraseña=?, activo=?\n"
+                + "WHERE id = ?;";
+        try (Connection con = MySQLConexion.getConexion()) {
+            try (PreparedStatement ps = con.prepareStatement(sql)) {
                 ps.setString(1, nombre);
                 ps.setString(2, correo);
                 ps.setString(3, contra);
                 ps.setString(4, activo);
                 ps.setString(5, id);
-                int filas=ps.executeUpdate();
-                if(filas>0){
-                    String sqlRol="update rol_usuarios set rol_id=? where usuarios_id=?";
-                    try (Connection co=MySQLConexion.getConexion()){
-                        try(PreparedStatement pss=co.prepareStatement(sqlRol)){
-                            if(rol.equals("Administrador")){
-                                rol="1";
-                            }else{
-                                rol="2";
+                int filas = ps.executeUpdate();
+                if (filas > 0) {
+                    String sqlRol = "update rol_usuarios set rol_id=? where usuarios_id=?";
+                    try (Connection co = MySQLConexion.getConexion()) {
+                        try (PreparedStatement pss = co.prepareStatement(sqlRol)) {
+                            if (rol.equals("Administrador")) {
+                                rol = "1";
+                            } else {
+                                rol = "2";
                             }
                             pss.setString(1, rol);
                             pss.setString(2, id);
@@ -2383,10 +2392,10 @@ private void cargarProductos() {
                     } catch (Exception e) {
                         System.out.println(e.toString());
                     }
-                }else{
+                } else {
                     JOptionPane.showMessageDialog(this, "Ocurrio un error al actualizar el usuario");
                 }
-               
+
             }
         } catch (Exception e) {
         }
@@ -2394,27 +2403,26 @@ private void cargarProductos() {
     private void btnMostrarUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMostrarUsuariosActionPerformed
         cargarUsuarios();
     }//GEN-LAST:event_btnMostrarUsuariosActionPerformed
-    
-    public void cargarUsuarios(){
-        String sql="SELECT u.id,u.nombre,u.activo,ro.nombreRol,u.correo,u.fecha_creacion,u.fecha_modificacion FROM rol ro INNER JOIN rol_usuarios r on ro.id=r.rol_id INNER JOIN usuarios u on u.id=r.usuarios_id";
-        try(Connection con=MySQLConexion.getConexion()){
-            try(PreparedStatement ps=con.prepareStatement(sql)){
-                ResultSet rs =ps.executeQuery();
-                DefaultTableModel tabla= (DefaultTableModel) tableUsuarios.getModel();
+
+    public void cargarUsuarios() {
+        String sql = "SELECT u.id,u.nombre,u.activo,ro.nombreRol,u.correo,u.fecha_creacion,u.fecha_modificacion FROM rol ro INNER JOIN rol_usuarios r on ro.id=r.rol_id INNER JOIN usuarios u on u.id=r.usuarios_id";
+        try (Connection con = MySQLConexion.getConexion()) {
+            try (PreparedStatement ps = con.prepareStatement(sql)) {
+                ResultSet rs = ps.executeQuery();
+                DefaultTableModel tabla = (DefaultTableModel) tableUsuarios.getModel();
                 tabla.setRowCount(0);
-                while(rs.next()){
-                    Object[] fila={
+                while (rs.next()) {
+                    Object[] fila = {
                         rs.getString("u.id"),
                         rs.getString("u.nombre"),
                         rs.getString("u.activo"),
                         rs.getString("ro.nombreRol"),
                         rs.getString("u.correo"),
                         rs.getString("u.fecha_creacion"),
-                        rs.getString("u.fecha_modificacion"),
-                    };
+                        rs.getString("u.fecha_modificacion"),};
                     tabla.addRow(fila);
                 }
-                
+
             }
         } catch (SQLException ex) {
             System.out.println(ex.toString());
@@ -2428,100 +2436,97 @@ private void cargarProductos() {
         // TODO add your handling code here:
     }//GEN-LAST:event_tfCorreoUUUActionPerformed
     private void limpiarCamposDeTexto() {
-    tfAlmacenProducto.setText("");
-    taDescripcionProducto.setText("");
-    tfPrecioProducto.setText("");
-    tfStockProducto.setText("");
-    tfCategoriaProducto.setText("");
-    tfAlmacenProducto.setText("");
-}
+        tfAlmacenProducto.setText("");
+        taDescripcionProducto.setText("");
+        tfPrecioProducto.setText("");
+        tfStockProducto.setText("");
+        tfCategoriaProducto.setText("");
+        tfAlmacenProducto.setText("");
+    }
+
     private void actualizarFilaEnBaseDeDatos(String id, String nuevoNombre, String nuevaDescripcion, String nuevoPrecio, String nuevoStock, String nuevaCategoria, String nuevoAlmacen) {
-    String sql = "UPDATE productos SET nombre = ?, descripción = ?, precio = ?, stock = ?, categoria = ?, almacen = ? WHERE id = ?";
+        String sql = "UPDATE productos SET nombre = ?, descripción = ?, precio = ?, stock = ?, categoria = ?, almacen = ? WHERE id = ?";
 
-    try (Connection conexion = MySQLConexion.getConexion();
-         PreparedStatement ps = conexion.prepareStatement(sql)) {
+        try (Connection conexion = MySQLConexion.getConexion(); PreparedStatement ps = conexion.prepareStatement(sql)) {
 
-        // Establecer los parámetros en la consulta preparada
-        ps.setString(1, nuevoNombre);
-        ps.setString(2, nuevaDescripcion);
-        ps.setString(3, nuevoPrecio);
-        ps.setString(4, nuevoStock);
-        ps.setString(5, nuevaCategoria);
-        ps.setString(6, nuevoAlmacen);
-        ps.setString(7, id);
+            // Establecer los parámetros en la consulta preparada
+            ps.setString(1, nuevoNombre);
+            ps.setString(2, nuevaDescripcion);
+            ps.setString(3, nuevoPrecio);
+            ps.setString(4, nuevoStock);
+            ps.setString(5, nuevaCategoria);
+            ps.setString(6, nuevoAlmacen);
+            ps.setString(7, id);
 
-        // Ejecutar la consulta de actualización en la base de datos
-        int filasAfectadas = ps.executeUpdate();
+            // Ejecutar la consulta de actualización en la base de datos
+            int filasAfectadas = ps.executeUpdate();
 
-        if (filasAfectadas > 0) {
-            System.out.println("Fila actualizada en la base de datos.");
-        } else {
-            System.out.println("No se pudo actualizar la fila en la base de datos.");
+            if (filasAfectadas > 0) {
+                System.out.println("Fila actualizada en la base de datos.");
+            } else {
+                System.out.println("No se pudo actualizar la fila en la base de datos.");
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al actualizar fila en la base de datos: " + e.getMessage());
         }
-    } catch (SQLException e) {
-        System.out.println("Error al actualizar fila en la base de datos: " + e.getMessage());
     }
-}
+
     private void eliminarFilaEnBaseDeDatos(String id) {
-    String sql = "DELETE FROM productos WHERE id = ?";
+        String sql = "DELETE FROM productos WHERE id = ?";
 
-    try (Connection conexion = MySQLConexion.getConexion();
-         PreparedStatement ps = conexion.prepareStatement(sql)) {
+        try (Connection conexion = MySQLConexion.getConexion(); PreparedStatement ps = conexion.prepareStatement(sql)) {
 
-        // Establecer el parámetro en la consulta preparada
-        ps.setString(1, id);
+            // Establecer el parámetro en la consulta preparada
+            ps.setString(1, id);
 
-        // Ejecutar la consulta de eliminación en la base de datos
-        int filasAfectadas = ps.executeUpdate();
+            // Ejecutar la consulta de eliminación en la base de datos
+            int filasAfectadas = ps.executeUpdate();
 
-        if (filasAfectadas > 0) {
-            System.out.println("Fila eliminada de la base de datos.");
-        } else {
-            System.out.println("No se pudo eliminar la fila de la base de datos.");
+            if (filasAfectadas > 0) {
+                System.out.println("Fila eliminada de la base de datos.");
+            } else {
+                System.out.println("No se pudo eliminar la fila de la base de datos.");
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al eliminar fila de la base de datos: " + e.getMessage());
         }
-    } catch (SQLException e) {
-        System.out.println("Error al eliminar fila de la base de datos: " + e.getMessage());
-    }
-    
-}
-private void eliminarFilaEnBaseDeDatos2(String id) {
-    String deleteRolUsuariosSql = "DELETE FROM rol_usuarios WHERE usuarios_id = ?";
-    try (Connection conexion = MySQLConexion.getConexion();
-         PreparedStatement psDeleteRolUsuarios = conexion.prepareStatement(deleteRolUsuariosSql)) {
-        psDeleteRolUsuarios.setString(1, id);
-        psDeleteRolUsuarios.executeUpdate();
-    } catch (SQLException e) {
-        System.out.println("Error al eliminar registros relacionados en rol_usuarios: " + e.getMessage());
-        return; 
-    }
-    String deleteUsuarioSql = "DELETE FROM usuarios WHERE id = ?";
-    try (Connection conexion = MySQLConexion.getConexion();
-         PreparedStatement psDeleteUsuario = conexion.prepareStatement(deleteUsuarioSql)) {
-        psDeleteUsuario.setString(1, id);
-        int filasAfectadas = psDeleteUsuario.executeUpdate();
-        if (filasAfectadas > 0) {
-            System.out.println("Fila eliminada de la base de datos.");
-            JOptionPane.showMessageDialog(this, "Usuario eliminado correctamente");
-            cargarUsuarios();
-        } else {
-            System.out.println("No se pudo eliminar la fila de la base de datos.");
-        }
-    } catch (SQLException e) {
-        System.out.println("Error al eliminar fila de la base de datos: " + e.getMessage());
-    }
-}
 
-     private void cargarProductosPorDefecto() {
+    }
+
+    private void eliminarFilaEnBaseDeDatos2(String id) {
+        String deleteRolUsuariosSql = "DELETE FROM rol_usuarios WHERE usuarios_id = ?";
+        try (Connection conexion = MySQLConexion.getConexion(); PreparedStatement psDeleteRolUsuarios = conexion.prepareStatement(deleteRolUsuariosSql)) {
+            psDeleteRolUsuarios.setString(1, id);
+            psDeleteRolUsuarios.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Error al eliminar registros relacionados en rol_usuarios: " + e.getMessage());
+            return;
+        }
+        String deleteUsuarioSql = "DELETE FROM usuarios WHERE id = ?";
+        try (Connection conexion = MySQLConexion.getConexion(); PreparedStatement psDeleteUsuario = conexion.prepareStatement(deleteUsuarioSql)) {
+            psDeleteUsuario.setString(1, id);
+            int filasAfectadas = psDeleteUsuario.executeUpdate();
+            if (filasAfectadas > 0) {
+                System.out.println("Fila eliminada de la base de datos.");
+                JOptionPane.showMessageDialog(this, "Usuario eliminado correctamente");
+                cargarUsuarios();
+            } else {
+                System.out.println("No se pudo eliminar la fila de la base de datos.");
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al eliminar fila de la base de datos: " + e.getMessage());
+        }
+    }
+
+    private void cargarProductosPorDefecto() {
         String sql = "SELECT * FROM productos";
 
-        try (Connection conexion = MySQLConexion.getConexion();
-             Statement statement = conexion.createStatement();
-             ResultSet resultSet = statement.executeQuery(sql)) {
+        try (Connection conexion = MySQLConexion.getConexion(); Statement statement = conexion.createStatement(); ResultSet resultSet = statement.executeQuery(sql)) {
 
             // Limpiar el modelo de la tabla antes de agregar nuevos datos
             DefaultTableModel modeloTabla = (DefaultTableModel) tableProductos.getModel();
             modeloTabla.setRowCount(0);
-            
+
             while (resultSet.next()) {
                 Object[] fila = {
                     resultSet.getString("id"),
@@ -2538,12 +2543,11 @@ private void eliminarFilaEnBaseDeDatos2(String id) {
             System.out.println("Error al cargar productos por defecto: " + e.getMessage());
         }
     }
-     private void cargarProveedoresPorDefecto() {
+
+    private void cargarProveedoresPorDefecto() {
         String sql = "SELECT * FROM proveedores";
 
-        try (Connection conexion = MySQLConexion.getConexion();
-             Statement statement = conexion.createStatement();
-             ResultSet resultSet = statement.executeQuery(sql)) {
+        try (Connection conexion = MySQLConexion.getConexion(); Statement statement = conexion.createStatement(); ResultSet resultSet = statement.executeQuery(sql)) {
             DefaultTableModel modeloTabla = (DefaultTableModel) tableProvedor.getModel();
             modeloTabla.setRowCount(0);
             while (resultSet.next()) {
@@ -2552,20 +2556,18 @@ private void eliminarFilaEnBaseDeDatos2(String id) {
                     resultSet.getString("nombre"),
                     resultSet.getString("dirección"),
                     resultSet.getString("teléfono"),
-                    resultSet.getString("correo"),
-                };
+                    resultSet.getString("correo"),};
                 modeloTabla.addRow(fila);
             }
         } catch (SQLException e) {
             System.out.println("Error al cargar proveedores por defecto: " + e.getMessage());
         }
     }
-     private void cargarAlmacen() {
+
+    private void cargarAlmacen() {
         String sql = "SELECT a.id, a.fecha_entrada,p.nombre as Producto,a.cantidad_unitaria,p.precio,a.precio_compra,pro.nombre as Proveedor FROM productos p INNER JOIN almacen a on  a.producto_id=p.id INNER JOIN proveedores pro on pro.id=a.proveedor_id";
 
-        try (Connection conexion = MySQLConexion.getConexion();
-             Statement statement = conexion.createStatement();
-             ResultSet resultSet = statement.executeQuery(sql)) {
+        try (Connection conexion = MySQLConexion.getConexion(); Statement statement = conexion.createStatement(); ResultSet resultSet = statement.executeQuery(sql)) {
             DefaultTableModel modeloTabla = (DefaultTableModel) tableAlmacen.getModel();
             modeloTabla.setRowCount(0);
             while (resultSet.next()) {
@@ -2576,16 +2578,13 @@ private void eliminarFilaEnBaseDeDatos2(String id) {
                     resultSet.getString("cantidad_unitaria"),
                     resultSet.getString("precio"),
                     resultSet.getString("precio_compra"),
-                    resultSet.getString("Proveedor"),
-                };
+                    resultSet.getString("Proveedor"),};
                 modeloTabla.addRow(fila);
             }
         } catch (SQLException e) {
             System.out.println("Error al cargar proveedores por defecto: " + e.getMessage());
         }
     }
-     
-    
 
     /**
      * @param args the command line arguments
@@ -2693,7 +2692,6 @@ private void eliminarFilaEnBaseDeDatos2(String id) {
     private javax.swing.JSeparator jSeparator5;
     private javax.swing.JSeparator jSeparator8;
     private javax.swing.JSeparator jSeparator9;
-    private javax.swing.JTable jTable4;
     private javax.swing.JTable jTable5;
     private javax.swing.JTable jTable6;
     private javax.swing.JLabel jlFotoUsuario;
@@ -2721,6 +2719,7 @@ private void eliminarFilaEnBaseDeDatos2(String id) {
     private rojerusan.RSTableMetro tableProductos;
     private rojerusan.RSTableMetro tableProvedor;
     private rojerusan.RSTableMetro tableUsuarios;
+    private javax.swing.JTable tblResumen;
     private javax.swing.JTextField tfActivoUUU;
     private javax.swing.JTextField tfAlmacenProducto;
     private javax.swing.JTextField tfBuscar;
