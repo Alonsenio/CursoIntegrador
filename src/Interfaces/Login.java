@@ -233,20 +233,16 @@ public final class Login extends javax.swing.JFrame {
         String nombre = tfNombreUser.getText().trim();
         String contraseña = new String(tfContraseñaUser.getPassword());
 
-    if (nombre.isEmpty() || contraseña.isEmpty()) {
-        JOptionPane.showMessageDialog(null, "Por favor, complete todos los campos.");
+        if (nombre.isEmpty() || contraseña.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Por favor, complete todos los campos.");
         } else {
             new UsuarioDAO().authUser(nombre, contraseña);
-            
-            if(UserLogged.getIsLogged() == null) {
+
+            if (UserLogged.getIsLogged() == null) {
                 JOptionPane.showMessageDialog(null, "Credenciales no válidas.");
                 return;
             }
-
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error en la conexión a la base de datos1: " + e.getMessage());
-            e.printStackTrace();
+            
             dispose();
             Cargando view = new Cargando(true, UserLogged.getPRIVILEGIO());
             view.setVisible(true);
@@ -259,9 +255,9 @@ public final class Login extends javax.swing.JFrame {
 
     private void jCheckBox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox3ActionPerformed
         if (jCheckBox3.isSelected()) {
-             tfContraseñaUser.setEchoChar((char) 0);
+            tfContraseñaUser.setEchoChar((char) 0);
         } else {
-        tfContraseñaUser.setEchoChar('*');
+            tfContraseñaUser.setEchoChar('*');
         }
     }//GEN-LAST:event_jCheckBox3ActionPerformed
 
@@ -270,7 +266,7 @@ public final class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCloseMouseEntered
 
     private void btnCloseMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCloseMouseExited
-        btnClose.setIcon(new ImageIcon(getClass().getResource("/Iconos/celestex.png"))); 
+        btnClose.setIcon(new ImageIcon(getClass().getResource("/Iconos/celestex.png")));
     }//GEN-LAST:event_btnCloseMouseExited
 
     private void tfContraseñaUserKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfContraseñaUserKeyPressed
@@ -294,27 +290,23 @@ public final class Login extends javax.swing.JFrame {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
 
-}
+                }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Login.class  
+            java.util.logging.Logger.getLogger(Login.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
 
-.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(Login.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
 
-} catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Login.class  
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(Login.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
 
-.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-
-} catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Login.class  
-
-.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-
-} catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Login.class  
-
-.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(Login.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
@@ -323,11 +315,7 @@ public final class Login extends javax.swing.JFrame {
             new Login().setVisible(true);
         });
     }
-    
-    
-    
-    
-    
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnClose;
