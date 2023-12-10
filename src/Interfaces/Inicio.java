@@ -3,6 +3,7 @@ package Interfaces;
 import Clases.MejoresClientes;
 import Clases.MejoresProductos;
 import Clases.ResumenVenta;
+import Clases.UserLogged;
 import DAO.VentaDAO;
 import java.awt.Color;
 import java.awt.Cursor;
@@ -70,9 +71,13 @@ public final class Inicio extends javax.swing.JFrame {
         cargarAlmacen();
         cargarRoles();
         cargarUsuarios();
+        
+        lblTitulo.setText(lblTitulo.getText().replace("usuario", UserLogged.getNOMBRE()));
+        
         resumenList = new VentaDAO().getResumenVentas();
         bestClientsList = new VentaDAO().getMejoresClientes();
         bestProductsList = new VentaDAO().getMejoresProductos();
+        
         updateTableResumen();
         updateBestClientsTable();
         updateBestProductsTable();
@@ -110,34 +115,6 @@ public final class Inicio extends javax.swing.JFrame {
         } catch (SQLException e) {
             System.out.println(e.toString());
         }
-    }
-
-    private void mostrarPendientes(int total, int completado, Graphics graph) {
-        lblPenText1.setText("Pendiente(s): " + Integer.toString(total - completado));
-        lblPenTextC1.setText("Completado(s): " + completado);
-        graficar(total, completado, graph);
-    }
-
-    public void graficar(int total, int completado, Graphics graph) {
-
-        int tareasPendientes = total - completado;
-
-        double porcentajeCompletadas = (double) completado / total;
-        double porcentajePendientes = (double) tareasPendientes / total;
-
-        int anguloCompletadas = (int) (porcentajeCompletadas * 360);
-        int anguloPendientes = (int) (porcentajePendientes * 360);
-
-        int radio = 100;
-        int centroPanel = 75; // Mitad de 150 (tamaño del JPanel)
-        int centroCirculo = centroPanel - radio / 2; // Centra el círculo en el JPanel
-        Color color_completado = new Color(102, 255, 102); // Crea el color para los completados
-        Color color_pendiene = new Color(255, 255, 51); // Crea el color para los pendientes
-
-        graph.setColor(color_completado);
-        graph.fillArc(centroCirculo, centroCirculo, radio, radio, 0, anguloCompletadas);
-        graph.setColor(color_pendiene);
-        graph.fillArc(centroCirculo, centroCirculo, radio, radio, anguloCompletadas, anguloPendientes);
     }
 
     public void handleCursorChange(boolean mouseEntered) {
@@ -192,14 +169,6 @@ public final class Inicio extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        PanelGraph = new javax.swing.JPanel(){
-            @Override
-            public void paint(Graphics graph){
-                super.paint(graph);
-
-                mostrarPendientes(total_p, pendientes, graph);
-            }
-        };
         rSProgressCircleAnimatedBeanInfo1 = new rojerusan.componentes.RSProgressCircleAnimatedBeanInfo();
         panelRound1 = new util.PanelRound();
         DashBoard = new util.PanelRound();
@@ -217,7 +186,7 @@ public final class Inicio extends javax.swing.JFrame {
         btnInventario = new javax.swing.JButton();
         panelPrincipal = new util.PanelRound();
         panelHome = new util.PanelRound();
-        jLabel7 = new javax.swing.JLabel();
+        lblTitulo = new javax.swing.JLabel();
         contentRecent1 = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
         modeloResumen = new javax.swing.table.DefaultTableModel(
@@ -271,13 +240,6 @@ public final class Inicio extends javax.swing.JFrame {
         );
         tblBestProducts = new javax.swing.JTable();
         tblBestProducts.setModel(modeloBestProducts);
-        contentPendings1 = new javax.swing.JPanel();
-        lblTitlePendings1 = new javax.swing.JLabel();
-        lblPenText1 = new javax.swing.JLabel();
-        jPanel4 = new javax.swing.JPanel();
-        jPanel5 = new javax.swing.JPanel();
-        lblPenTextC1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
         jSeparator8 = new javax.swing.JSeparator();
         jSeparator9 = new javax.swing.JSeparator();
         jSeparator5 = new javax.swing.JSeparator();
@@ -358,22 +320,6 @@ public final class Inicio extends javax.swing.JFrame {
         btnMostrarProvedor1 = new rsbuttongradiente.RSButtonGradiente();
         jScrollPane7 = new javax.swing.JScrollPane();
         tableAlmacen = new rojerusan.RSTableMetro();
-
-        PanelGraph.setBackground(new java.awt.Color(35, 35, 35));
-        PanelGraph.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 51, 51)));
-        PanelGraph.setFocusable(false);
-        PanelGraph.setRequestFocusEnabled(false);
-
-        javax.swing.GroupLayout PanelGraphLayout = new javax.swing.GroupLayout(PanelGraph);
-        PanelGraph.setLayout(PanelGraphLayout);
-        PanelGraphLayout.setHorizontalGroup(
-            PanelGraphLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 148, Short.MAX_VALUE)
-        );
-        PanelGraphLayout.setVerticalGroup(
-            PanelGraphLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 148, Short.MAX_VALUE)
-        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -576,24 +522,24 @@ public final class Inicio extends javax.swing.JFrame {
         panelHome.setRoundTopRight(30);
         panelHome.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel7.setFont(new java.awt.Font("Arial Black", 0, 24)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel7.setText("¡Bienvenido, usuario!");
-        panelHome.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(21, 41, -1, -1));
+        lblTitulo.setFont(new java.awt.Font("Arial Black", 0, 24)); // NOI18N
+        lblTitulo.setForeground(new java.awt.Color(255, 255, 255));
+        lblTitulo.setText("¡Bienvenido, usuario!");
+        panelHome.add(lblTitulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(21, 41, -1, -1));
 
         contentRecent1.setBackground(new java.awt.Color(35, 35, 35));
         contentRecent1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jScrollPane4.setViewportView(tblResumen);
 
-        contentRecent1.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 50, 410, 220));
+        contentRecent1.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 50, 550, 220));
 
         lblTitleRecent1.setFont(new java.awt.Font("Arial Black", 0, 20)); // NOI18N
         lblTitleRecent1.setForeground(new java.awt.Color(255, 255, 255));
         lblTitleRecent1.setText("Ventas Recientes");
         contentRecent1.add(lblTitleRecent1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, -1, -1));
 
-        panelHome.add(contentRecent1, new org.netbeans.lib.awtextra.AbsoluteConstraints(21, 94, 417, -1));
+        panelHome.add(contentRecent1, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 90, 550, -1));
 
         contentClients1.setBackground(new java.awt.Color(35, 35, 35));
         contentClients1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -622,64 +568,8 @@ public final class Inicio extends javax.swing.JFrame {
         contentProducts1.add(jScrollPane6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 40, 350, 170));
 
         panelHome.add(contentProducts1, new org.netbeans.lib.awtextra.AbsoluteConstraints(386, 390, 355, 210));
-
-        contentPendings1.setBackground(new java.awt.Color(35, 35, 35));
-        contentPendings1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        lblTitlePendings1.setFont(new java.awt.Font("Arial Black", 0, 20)); // NOI18N
-        lblTitlePendings1.setForeground(new java.awt.Color(255, 255, 255));
-        lblTitlePendings1.setText("Ventas Pendientes");
-        contentPendings1.add(lblTitlePendings1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, -1, -1));
-
-        lblPenText1.setForeground(new java.awt.Color(255, 255, 255));
-        lblPenText1.setText("Pendiente(s): 0");
-        contentPendings1.add(lblPenText1, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 180, -1, -1));
-
-        jPanel4.setBackground(new java.awt.Color(102, 255, 102));
-
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 22, Short.MAX_VALUE)
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 20, Short.MAX_VALUE)
-        );
-
-        contentPendings1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 180, -1, 20));
-
-        jPanel5.setBackground(new java.awt.Color(255, 255, 51));
-
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 20, Short.MAX_VALUE)
-        );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 20, Short.MAX_VALUE)
-        );
-
-        contentPendings1.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 180, -1, -1));
-
-        lblPenTextC1.setForeground(new java.awt.Color(255, 255, 255));
-        lblPenTextC1.setText("Completado(s): 0");
-        contentPendings1.add(lblPenTextC1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 180, -1, -1));
-
-        jButton1.setText("jButton1");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-        contentPendings1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 220, -1, -1));
-
-        panelHome.add(contentPendings1, new org.netbeans.lib.awtextra.AbsoluteConstraints(444, 94, 297, 254));
         panelHome.add(jSeparator8, new org.netbeans.lib.awtextra.AbsoluteConstraints(385, 322, -1, -1));
-        panelHome.add(jSeparator9, new org.netbeans.lib.awtextra.AbsoluteConstraints(44, 377, 697, 17));
+        panelHome.add(jSeparator9, new org.netbeans.lib.awtextra.AbsoluteConstraints(11, 377, 740, 17));
 
         jSeparator5.setOrientation(javax.swing.SwingConstants.VERTICAL);
         panelHome.add(jSeparator5, new org.netbeans.lib.awtextra.AbsoluteConstraints(364, 370, 10, 1));
@@ -1649,10 +1539,6 @@ public final class Inicio extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_rSButtonCustom2ActionPerformed
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
 
     private void taDescripcionProductoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_taDescripcionProductoMouseClicked
         // TODO add your handling code here:
@@ -2643,7 +2529,6 @@ public final class Inicio extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private util.PanelRound DashBoard;
-    private javax.swing.JPanel PanelGraph;
     private javax.swing.JButton Provedores;
     private rsbuttongradiente.RSButtonGradiente btnBuscar;
     private rsbuttongradiente.RSButtonGradiente btnBuscarProvedor;
@@ -2672,11 +2557,9 @@ public final class Inicio extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> cbProveedores;
     private javax.swing.JComboBox<String> cbRolUUU;
     private javax.swing.JPanel contentClients1;
-    private javax.swing.JPanel contentPendings1;
     private javax.swing.JPanel contentProducts1;
     private javax.swing.JPanel contentRecent1;
     private util.PanelRound exit;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton7;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -2698,11 +2581,8 @@ public final class Inicio extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
@@ -2716,12 +2596,10 @@ public final class Inicio extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator9;
     private javax.swing.JLabel jlFotoUsuario;
     private javax.swing.JLabel lblLogo;
-    private javax.swing.JLabel lblPenText1;
-    private javax.swing.JLabel lblPenTextC1;
     private javax.swing.JLabel lblTitleClients1;
-    private javax.swing.JLabel lblTitlePendings1;
     private javax.swing.JLabel lblTitleProducts1;
     private javax.swing.JLabel lblTitleRecent1;
+    private javax.swing.JLabel lblTitulo;
     private util.PanelRound panelHome;
     private util.PanelRound panelInventario;
     private util.PanelRound panelPrincipal;
